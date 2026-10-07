@@ -155,6 +155,8 @@ Windows，Python3.13.13 / PySide6 6.11.2。命令 `E:/dsh-pet-dev313/Scripts/pyt
 
 推送前本地门禁：ruff 与 `git diff --check` 通过；全量 2977 passed 的记录见上文。另用 `E:/dsh-pet-dev313/Scripts/python.exe E:/qilin-codex-fix-20261007/github-desktop-upload/stress_gate.py`，在 16 个逻辑 CPU 上持续施加负载，将受影响的 Agent/Qt/生命周期/IPC/播放器相关 20 个测试族复跑三遍：每遍 **617 passed、2 skipped**，pytest 耗时 **51.91 / 50.32 / 51.17 秒**。主机 156 个一秒 CPU 样本平均 **96.46%**，最大 **100%**；负载子进程均已退出。原始命令、三轮日志与采样在 `github-desktop-upload/stress-record.json`、`stress-round-{1,2,3}.log`。
 
+**源码已上传**：在 Desktop 中点击提交与 Publish branch，生成 [a7d5160b34f92a423a546587be341c11fe791175](https://github.com/ysyx-22040210-yudian/dsh-pet-indesktop/commit/a7d5160b34f92a423a546587be341c11fe791175)。提交包含全部 98 个候选文件，逐文件 Git blob 与提交前记录一致，工作树清洁；只读 `git ls-remote` 确认线上分支哈希与本地提交相同。原克隆只抓取 `main`，发布后本地缺少当前分支的远端跟踪引用；补充仅针对当前分支的 fetch 映射，并由 Desktop Fetch 同步。证据保存在 `github-desktop-upload/commit-verification.json` 和界面截图；本段上传回执作为文档补充提交。
+
 ## 后续动画修复断点
 
 **品牌清理阶段已交付；105动作的完整视觉修复尚未完成。** 初始台账55个观察问题，新增2个候选通过并安装；其余53个观察问题及50个待全时序审查动作继续保留，没有通过删动作缩小范围。
