@@ -1,0 +1,25 @@
+{
+  "generation_tool": "built-in imagegen",
+  "backend_model": null,
+  "backend_note": "Tool did not report a backend model; no inferred model name.",
+  "actual_size": [
+    1254,
+    1254
+  ],
+  "actual_mode": "RGBA",
+  "transparent_background": true,
+  "sha256": "c209250c2e345d81fa8a6539d22e443d5dc250ac5663894432de110116f3eabc",
+  "source_master_sha256": "4fe98a4ae19478b61832b31d197d14debdd2cc642fb59132f6fdceb60d58633e",
+  "registered_utc": "2026-10-07T18:46:15.930537+00:00",
+  "prompt": "Edit the supplied approved Qilin character texture. This is a precision texture edit for a 2.5D real time puppet. Keep the EXACT pose, silhouette, body proportions, limb positions, horn/ear/hair contours, clothing, colors, all accessories and red clothing emblem, and transparent background of the input. Only change BOTH large amber open eyes to naturally fully CLOSED eyes: no iris, pupil or open eye visible anywhere. Draw delicately curved dark upper eyelids and lashes on smoothly continuous pink facial skin, matching this same golden chibi anime rendering style. The two closed eyelids must be at the same original eye positions and each feel naturally connected to the surrounding face. Maintain clean original bangs and cheek contours with no rectangular skin patches, hard seams, wood background or ghost eyes. The entire rest of the full body image is unchanged. Output a single square transparent RGBA full character texture, maximum native quality. Do not make multiple poses, a sheet, a scene or a video.",
+  "references": [
+    {
+      "url": "https://booth.pm/en/items/8777527",
+      "use": "Chibi structure reference only; no asset/bone extraction or redistribution."
+    },
+    {
+      "url": "https://docs.live2d.com/en/cubism-editor-manual/standard-parameter-list/",
+      "use": "Independent eye-open, head and breathing parameter convention."
+    }
+  ]
+}

@@ -125,3 +125,7 @@ python -m pytest -q tests/test_config_key_migration.py
 - **本机遗留旧自启项**：注册表 `HKCU\...\Run` 里的 `DesktopPet = E:\software\AI\AI的有用工具\打字统计\dist\DesktopPet.exe` 是 7 月的旧 onefile 构建（无 `start /D`、解压在 C 盘 Temp），建议删除或替换，避免开机双桌宠 + 继续污染 C 盘
 - GIF 变体体积大（800MB+），zip/安装包较慢；WebM 变体约 124MB
 *（内容由AI生成，仅供参考）*
+
+### 实时麒麟模型包（3.0.0-rig2d，2026-10-08）
+
+`renderer=rig2d`角色包由`rig/model.json`、固定PNG贴图和两份清单组成；`videos/`保留清单入口，不需要WebM文件。既有QilinOnly构建会包含整个角色目录，QtPainter模型不增加运行依赖。中文资源门禁检查模型动作名与真实包内贴图；交付证据见[模型报告](PR-REPORT-qilin-rig2d-2026-10-08.md)。

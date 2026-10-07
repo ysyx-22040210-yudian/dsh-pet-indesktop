@@ -49,6 +49,16 @@ def representative_frame_index(frame_count: int, fraction: float = REPRESENTATIV
     return max(0, min(count - 1, int((count - 1) * float(fraction))))
 
 
+def representative_library_image(library, name, decode):
+    """Render a live model or use the injected, cached media decoder."""
+    render = getattr(library, "representative_image", None)
+    image = render(name) if callable(render) else None
+    if image is not None:
+        return image
+    path = library.clip_path(name)
+    return decode(path) if path is not None else QImage()
+
+
 def _decode_gif(path: Path) -> QImage:
     reader = QImageReader(str(path))
     count = max(1, reader.imageCount())

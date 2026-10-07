@@ -23,6 +23,7 @@ PYZ 字节码，未安装 PyInstaller 时退化为 zip/pyc/字节级扫描兜底
 from __future__ import annotations
 
 import argparse
+import json
 import marshal
 import sys
 import zipfile
@@ -240,9 +241,26 @@ def verify_chinese_filenames(root: Path, needles: tuple[str, ...]) -> list[str]:
     只统计文件：目录名即使包含中文串（如 assets/characters 下的分类目录），
     也不能代替实际素材文件，否则自检会漏报缺失文件。
     """
+    # A layered model stores action names in its UTF-8 model file instead of
+    # naming one video per action. Require the schema and referenced textures,
+    # so an arbitrary text file cannot hide a missing character package.
+    rig_names = set()
+    for model_path in root.rglob('model.json'):
+        try:
+            model = json.loads(model_path.read_text(encoding='utf-8'))
+            if model.get('schema') != 'qilin-rig2d-1' or not model.get('layers'):
+                continue
+            files = [(model_path.parent / layer['file']).resolve() for layer in model['layers'].values()]
+            if not all(path.is_relative_to(model_path.parent.resolve()) and path.is_file() for path in files):
+                continue
+            rig_names.update(model['actions'])
+        except (OSError, ValueError, KeyError, TypeError, AttributeError):
+            continue
     missing: list[str] = []
     for needle in needles:
-        if not any(path.is_file() and needle in path.name for path in root.rglob("*")):
+        if not any(needle in name for name in rig_names) and not any(
+            path.is_file() and needle in path.name for path in root.rglob("*")
+        ):
             missing.append(needle)
     return missing
 

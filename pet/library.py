@@ -26,7 +26,7 @@ import weakref
 from pathlib import Path
 from typing import Callable
 
-from PySide6.QtCore import QObject, QTimer, Signal
+from PySide6.QtCore import QObject, QTimer, Qt, Signal
 from PySide6.QtGui import QImage, QMovie
 
 from . import catalog
@@ -186,6 +186,7 @@ class MovieLibrary(QObject):
         self._low_warm_retry_timer.timeout.connect(self._warm_low_priority_background)
         self.low_warm_batch_finished.connect(self._on_low_warm_batch_finished)
         self.media_type: str = 'webm'
+        self._rig_model = None
         self.no_mirror: set[str] = self._load_no_mirror()
         # move_strides.json 一次读取、一次遍历 → (步幅, 曲线) 两份结果：
         # 此前两个加载器各读一遍文件、各遍历一遍 dict（重复 IO，且两套口径
@@ -286,6 +287,23 @@ class MovieLibrary(QObject):
         return data if isinstance(data, dict) else {}
 
     def _load_all(self) -> None:
+        if self.manifest and self.manifest.get('renderer') == 'rig2d':
+            from .rig_model import load_rig_model
+            rig_path = (self._asset_dir / self.manifest['rig']).resolve()
+            if not rig_path.is_relative_to(self._asset_dir.parent.resolve()):
+                raise ValueError('角色模型不在角色素材包内')
+            self._rig_model = load_rig_model(rig_path)
+            self.media_type = 'rig2d'
+            self._manifest = {}
+            for name, action in self._rig_model.actions.items():
+                self._manifest[name] = str(rig_path)
+                self._paths[name] = rig_path
+                folder = action.get('folder', '')
+                self.folder_map[name] = folder
+                self.folder_files.setdefault(folder, []).append(name)
+            # The textures are loaded once and shared by all actions. Neither
+            # first-frame ffmpeg caching nor worker-thread prewarming is needed.
+            return
         if self._manifest is None:
             # 自动扫描该形象目录下的 webm 或 gif，支持不同角色有不同动作集
             if not self._asset_dir.is_dir():
@@ -556,6 +574,8 @@ class MovieLibrary(QObject):
 
     def resume_warm(self) -> None:
         """窗口恢复显示时补齐预热：低优先级池未建完或首帧未预热完则重新排期。"""
+        if getattr(self, '_rig_model', None) is not None:
+            return
         if not self._prewarm_enabled:
             return  # Phase 2：动画预热关闭时，隐藏/恢复都不再自动拉起预热
         self._warm_paused = False
@@ -751,12 +771,16 @@ class MovieLibrary(QObject):
         加入 0~0.05s 随机错峰，多开同时启动时避免 ffmpeg 进程洪峰。
         Phase 2：动画预热关闭时不启动。
         """
+        if getattr(self, '_rig_model', None) is not None:
+            return
         if not self._paths or not self._prewarm_enabled:
             return
         threading.Thread(target=self._warm_all_meta_background, daemon=True).start()
 
     def schedule_low_priority_warm(self) -> None:
         """应用层调用：UI 就绪后延迟补全随机动作池预热（2s 后 1 worker）。"""
+        if getattr(self, '_rig_model', None) is not None:
+            return
         if not self._prewarm_enabled:
             return
         self._low_warm_timer.start()
@@ -798,6 +822,8 @@ class MovieLibrary(QObject):
         必须在 GUI 线程调用（self.movie(name) 按 QObject thread affinity 在
         主线程创建 clip）；真正耗时的 ffmpeg 解码放到独立 daemon 线程。
         """
+        if getattr(self, '_rig_model', None) is not None:
+            return
         if self._warm_paused or not self._prewarm_enabled:
             return
         if session_ending():
@@ -834,11 +860,23 @@ class MovieLibrary(QObject):
         """
         if name not in self._movies:
             path = self._paths[name]
-            if path.suffix.lower() == '.gif':
+            if getattr(self, '_rig_model', None) is not None:
+                from .rig_clip import RigClip
+                self._movies[name] = RigClip(self._rig_model, self._rig_model.actions[name], parent=self)
+            elif path.suffix.lower() == '.gif':
                 self._movies[name] = GifClip(path, parent=self)
             else:
                 self._movies[name] = WebMClip(path, parent=self)
         return self._movies[name]
+
+    def representative_image(self, name: str) -> QImage | None:
+        """Render model thumbnails into QImage; safe for existing icon workers."""
+        if getattr(self, '_rig_model', None) is None:
+            return None
+        action = self._rig_model.actions[name]
+        image = self._rig_model.render(action, action['seconds'] * .62)
+        return image.scaled(128, 128, Qt.AspectRatioMode.KeepAspectRatio,
+                            Qt.TransformationMode.SmoothTransformation)
 
     def clip_path(self, name: str) -> Path | None:
         """只取素材路径、不创建 clip——供工作线程解码缩略图用。
@@ -880,3 +918,9 @@ def clip_current_image(clip):
     if pm is None or pm.isNull():
         return None
     return pm.toImage()
+
+
+def clip_render_signature(clip, signature: tuple) -> tuple:
+    """Keep paused live parameter edits visible without altering media signatures."""
+    revision = getattr(clip, 'render_revision', None)
+    return signature + (revision,) if revision is not None else signature

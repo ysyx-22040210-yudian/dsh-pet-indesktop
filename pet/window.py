@@ -77,14 +77,14 @@ from .config import (
     Config,
     _float_or_default,
 )
-from .library import MovieLibrary
+from .library import MovieLibrary, clip_render_signature
 from .movement import body_reach, choose_move_direction, inward_facing, move_anim_tick, move_position_at_frame, quantize_move, wander_target_y
 from .predictive_prewarm import PredictivePrewarm, pick_from_pool, roll_next
 from .report_gates import REPORT_GATE_DEFAULTS
 from . import window_placement
 from . import window_screen
 from . import window_alerts
-from .animation_thumbnail import decode_representative_frame
+from .animation_thumbnail import decode_representative_frame, representative_library_image
 from .speech_bubble import PetSpeechBubble, list_self_talk_images
 from .fun_image_popup import oijingjing_image_path, resolve_fun_asset
 from .context_menu import normalize_template_id, populate_context_menu as _populate_context_menu
@@ -2003,8 +2003,8 @@ class PetWindow(QWidget, WindowFeatureGateMixin):
             self.facing == 'right'
             and self.anim not in getattr(self.lib, 'no_mirror', frozenset())
         )
-        return (path, mtime, size, fp, frame_n, self.facing, mirrored,
-                self.scale, dpr, self.anim)
+        return clip_render_signature(self.movie, (path, mtime, size, fp, frame_n, self.facing, mirrored,
+                                                  self.scale, dpr, self.anim))
 
     def _frame_content_fingerprint(self, path: str, mtime: int, size: int) -> int:
         """素材内容弱指纹（首尾块）：同 mtime + 同 size 的原地替换也能失效。
@@ -2533,9 +2533,8 @@ class PetWindow(QWidget, WindowFeatureGateMixin):
                 return QImage()
             with lock:
                 return QImage(self._animation_icon_image_cache.get(name, QImage()))
-        path = self.lib.clip_path(name)  # 不在 worker 线程构造 WebMClip（Qt 线程亲和）
         try:
-            image = decode_representative_frame(path) if path is not None else QImage()
+            image = representative_library_image(self.lib, name, decode_representative_frame)
             with lock:
                 if not image.isNull():
                     cache = self._animation_icon_image_cache

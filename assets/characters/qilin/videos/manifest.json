@@ -1,0 +1,46 @@
+{
+  "id": "qilin",
+  "name": "麒麟",
+  "version": "3.0.0-rig2d",
+  "canvas": [
+    640,
+    360
+  ],
+  "fps": 30,
+  "body_box": [
+    196,
+    40,
+    444,
+    335
+  ],
+  "head_box": [
+    196,
+    40,
+    444,
+    208
+  ],
+  "idle": "待机呼吸休闲",
+  "turn": "东张西望",
+  "moves": [
+    "螃蟹走路",
+    "漂浮踏步"
+  ],
+  "clicks": [
+    "点击回应-开心跃动",
+    "点击回应-害羞惊讶",
+    "点击回应-傲娇生气",
+    "点击回应-挠痒咯咯笑",
+    "点击回应-元气挥手"
+  ],
+  "drag": "被鼠标拖拽悬空反馈",
+  "description": "固定麒麟分层模型：实时骨骼、眼睑参数及道具接触约束。",
+  "production": {
+    "runtime": "Qt QPainter rig2d; no video decoding for this character",
+    "actions": 105,
+    "layers": 68,
+    "sampling": 2,
+    "limitations": "2.5D front/three-quarter pose; no complete 3D back view"
+  },
+  "renderer": "rig2d",
+  "rig": "../rig/model.json"
+}

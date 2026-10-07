@@ -11,6 +11,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import marshal
 import zipfile
 import zlib
@@ -29,6 +30,29 @@ def _load_checker():
 
 
 _CHECKER = _load_checker()
+
+
+def test_live_rig_action_names_need_valid_textures(tmp_path):
+    rig = tmp_path / "assets/characters/qilin/rig"
+    rig.mkdir(parents=True)
+    texture = rig / "body.png"
+    texture.write_bytes(b"model texture fixture")
+    model = {"schema": "qilin-rig2d-1", "layers": {"body": {"file": "body.png"}},
+             "actions": {"吃Token": {"kind": "eat-token"}}}
+    (rig / "model.json").write_text(json.dumps(model, ensure_ascii=False), encoding="utf-8")
+    assert _CHECKER.verify_chinese_filenames(tmp_path, ("吃Token",)) == []
+    texture.unlink()
+    assert _CHECKER.verify_chinese_filenames(tmp_path, ("吃Token",)) == ["吃Token"]
+
+
+def test_rig_action_name_outside_package_does_not_bypass_gate(tmp_path):
+    (tmp_path / "outside.png").write_bytes(b"fixture")
+    rig = tmp_path / "rig"
+    rig.mkdir()
+    model = {"schema": "qilin-rig2d-1", "layers": {"body": {"file": "../outside.png"}},
+             "actions": {"吃Token": {"kind": "eat-token"}}}
+    (rig / "model.json").write_text(json.dumps(model, ensure_ascii=False), encoding="utf-8")
+    assert _CHECKER.verify_chinese_filenames(tmp_path, ("吃Token",)) == ["吃Token"]
 
 
 @pytest.fixture(scope="module")

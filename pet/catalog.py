@@ -213,7 +213,9 @@ def resolve_character_video_dir(character_id: str) -> Path:
         if candidate.is_dir():
             return candidate
     webm_dir_path = character_video_dir(character_id)
-    if webm_dir_path.is_dir() and any(webm_dir_path.rglob('*.webm')):
+    if webm_dir_path.is_dir() and (
+        any(webm_dir_path.rglob('*.webm')) or _has_rig_package(character_id, webm_dir_path)
+    ):
         return webm_dir_path
     gif_dir_path = character_gif_video_dir(character_id)
     if gif_dir_path.is_dir() and any(gif_dir_path.rglob('*.gif')):
@@ -239,6 +241,7 @@ def list_available_characters() -> list[str]:
             video_dir = child / 'videos'
             if child.is_dir() and video_dir.is_dir() and (
                 any(video_dir.rglob('*.webm')) or any(video_dir.rglob('*.gif'))
+                or _has_rig_package(child.name, video_dir)
             ):
                 cid = child.name
                 if cid not in seen:
@@ -273,6 +276,18 @@ def load_character_manifest(character_id: str, asset_dir: Path | str | None = No
             except Exception:
                 return None
     return None
+
+
+def _has_rig_package(character_id: str, video_dir: Path) -> bool:
+    """A rig is a character package even when it contains no video files."""
+    manifest = load_character_manifest(character_id, video_dir)
+    if not manifest or manifest.get('renderer') != 'rig2d':
+        return False
+    relative = manifest.get('rig')
+    if not isinstance(relative, str):
+        return False
+    path = (video_dir / relative).resolve()
+    return path.is_relative_to(video_dir.parent.resolve()) and path.is_file()
 
 
 def character_display_name(character_id: str) -> str:

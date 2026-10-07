@@ -1,0 +1,1879 @@
+{
+  "schema": "qilin-rig2d-1",
+  "canvas": [
+    640,
+    360
+  ],
+  "fps": 30,
+  "sampling": 2,
+  "neck": [
+    298.79998779296875,
+    198.0
+  ],
+  "bones": {
+    "la": [
+      [
+        268.55999755859375,
+        218.8800048828125
+      ],
+      [
+        254.39999389648438,
+        232.8000030517578
+      ],
+      [
+        237.60000610351562,
+        250.8000030517578
+      ]
+    ],
+    "ra": [
+      [
+        322.79998779296875,
+        218.8800048828125
+      ],
+      [
+        337.9200134277344,
+        234.0
+      ],
+      [
+        357.1199951171875,
+        253.9199981689453
+      ]
+    ],
+    "ll": [
+      [
+        281.2799987792969,
+        282.0
+      ],
+      [
+        282.4800109863281,
+        299.2799987792969
+      ],
+      [
+        284.6400146484375,
+        309.3599853515625
+      ]
+    ],
+    "rl": [
+      [
+        319.67999267578125,
+        282.9599914550781
+      ],
+      [
+        321.1199951171875,
+        300.7200012207031
+      ],
+      [
+        323.5199890136719,
+        310.79998779296875
+      ]
+    ],
+    "tail": [
+      [
+        349.4,
+        277.0
+      ],
+      [
+        400.0,
+        293.0
+      ],
+      [
+        414.0,
+        250.0
+      ]
+    ]
+  },
+  "tail_root": [
+    349.4,
+    277.0
+  ],
+  "wing_root": [
+    364.0799865722656,
+    212.39999389648438
+  ],
+  "eye_rects": [
+    [
+      246.48000000000002,
+      137.28,
+      38.879999999999995,
+      38.16
+    ],
+    [
+      304.32,
+      145.92000000000002,
+      40.8,
+      33.36
+    ]
+  ],
+  "layers": {
+    "body": {
+      "file": "body.png",
+      "origin": [
+        224.5,
+        194.0
+      ],
+      "size": [
+        145.5,
+        105.5
+      ],
+      "sha256": "4da8bc40d805e854eb757b3575856316a44dec42ef9fbacaac5c54ab6c13d30c"
+    },
+    "head_neutral": {
+      "file": "head_neutral.png",
+      "origin": [
+        218.5,
+        38.0
+      ],
+      "size": [
+        181.0,
+        205.0
+      ],
+      "sha256": "ae1713ac45690ec0b8ee7c6549296327b5b93798fdd800e84e0b68c470b6571f"
+    },
+    "head_blink": {
+      "file": "head_blink.png",
+      "origin": [
+        218.5,
+        38.0
+      ],
+      "size": [
+        181.0,
+        205.0
+      ],
+      "sha256": "66baace86a71caec000b6781178487a42dd392600526fa88843fd1fcda8eea2b"
+    },
+    "head_happy": {
+      "file": "head_happy.png",
+      "origin": [
+        218.5,
+        38.0
+      ],
+      "size": [
+        181.0,
+        205.0
+      ],
+      "sha256": "c3ad8905f1c2fdeb85e4c506f3e07149c43d8f0b303d75dab5ff370c522b58bd"
+    },
+    "head_surprise": {
+      "file": "head_surprise.png",
+      "origin": [
+        218.5,
+        38.0
+      ],
+      "size": [
+        181.0,
+        205.0
+      ],
+      "sha256": "049616fe331b7f57a00c07e6f6e96844a68456e4cf0ddf23dccee3f7c1a58aca"
+    },
+    "head_shy": {
+      "file": "head_shy.png",
+      "origin": [
+        218.5,
+        38.0
+      ],
+      "size": [
+        181.0,
+        205.0
+      ],
+      "sha256": "680234ab430fc224ff8d3cdf89cb19ecc314f7871f2d73315064568ddce93881"
+    },
+    "head_sad": {
+      "file": "head_sad.png",
+      "origin": [
+        218.5,
+        38.0
+      ],
+      "size": [
+        181.0,
+        205.0
+      ],
+      "sha256": "3f474bb89147a64d31c324ec49aa701e918640a9b5e7b0efcce0e79388f3edfe"
+    },
+    "head_angry": {
+      "file": "head_angry.png",
+      "origin": [
+        218.5,
+        38.0
+      ],
+      "size": [
+        181.0,
+        205.0
+      ],
+      "sha256": "105bcac98a91420bbb6b11faa91fb6392aa92271c157af501986bfa2b6005108"
+    },
+    "la_upper": {
+      "file": "la_upper.png",
+      "origin": [
+        244.54000000000002,
+        211.44
+      ],
+      "size": [
+        30.5,
+        31.5
+      ],
+      "sha256": "51e2d2953b617d5fa28cfbcbb3b86babefd4376def8f274a685596b506acffbc"
+    },
+    "la_lower": {
+      "file": "la_lower.png",
+      "origin": [
+        227.04000000000002,
+        222.94
+      ],
+      "size": [
+        37.5,
+        35.5
+      ],
+      "sha256": "dbb46fcf2837ad2e51d9e7a9f56f39271029d425c2696c663a9c80b9a2782ff0"
+    },
+    "ra_upper": {
+      "file": "ra_upper.png",
+      "origin": [
+        316.8,
+        210.95999999999998
+      ],
+      "size": [
+        31.5,
+        33.5
+      ],
+      "sha256": "4c68ee6d4067e4b3306a00b66a04dd4c23d39e81249907fcf29fec59ba52fc11"
+    },
+    "ra_lower": {
+      "file": "ra_lower.png",
+      "origin": [
+        328.3,
+        224.45999999999998
+      ],
+      "size": [
+        41.5,
+        40.5
+      ],
+      "sha256": "915895b57c348685f874615170cae8bbdb76ffd284f71cd762d1d72d0023e559"
+    },
+    "ll_upper": {
+      "file": "ll_upper.png",
+      "origin": [
+        263.52,
+        288.71999999999997
+      ],
+      "size": [
+        36.0,
+        17.0
+      ],
+      "sha256": "aac0d358600b67a32f4d0343ce25b5445f49c5f926959abfa74c923facad0592"
+    },
+    "ll_lower": {
+      "file": "ll_lower.png",
+      "origin": [
+        267.02,
+        293.71999999999997
+      ],
+      "size": [
+        32.5,
+        15.0
+      ],
+      "sha256": "8d4189573e67d6acb6c97b969063d291e6979f623dfc00c79ab9043e90cede8f"
+    },
+    "rl_upper": {
+      "file": "rl_upper.png",
+      "origin": [
+        302.88,
+        288.24
+      ],
+      "size": [
+        38.5,
+        18.5
+      ],
+      "sha256": "39de9f9662b689468e2e39aef076e24293056476d7f956d3c5ee7f7301f61e6a"
+    },
+    "rl_lower": {
+      "file": "rl_lower.png",
+      "origin": [
+        308.38,
+        295.24
+      ],
+      "size": [
+        33.5,
+        15.0
+      ],
+      "sha256": "10ddea02ed5f21e61d899ed0ed529b7ed8b12a4c64bb8252e9784fe5416a7183"
+    },
+    "l_foot": {
+      "file": "l_foot.png",
+      "origin": [
+        -18.960000286102293,
+        -2.8799999356269836
+      ],
+      "size": [
+        36.239999999999995,
+        24.0
+      ],
+      "sha256": "791c8e19940ec18402ffe88895606526542b97fda956e7368a6ddfb8879e3914"
+    },
+    "r_foot": {
+      "file": "r_foot.png",
+      "origin": [
+        -19.43999928474426,
+        -2.879999953508377
+      ],
+      "size": [
+        38.4,
+        22.799999999999997
+      ],
+      "sha256": "06956ce851e1b7cb597f4874b2eb9812660edb90476a050d02338d998cc9fe78"
+    },
+    "tail_upper": {
+      "file": "tail_upper.png",
+      "origin": [
+        354.2399704635143,
+        229.4399687862396
+      ],
+      "size": [
+        54.72,
+        72.0
+      ],
+      "sha256": "ea984208fb86147e7af04cbd4778b6b041f5e1ab702bdc8bd00dd16384f9f7b3"
+    },
+    "tail_lower": {
+      "file": "tail_lower.png",
+      "origin": [
+        390.7199704635143,
+        229.4399687862396
+      ],
+      "size": [
+        32.4,
+        70.55999999999999
+      ],
+      "sha256": "5169a85bb082438ab0bfaae6a642ed825c9a434cfde1dacfcfd5465bea3a37d4"
+    },
+    "wing": {
+      "file": "wing.png",
+      "origin": [
+        -10.080000375509261,
+        -23.75999937057495
+      ],
+      "size": [
+        50.63999999999999,
+        51.36
+      ],
+      "sha256": "63e661cba39e1788dc98e0cef04a5b6a7ec7e01d9cc362f58359f03044d0d007"
+    },
+    "prop_laptop": {
+      "file": "prop_laptop.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        1.4676616915422886,
+        1.0
+      ],
+      "sha256": "10bedaa84447c03e82a49738f959f9d344ab1f70808c8740e2f6cb89bea1c850"
+    },
+    "prop_notebook": {
+      "file": "prop_notebook.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        1.502169197396963,
+        1.0
+      ],
+      "sha256": "af3123081fe9fabfa67ec00d8608437a93d32c3f2c6b2b9c0e647b68cd420eaf"
+    },
+    "prop_brush": {
+      "file": "prop_brush.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.7402135231316725,
+        1.0
+      ],
+      "sha256": "663f6bc421baa38ac8169b5c29b85a49dbf72dfa4a5273e07af6f88a74b52595"
+    },
+    "prop_dumplings": {
+      "file": "prop_dumplings.png",
+      "origin": [
+        0.0,
+        0.006024096385542169
+      ],
+      "size": [
+        1.2048192771084338,
+        0.9939759036144579
+      ],
+      "sha256": "c49f87a73901eec57d6882f59317d811333e0485a3407263d1c1cd3ef2601c03"
+    },
+    "prop_controller": {
+      "file": "prop_controller.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        1.3240740740740742,
+        1.0
+      ],
+      "sha256": "3545eaf045fe06c19f9eddc74ecb204d2aedf7574d457bd96723cc335c828c47"
+    },
+    "prop_fan": {
+      "file": "prop_fan.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        1.140625,
+        1.0
+      ],
+      "sha256": "cedd41a090853d71076b049b079af771ec5304e277ef5ebb05344c4e2e2638d0"
+    },
+    "prop_balloon": {
+      "file": "prop_balloon.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.5096774193548387,
+        1.0
+      ],
+      "sha256": "b27592908c1cbd9322b455df989a5c6294a490b1a2e02489f1e6581241fb6640"
+    },
+    "prop_flower": {
+      "file": "prop_flower.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.6885245901639344,
+        1.0
+      ],
+      "sha256": "79b636279d8b1f4c9c194772c7a542998430138d0d35ab8dd6f5716560d42317"
+    },
+    "prop_ball": {
+      "file": "prop_ball.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        1.0106382978723405,
+        1.0
+      ],
+      "sha256": "9e74d4b61c84ba13e247ea8292caeb8c8f12cd90c0c1e148e490cc08515cb208"
+    },
+    "prop_bow": {
+      "file": "prop_bow.png",
+      "origin": [
+        0.005208333333333333,
+        0.005208333333333333
+      ],
+      "size": [
+        0.9791666666666666,
+        0.9947916666666666
+      ],
+      "sha256": "ce195e6b367f3e28fc2d9be653083191fde28523a8d88576fbc13e48d9acf279"
+    },
+    "prop_cake": {
+      "file": "prop_cake.png",
+      "origin": [
+        0.0,
+        0.006711409395973154
+      ],
+      "size": [
+        1.342281879194631,
+        0.9865771812080537
+      ],
+      "sha256": "201d9ddc64e260a7f3ce5a9bda9a611a46706c89c3503eb581399d868cdb5a11"
+    },
+    "prop_candy": {
+      "file": "prop_candy.png",
+      "origin": [
+        0.004672897196261682,
+        0.004672897196261682
+      ],
+      "size": [
+        0.6261682242990654,
+        0.9906542056074766
+      ],
+      "sha256": "c0e64dc53b61581a0ae1e4dd6c5e0a16fdc0b0301819336695f3ce17f5f754c8"
+    },
+    "prop_cat": {
+      "file": "prop_cat.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.9835616438356164,
+        1.0
+      ],
+      "sha256": "313f3bb0956e5e58ae0f85f3e5e2044c0af9b74817235a6f1eed68ad4567b3a5"
+    },
+    "prop_chopsticks": {
+      "file": "prop_chopsticks.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.8617021276595744,
+        1.0
+      ],
+      "sha256": "8890172dfa97e20bbe1b0e7381dc8ac4cc79620addba22cdf4fec8b0c6ed1c36"
+    },
+    "prop_coin": {
+      "file": "prop_coin.png",
+      "origin": [
+        0.0,
+        0.005714285714285714
+      ],
+      "size": [
+        1.0285714285714285,
+        0.9942857142857143
+      ],
+      "sha256": "caf9238a5b478d0d1cb785e5ca0a424531df2b9ff30e8fc387177198f2ca29d0"
+    },
+    "prop_cone": {
+      "file": "prop_cone.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.6169154228855721,
+        0.9950248756218906
+      ],
+      "sha256": "d851269051d25d46007abd153d9e659d912552f26730683075cf4a7b329c939c"
+    },
+    "prop_crab": {
+      "file": "prop_crab.png",
+      "origin": [
+        0.0,
+        0.006134969325153374
+      ],
+      "size": [
+        1.2760736196319018,
+        0.9877300613496932
+      ],
+      "sha256": "c66bed61ae50a7bb762d439a0d5839525dac5bbd5d4010a3e858200617a36705"
+    },
+    "prop_cube": {
+      "file": "prop_cube.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.9179487179487179,
+        1.0
+      ],
+      "sha256": "9abf18f93b7d88b0483c15955e82d45f8c30f78b3c64850d2c082f18ffa168ef"
+    },
+    "prop_desk": {
+      "file": "prop_desk.png",
+      "origin": [
+        0.006756756756756757,
+        0.006756756756756757
+      ],
+      "size": [
+        1.4189189189189189,
+        0.9864864864864865
+      ],
+      "sha256": "2ccef6e97d32afee3878977a6ccd062f744c37878b98b7379798e65c9d249cb2"
+    },
+    "prop_emptybag": {
+      "file": "prop_emptybag.png",
+      "origin": [
+        0.006369426751592357,
+        0.0
+      ],
+      "size": [
+        1.2802547770700636,
+        1.0
+      ],
+      "sha256": "842e42bd03957d1e264a9f045dbeead18ba3460db74fae5cf0c0a73a66d6ac2d"
+    },
+    "prop_flute": {
+      "file": "prop_flute.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.8669950738916257,
+        0.9950738916256158
+      ],
+      "sha256": "a6a21e51137dfffd19fd5c0b6c104a5b7597c2ac9091d28e91e93944e21047da"
+    },
+    "prop_fullbag": {
+      "file": "prop_fullbag.png",
+      "origin": [
+        0.00510204081632653,
+        0.00510204081632653
+      ],
+      "size": [
+        1.010204081632653,
+        0.9897959183673469
+      ],
+      "sha256": "2b81a15e9c11c205c347266f2ad4fdcaa49f59998453f2f409f453257e30c5e9"
+    },
+    "prop_goboard": {
+      "file": "prop_goboard.png",
+      "origin": [
+        0.006756756756756757,
+        0.006756756756756757
+      ],
+      "size": [
+        1.3513513513513513,
+        0.9932432432432432
+      ],
+      "sha256": "10b7976a480f7c3800fee4cff0c6be0270bfc882e969c2297162d5af5581106a"
+    },
+    "prop_goldlantern": {
+      "file": "prop_goldlantern.png",
+      "origin": [
+        0.0,
+        0.0044444444444444444
+      ],
+      "size": [
+        0.6488888888888888,
+        0.9911111111111112
+      ],
+      "sha256": "04bd65ccefc2e1f4a52ee9bc88c4c8f7065ac6d7f99606b163353e4f1d1e1a18"
+    },
+    "prop_greenball": {
+      "file": "prop_greenball.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        1.5112781954887218,
+        0.9924812030075187
+      ],
+      "sha256": "51dbe21562fceb1e21454adfec83530b832cbf9a344596e519ba1dc239fdf318"
+    },
+    "prop_horse": {
+      "file": "prop_horse.png",
+      "origin": [
+        0.005208333333333333,
+        0.005208333333333333
+      ],
+      "size": [
+        0.984375,
+        0.9895833333333334
+      ],
+      "sha256": "8adf90c760b6c3234bf09eb5ea8c497d0a0762769fafbd152f77ea71e0f74c05"
+    },
+    "prop_kite": {
+      "file": "prop_kite.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        1.0246305418719213,
+        1.0
+      ],
+      "sha256": "390c42794d234c6fc1db3f1ff2961d486fd9202ad8b43516eaa151e1e55347f7"
+    },
+    "prop_lion": {
+      "file": "prop_lion.png",
+      "origin": [
+        0.004830917874396135,
+        0.0
+      ],
+      "size": [
+        0.9565217391304348,
+        1.0
+      ],
+      "sha256": "be0ae200f436c129e92558c5aca825ce05e3bf48c54b53f1011ef66d0c86d85b"
+    },
+    "prop_lotus": {
+      "file": "prop_lotus.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        1.336996336996337,
+        1.0
+      ],
+      "sha256": "d244a38670ffb20079a8d25bc6fcd856a9f6b9337c54a53d3a7888191b743bf4"
+    },
+    "prop_mirror": {
+      "file": "prop_mirror.png",
+      "origin": [
+        0.005208333333333333,
+        0.005208333333333333
+      ],
+      "size": [
+        0.828125,
+        0.9947916666666666
+      ],
+      "sha256": "af0b49129c10907251682fc221155cdebf2694939fc95e9a02bc1ecaa4e3202e"
+    },
+    "prop_mooncake": {
+      "file": "prop_mooncake.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        1.4545454545454546,
+        0.9924242424242424
+      ],
+      "sha256": "b026ad6a3e44d115a3e4f3d05d262ab8a5a6143be86f149b748fc5a3de87d249"
+    },
+    "prop_present": {
+      "file": "prop_present.png",
+      "origin": [
+        0.0,
+        0.00510204081632653
+      ],
+      "size": [
+        0.9693877551020408,
+        0.9897959183673469
+      ],
+      "sha256": "c115736cf74ad4499c66c56cea685ce44d34811457ce13fb7949554a7df5bfa2"
+    },
+    "prop_pumpkin": {
+      "file": "prop_pumpkin.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.9615384615384616,
+        1.0
+      ],
+      "sha256": "e4629d5f39599381e46e37e71f3380ab156d90c8ff3d609e77535df6343968f1"
+    },
+    "prop_redpacket": {
+      "file": "prop_redpacket.png",
+      "origin": [
+        0.0,
+        0.004901960784313725
+      ],
+      "size": [
+        0.7843137254901961,
+        0.9901960784313726
+      ],
+      "sha256": "f5af74eac2e9c4ad6f519b84e3d1b19aaebad0faaf1d61b78d645086f35a0c77"
+    },
+    "prop_rice": {
+      "file": "prop_rice.png",
+      "origin": [
+        0.0,
+        0.006711409395973154
+      ],
+      "size": [
+        1.1140939597315436,
+        0.9932885906040269
+      ],
+      "sha256": "fb406eaa5a40478dcba7dbff1dffde1665f966a4c86229d970eab59cf5e64a42"
+    },
+    "prop_shuttle": {
+      "file": "prop_shuttle.png",
+      "origin": [
+        0.005319148936170213,
+        0.005319148936170213
+      ],
+      "size": [
+        0.8297872340425532,
+        0.9946808510638298
+      ],
+      "sha256": "066fec64722b6b988351580b03e11f777c510150368510f3b1758f61a9edf04a"
+    },
+    "prop_skylamp": {
+      "file": "prop_skylamp.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.6,
+        1.0
+      ],
+      "sha256": "edb997b885065443f75a1b2e094d855fc7ec52340de1f13293495e504e45ac20"
+    },
+    "prop_snowman": {
+      "file": "prop_snowman.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.8536585365853658,
+        1.0
+      ],
+      "sha256": "532de3a250658132adda24a36f82230d721d4329ea261c84fb6722948b4a9810"
+    },
+    "prop_token": {
+      "file": "prop_token.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        1.0058479532163742,
+        0.9941520467836257
+      ],
+      "sha256": "6805686b01736b24be07edd5869df4c0701fa0bffe886622cec372c1c1ada50c"
+    },
+    "prop_top": {
+      "file": "prop_top.png",
+      "origin": [
+        0.0,
+        0.006172839506172839
+      ],
+      "size": [
+        0.8827160493827161,
+        0.9876543209876543
+      ],
+      "sha256": "6d62daf2cc21017dabd767214e0cd56b7fadf2d3b44ef016334d4720c8819185"
+    },
+    "prop_toycar": {
+      "file": "prop_toycar.png",
+      "origin": [
+        0.007194244604316547,
+        0.007194244604316547
+      ],
+      "size": [
+        1.39568345323741,
+        0.9856115107913669
+      ],
+      "sha256": "af50ca6866aa441fb7e7fb00814f7aaab4f9f8d296ac31c689dd05b5417c81fb"
+    },
+    "prop_tree": {
+      "file": "prop_tree.png",
+      "origin": [
+        0.004807692307692308,
+        0.0
+      ],
+      "size": [
+        0.9038461538461539,
+        1.0
+      ],
+      "sha256": "df7e3cc15addf135bdadcddba45dd157581c7fe9f0b690c2bf13b6742055c27d"
+    },
+    "prop_violin": {
+      "file": "prop_violin.png",
+      "origin": [
+        0.0,
+        0.004545454545454545
+      ],
+      "size": [
+        0.7863636363636364,
+        0.9954545454545455
+      ],
+      "sha256": "ed64b8934f9172763e2f60693ea2f6d5660d168600f97fe396abf4e739656dc4"
+    },
+    "prop_watergun": {
+      "file": "prop_watergun.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        1.0397350993377483,
+        0.9933774834437086
+      ],
+      "sha256": "1b7bba18d28a9133476000a345847ba48f06c4586a6d8b422309c966f4e49094"
+    },
+    "prop_watermelon": {
+      "file": "prop_watermelon.png",
+      "origin": [
+        0.0056179775280898875,
+        0.0056179775280898875
+      ],
+      "size": [
+        1.0224719101123596,
+        0.9887640449438202
+      ],
+      "sha256": "cb3f1cae09c7351625a81216f240ba96cb1dd3ced6c058ef39bb47029e5ba4fa"
+    },
+    "prop_whale": {
+      "file": "prop_whale.png",
+      "origin": [
+        0.0,
+        0.005747126436781609
+      ],
+      "size": [
+        1.160919540229885,
+        0.9885057471264368
+      ],
+      "sha256": "f2a5ab104dfd2d3ac8ab59af4390da571ff112682cdc7e721b3e0efac018cc22"
+    },
+    "prop_pen": {
+      "file": "prop_pen.png",
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        0.10310077519379846,
+        1.0
+      ],
+      "sha256": "929780b1e8489b881999bcf837b476f2c8321b524f741f26e24e7e5a791b94c9"
+    }
+  },
+  "actions": {
+    "点击回应-傲娇生气": {
+      "kind": "angry",
+      "emotion": "angry",
+      "prop": null,
+      "variant": 3,
+      "seconds": 3.0,
+      "effect": null,
+      "folder": "click"
+    },
+    "点击回应-元气挥手": {
+      "kind": "wave",
+      "emotion": "happy",
+      "prop": null,
+      "variant": 1,
+      "seconds": 3.0,
+      "effect": null,
+      "folder": "click"
+    },
+    "点击回应-害羞惊讶": {
+      "kind": "shy",
+      "emotion": "shy",
+      "prop": null,
+      "variant": 2,
+      "seconds": 3.0,
+      "effect": null,
+      "folder": "click"
+    },
+    "点击回应-开心跃动": {
+      "kind": "jump",
+      "emotion": "happy",
+      "prop": null,
+      "variant": 1,
+      "seconds": 3.0,
+      "effect": null,
+      "folder": "click"
+    },
+    "点击回应-挠痒咯咯笑": {
+      "kind": "tickle",
+      "emotion": "happy",
+      "prop": null,
+      "variant": 0,
+      "seconds": 3.0,
+      "effect": null,
+      "folder": "click"
+    },
+    "被鼠标拖拽悬空反馈": {
+      "kind": "drag",
+      "emotion": "surprise",
+      "prop": null,
+      "variant": 2,
+      "seconds": 3.0,
+      "effect": null,
+      "folder": "drag"
+    },
+    "余额-分文不剩": {
+      "kind": "sad",
+      "emotion": "sad",
+      "prop": null,
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "events/balance"
+    },
+    "余额-数金皱眉": {
+      "kind": "inspect",
+      "emotion": "angry",
+      "prop": "coin",
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "events/balance"
+    },
+    "余额-袋空如洗": {
+      "kind": "sad",
+      "emotion": "sad",
+      "prop": "emptybag",
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "events/balance"
+    },
+    "余额-金袋叮当": {
+      "kind": "present",
+      "emotion": "happy",
+      "prop": "fullbag",
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "events/balance"
+    },
+    "余额-钱袋如常": {
+      "kind": "present",
+      "emotion": "neutral",
+      "prop": "fullbag",
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "events/balance"
+    },
+    "余额-钱袋满溢": {
+      "kind": "present",
+      "emotion": "happy",
+      "prop": "fullbag",
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "events/balance"
+    },
+    "待机呼吸休闲": {
+      "kind": "idle",
+      "emotion": "neutral",
+      "prop": null,
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "idle"
+    },
+    "漂浮踏步": {
+      "kind": "float",
+      "emotion": "neutral",
+      "prop": null,
+      "variant": 3,
+      "seconds": 1.6,
+      "effect": null,
+      "folder": "move"
+    },
+    "螃蟹走路": {
+      "kind": "walk",
+      "emotion": "neutral",
+      "prop": null,
+      "variant": 2,
+      "seconds": 1.6,
+      "effect": null,
+      "folder": "move"
+    },
+    "三球抛接": {
+      "kind": "juggle",
+      "emotion": "happy",
+      "prop": "ball",
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "下五子棋": {
+      "kind": "board",
+      "emotion": "neutral",
+      "prop": "goboard",
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "中秋赏月吃月饼": {
+      "kind": "eat",
+      "emotion": "happy",
+      "prop": "mooncake",
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "优雅国风舞": {
+      "kind": "dance",
+      "emotion": "happy",
+      "prop": null,
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "偷吃零食被抓住": {
+      "kind": "eat-token",
+      "emotion": "shy",
+      "prop": "token",
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "写代码": {
+      "kind": "type",
+      "emotion": "neutral",
+      "prop": null,
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "写福字": {
+      "kind": "write",
+      "emotion": "neutral",
+      "prop": "notebook",
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "凭空生花": {
+      "kind": "flower",
+      "emotion": "happy",
+      "prop": "flower",
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "动物环绕": {
+      "kind": "animals",
+      "emotion": "happy",
+      "prop": "whale",
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "原地专心玩魔方": {
+      "kind": "cube",
+      "emotion": "neutral",
+      "prop": "cube",
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "原地小憩沉眠": {
+      "kind": "sleep",
+      "emotion": "blink",
+      "prop": null,
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "原地敲击桌面互动": {
+      "kind": "desk",
+      "emotion": "neutral",
+      "prop": "desk",
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "原地跳跃抓碎头顶物品": {
+      "kind": "jump",
+      "emotion": "surprise",
+      "prop": null,
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": "star",
+      "folder": "random"
+    },
+    "原地蹲下玩玩具汽车": {
+      "kind": "toycar",
+      "emotion": "neutral",
+      "prop": "toycar",
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "原地重力下蹲压缩": {
+      "kind": "squat",
+      "emotion": "neutral",
+      "prop": null,
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "变鸽子": {
+      "kind": "magic",
+      "emotion": "happy",
+      "prop": "coin",
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "可爱宅舞": {
+      "kind": "dance",
+      "emotion": "happy",
+      "prop": null,
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "吃Token": {
+      "kind": "eat-token",
+      "emotion": "happy",
+      "prop": "token",
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "吃冰淇淋融化": {
+      "kind": "eat-token",
+      "emotion": "happy",
+      "prop": "cone",
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "吃午餐": {
+      "kind": "eat",
+      "emotion": "happy",
+      "prop": "rice",
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "吃大闸蟹": {
+      "kind": "eat",
+      "emotion": "happy",
+      "prop": "crab",
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "吃年糕": {
+      "kind": "eat",
+      "emotion": "happy",
+      "prop": "cake",
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "吃早餐": {
+      "kind": "eat",
+      "emotion": "happy",
+      "prop": "rice",
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "吃晚餐": {
+      "kind": "eat",
+      "emotion": "happy",
+      "prop": "rice",
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "吃汤圆": {
+      "kind": "eat",
+      "emotion": "happy",
+      "prop": "rice",
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "吃白饭": {
+      "kind": "eat",
+      "emotion": "happy",
+      "prop": "rice",
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "吃粽子": {
+      "kind": "eat",
+      "emotion": "happy",
+      "prop": "greenball",
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "吃糖葫芦": {
+      "kind": "eat-token",
+      "emotion": "happy",
+      "prop": "candy",
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "吃腊八粥": {
+      "kind": "eat",
+      "emotion": "happy",
+      "prop": "rice",
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "吃西瓜": {
+      "kind": "eat-token",
+      "emotion": "happy",
+      "prop": "watermelon",
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "吃重阳糕": {
+      "kind": "eat",
+      "emotion": "happy",
+      "prop": "cake",
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "吃长寿面": {
+      "kind": "eat",
+      "emotion": "happy",
+      "prop": "dumplings",
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "吃青团": {
+      "kind": "eat",
+      "emotion": "happy",
+      "prop": "greenball",
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "吃饺子": {
+      "kind": "eat",
+      "emotion": "happy",
+      "prop": "dumplings",
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "吹气球": {
+      "kind": "balloon",
+      "emotion": "surprise",
+      "prop": "balloon",
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "吹笛子": {
+      "kind": "flute",
+      "emotion": "neutral",
+      "prop": "flute",
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "哈欠连天": {
+      "kind": "yawn",
+      "emotion": "blink",
+      "prop": null,
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "国风屈膝礼仪": {
+      "kind": "bow",
+      "emotion": "shy",
+      "prop": null,
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "堆雪人": {
+      "kind": "snow",
+      "emotion": "happy",
+      "prop": "snowman",
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "大口吃零食": {
+      "kind": "eat-token",
+      "emotion": "shy",
+      "prop": "token",
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "小幅度原地360度旋转展示": {
+      "kind": "display",
+      "emotion": "happy",
+      "prop": null,
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "小提琴演奏": {
+      "kind": "violin",
+      "emotion": "neutral",
+      "prop": "violin",
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "工作状态-原地踱步张望": {
+      "kind": "pace",
+      "emotion": "neutral",
+      "prop": null,
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "工作状态-垂头叹气冒汗（失败反馈）": {
+      "kind": "sad",
+      "emotion": "sad",
+      "prop": null,
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "工作状态-忙碌点按": {
+      "kind": "type",
+      "emotion": "neutral",
+      "prop": null,
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "工作状态-思考冒泡": {
+      "kind": "think",
+      "emotion": "neutral",
+      "prop": null,
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "工作状态-清点归档": {
+      "kind": "write",
+      "emotion": "neutral",
+      "prop": "notebook",
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "工作状态-雀跃庆祝": {
+      "kind": "jump",
+      "emotion": "happy",
+      "prop": null,
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "悠闲哼歌": {
+      "kind": "dance",
+      "emotion": "happy",
+      "prop": null,
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "扑克魔术": {
+      "kind": "magic",
+      "emotion": "happy",
+      "prop": "coin",
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "打瞌睡被惊醒": {
+      "kind": "startled",
+      "emotion": "surprise",
+      "prop": null,
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "抽陀螺": {
+      "kind": "top",
+      "emotion": "neutral",
+      "prop": "top",
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "拆礼物": {
+      "kind": "gift",
+      "emotion": "happy",
+      "prop": "present",
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "插茱萸赏菊": {
+      "kind": "flower",
+      "emotion": "happy",
+      "prop": "flower",
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "摇扇纳凉": {
+      "kind": "fan",
+      "emotion": "neutral",
+      "prop": "fan",
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "撸猫": {
+      "kind": "cuddle",
+      "emotion": "happy",
+      "prop": "cat",
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "收红包": {
+      "kind": "present",
+      "emotion": "happy",
+      "prop": "redpacket",
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "放孔明灯": {
+      "kind": "lantern",
+      "emotion": "happy",
+      "prop": "skylamp",
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "放河灯": {
+      "kind": "lantern",
+      "emotion": "happy",
+      "prop": "lotus",
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "放烟花": {
+      "kind": "lantern",
+      "emotion": "happy",
+      "prop": "goldlantern",
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": "fireworks",
+      "folder": "random"
+    },
+    "放风筝": {
+      "kind": "kite",
+      "emotion": "happy",
+      "prop": "kite",
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "整体换装试色": {
+      "kind": "display",
+      "emotion": "happy",
+      "prop": null,
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "是啊，吃什么": {
+      "kind": "think",
+      "emotion": "neutral",
+      "prop": null,
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "晨间刷牙": {
+      "kind": "brush",
+      "emotion": "happy",
+      "prop": "brush",
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "涮火锅": {
+      "kind": "eat",
+      "emotion": "happy",
+      "prop": "dumplings",
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "深度思考碎碎念": {
+      "kind": "think",
+      "emotion": "neutral",
+      "prop": null,
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "照镜子": {
+      "kind": "mirror",
+      "emotion": "neutral",
+      "prop": "mirror",
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "玩水枪": {
+      "kind": "watergun",
+      "emotion": "happy",
+      "prop": "watergun",
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "玩游戏气急败坏": {
+      "kind": "game",
+      "emotion": "angry",
+      "prop": "controller",
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "瑞麟吐泡泡特效": {
+      "kind": "bubbles",
+      "emotion": "surprise",
+      "prop": null,
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "瑞麟现世": {
+      "kind": "animals",
+      "emotion": "happy",
+      "prop": null,
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "用龙尾拍打地面": {
+      "kind": "tail",
+      "emotion": "happy",
+      "prop": null,
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "碎碎念-发呆碎碎念": {
+      "kind": "think",
+      "emotion": "neutral",
+      "prop": null,
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "碎碎念-对屏碎碎念": {
+      "kind": "think",
+      "emotion": "neutral",
+      "prop": null,
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "碎碎念-擦桌碎碎念": {
+      "kind": "desk",
+      "emotion": "neutral",
+      "prop": "desk",
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "穿针乞巧": {
+      "kind": "sew",
+      "emotion": "neutral",
+      "prop": "notebook",
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "舞狮头": {
+      "kind": "lion",
+      "emotion": "happy",
+      "prop": "lion",
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "荡秋千": {
+      "kind": "swing",
+      "emotion": "happy",
+      "prop": null,
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "萌化小幽灵": {
+      "kind": "ghost",
+      "emotion": "surprise",
+      "prop": null,
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "蝴蝶蜜蜂环绕头顶开花": {
+      "kind": "flower",
+      "emotion": "happy",
+      "prop": "flower",
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": "bugs",
+      "folder": "random"
+    },
+    "被吓一跳": {
+      "kind": "startled",
+      "emotion": "surprise",
+      "prop": null,
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "被落叶淹没": {
+      "kind": "leaves",
+      "emotion": "surprise",
+      "prop": null,
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "装点圣诞树": {
+      "kind": "tree",
+      "emotion": "happy",
+      "prop": "tree",
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "讨糖南瓜灯": {
+      "kind": "present",
+      "emotion": "happy",
+      "prop": "pumpkin",
+      "variant": 0,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "超大伸懒腰": {
+      "kind": "stretch",
+      "emotion": "happy",
+      "prop": null,
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "踢毽子": {
+      "kind": "kick",
+      "emotion": "happy",
+      "prop": "shuttle",
+      "variant": 2,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "轻快摇摆舞": {
+      "kind": "dance",
+      "emotion": "happy",
+      "prop": null,
+      "variant": 3,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "轻快记录": {
+      "kind": "write",
+      "emotion": "neutral",
+      "prop": "notebook",
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "骑木马": {
+      "kind": "horse",
+      "emotion": "happy",
+      "prop": "horse",
+      "variant": 1,
+      "seconds": 4.0,
+      "effect": null,
+      "folder": "random"
+    },
+    "东张西望": {
+      "kind": "think",
+      "emotion": "neutral",
+      "prop": null,
+      "variant": 1,
+      "seconds": 3.0,
+      "effect": null,
+      "folder": "turn"
+    }
+  },
+  "authoring": {
+    "method": "Fixed native art, hierarchical two-bone rig and Qt parameters",
+    "rig_source_sha256": "5076aa539b57fc60fcc87bd02efcf29d6d09bc67e652a25714b67dc79ad0ddc3",
+    "master_sha256": "4fe98a4ae19478b61832b31d197d14debdd2cc642fb59132f6fdceb60d58633e",
+    "closed_eye_source_sha256": "c209250c2e345d81fa8a6539d22e443d5dc250ac5663894432de110116f3eabc",
+    "reference": "Chibi proportions and independent eye/blink parameters; no third-party model assets"
+  }
+}
