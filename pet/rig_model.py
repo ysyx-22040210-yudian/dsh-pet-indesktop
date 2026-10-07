@@ -12,12 +12,12 @@ from pathlib import Path
 import weakref
 
 from PySide6.QtCore import QPointF, QRectF, Qt
-from PySide6.QtGui import QColor, QImage, QPainter, QPen, QTransform
+from PySide6.QtGui import QColor, QImage, QPainter, QPen, QPolygonF, QTransform
 
 from .rig_motion import (
     Pose as Pose, Prop as Prop, add as add, bone_points as bone_points,
     gate as gate, rotate as rotate, smooth as smooth,
-    solve_ik as solve_ik, subtract as subtract, build_pose,
+    solve_ik as solve_ik, subtract as subtract, build_pose, surface_point,
 )
 
 
@@ -119,8 +119,53 @@ class RigModel:
         painter.rotate(prop.angle)
         painter.scale(prop.height, prop.height)
         painter.translate(-prop.anchor[0] * layer["size"][0], -prop.anchor[1] * layer["size"][1])
-        self._draw_layer(painter, name)
+        if layer.get('render_style') == 'laptop-mesh-1':
+            self._draw_laptop(painter, layer)
+        else:
+            self._draw_layer(painter, name)
         painter.restore()
+
+    def _draw_laptop(self, painter, layer):
+        """Fixed 2.5D lid and keyboard planes, sharing the contact geometry."""
+        ratio = layer['size'][0]
+
+        def polygon(points):
+            return QPolygonF([QPointF(x * ratio, y) for x, y in points])
+
+        def plane(corners, u0, v0, u1, v1):
+            return polygon([surface_point(corners, u, v) for u, v in
+                            ((u0, v0), (u1, v0), (u1, v1), (u0, v1))])
+
+        lid, keyboard = layer['lid'], layer['keyboard']['corners']
+        # The fixed stand supports the computer while both hands type. The
+        # authored prop origin cancels pelvis breathing, including these feet.
+        painter.setPen(QPen(QColor('#cd8b34'), .015))
+        painter.setBrush(QColor('#efba72'))
+        for support in layer['stand']:
+            painter.drawPolygon(polygon(support))
+        painter.setPen(QPen(QColor('#cd8b34'), .019))
+        painter.setBrush(QColor('#ffdc94'))
+        painter.drawPolygon(polygon(lid))
+        painter.setPen(QPen(QColor('#fce6b6'), .013))
+        painter.setBrush(QColor('#42303c'))
+        painter.drawPolygon(plane(lid, .06, .07, .94, .9))
+        # A few readable code lines identify the screen without rendered text
+        # or user data. The screen stays behind the hands and the key plane.
+        painter.setPen(QPen(QColor('#ffe6ac'), .019))
+        for row, (start, end) in enumerate(((.15, .66), (.22, .81), (.22, .61), (.15, .48))):
+            a = surface_point(lid, start, .25 + row * .15)
+            b = surface_point(lid, end, .25 + row * .15)
+            painter.drawLine(QPointF(a[0] * ratio, a[1]), QPointF(b[0] * ratio, b[1]))
+        painter.setPen(QPen(QColor('#cd8b34'), .015))
+        painter.setBrush(QColor('#e6ae63'))
+        painter.drawPolygon(polygon(keyboard))
+        painter.setBrush(QColor('#fff0cb'))
+        painter.setPen(QPen(QColor('#d69a4c'), .008))
+        for row in range(3):
+            for col in range(8):
+                painter.drawPolygon(plane(keyboard, .055 + col * .112, .09 + row * .21,
+                                          .151 + col * .112, .25 + row * .21))
+        painter.drawPolygon(plane(keyboard, .28, .77, .72, .91))
 
     def render(self, action: str | dict, seconds: float, parameters: dict | None = None) -> QImage:
         if isinstance(action, str):

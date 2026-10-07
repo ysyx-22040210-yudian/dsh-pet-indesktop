@@ -67,6 +67,18 @@ def bone_points(bone, angles):
     return shoulder, joint, endpoint
 
 
+def surface_point(corners, u, v):
+    """Bilinear point on an authored prop plane, in normalized texture space."""
+    return tuple((1 - v) * ((1 - u) * corners[0][i] + u * corners[1][i])
+                 + v * ((1 - u) * corners[3][i] + u * corners[2][i]) for i in (0, 1))
+
+
+def prop_point(layer, prop, uv):
+    local = ((uv[0] - prop.anchor[0]) * layer['size'][0] * prop.height,
+             (uv[1] - prop.anchor[1]) * layer['size'][1] * prop.height)
+    return add(prop.point, rotate(local, prop.angle))
+
+
 def safe_arm(key, angles):
     """Keep the authored shoulder branch and anatomical elbow bend direction."""
     side = 1 if key == "la" else -1
@@ -132,6 +144,16 @@ def build_pose(model, action: dict, seconds: float, parameters: dict | None = No
         # Interpolate the safe joint pose, never a hand line crossing the shoulder.
         state.angles[key] = tuple(a * e for a in safe_arm(key, goal))
         return hand(key)
+
+    def touch(key, target):
+        # Solve against the actual fingertip texel. The original wrist bones
+        # retain their lengths; the fixed finger offset turns with the forearm.
+        bone = model.bones[key]
+        tip = tuple(model.layers[key + '_lower']['touch_point'])
+        contact_bone = (bone[0], bone[1], tip)
+        goal, _ = solve_ik(contact_bone, target, 1 if key == 'la' else -1)
+        state.angles[key] = tuple(a * e for a in safe_arm(key, goal))
+        return bone_points(contact_bone, state.angles[key])[-1]
 
     def held(name, key="ra", height=38., angle=0., anchor=(.5, .8)):
         item = Prop(name, hand(key), height, angle, anchor, False, e)
@@ -221,9 +243,20 @@ def build_pose(model, action: dict, seconds: float, parameters: dict | None = No
     elif kind in {"type", "write", "board", "desk", "sew"}:
         stroke = math.sin(phase * 3) * work
         if kind == "type":
-            reach("la", (280, 245 + .8 * stroke))
-            reach("ra", (316, 244 - .8 * stroke))
-            state.props.append(Prop("laptop", (297, 268), 48, opacity=e))
+            layer = model.layers['prop_laptop']
+            placement = layer['placement']
+            point = subtract(tuple(placement['point']), (0., state.root_y))
+            laptop = Prop('laptop', point, placement['height'], opacity=e)
+            state.props.append(laptop)
+            keyboard = layer['keyboard']
+            for key, (u, v) in keyboard['hand_positions'].items():
+                surface = prop_point(layer, laptop, surface_point(keyboard['corners'], u, v))
+                # Alternate subpixel taps above the key plane, without waving
+                # around the screen or moving the computer with each keystroke.
+                lift = .6 * work * (1 + (stroke if key == 'la' else -stroke)) / 2
+                target = subtract(surface, (0., lift))
+                state.contacts[key + '_key_surface'] = surface
+                state.contacts[key + '_key_touch'] = touch(key, target)
         elif kind == "write":
             center = (297., 267.)
             page = (309 + 2 * stroke, 245 + .6 * math.sin(phase * 6) * work)

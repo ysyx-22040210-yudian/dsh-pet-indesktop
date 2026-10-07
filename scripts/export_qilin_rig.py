@@ -140,7 +140,24 @@ def compile_model(source: Path, installed: Path, output: Path) -> None:
         # Normalise props to logical height 1. Grip/tip use this cropped artwork.
         save("prop_" + name, module.premultiply(rgba), factor=rgba.shape[0])
 
-    model = {"schema": "qilin-rig2d-1", "motion_revision": "natural-rig-1", "canvas": [640, 360], "fps": 30,
+    # Contact landmarks are measured on the fixed fingertip art, not the wrist.
+    layers["la_lower"]["touch_point"] = [230.54, 252.44]
+    layers["ra_lower"]["touch_point"] = [364.3, 257.96]
+    layers["prop_laptop"].update({
+        "render_style": "laptop-mesh-1",
+        "placement": {"point": [298., 248.], "height": 55.},
+        "lid": [[.075, .07], [.91, .07], [.91, .60], [.075, .60]],
+        "stand": [
+            [[.01, .96], [.99, .96], [.99, 1.03], [.01, 1.03]],
+            [[.025, 1.03], [.105, 1.03], [.10, 1.994], [.035, 1.994]],
+            [[.89, 1.03], [.97, 1.03], [.96, 1.994], [.90, 1.994]],
+        ],
+        "keyboard": {
+            "corners": [[.075, .64], [.91, .64], [.995, .95], [.01, .95]],
+            "hand_positions": {"la": [.28, .32], "ra": [.72, .32]},
+        },
+    })
+    model = {"schema": "qilin-rig2d-1", "motion_revision": "natural-rig-2", "canvas": [640, 360], "fps": 30,
              "sampling": 2, "neck": (rig.neck / 2).tolist(), "bones": bones,
              "tail_root": bones["tail"][0], "wing_root": (wing_pivot / 2).tolist(),
              "eye_rects": [[module.TX / 2 + x * module.S / 2,
@@ -155,7 +172,7 @@ def compile_model(source: Path, installed: Path, output: Path) -> None:
                            "reference": "Chibi proportions and independent eye/blink parameters; no third-party model assets"}}
     (output / "model.json").write_text(json.dumps(model, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     manifest = json.loads((videos / "manifest.json").read_text(encoding="utf-8"))
-    manifest.update({"version": "3.0.1-natural-rig", "name": "麒麟", "renderer": "rig2d", "rig": "../rig/model.json", "fps": 30,
+    manifest.update({"version": "3.0.2-keyboard-contact", "name": "麒麟", "renderer": "rig2d", "rig": "../rig/model.json", "fps": 30,
                      "description": "固定麒麟分层模型：实时骨骼、眼睑参数及道具接触约束。"})
     manifest["production"] = {"runtime": "Qt QPainter rig2d; no video decoding for this character",
                               "actions": len(actions), "layers": len(layers),

@@ -137,7 +137,8 @@
 | [`PR-REPORT-qilin-notebook-contact-2026-10-07.md`](PR-REPORT-qilin-notebook-contact-2026-10-07.md) | 轻快记录的书边/支撑手、笔握点/纸面接触修复，241帧视觉检查、Windows绘制、性能和2.0.21安装及包SHA。 | 修复手持道具、复现本段合成、重建或回滚2.0.21资源时。 |
 | [`PR-REPORT-qilin-tail-root-2026-10-08.md`](PR-REPORT-qilin-tail-root-2026-10-08.md) | 旋转展示的后臀尾根、单条短尾与裙摆遮挡，241帧复核、Windows绘制、2.0.22安装和便携包证据。 | 修复尾巴连接、复现局部布料合成或回滚2.0.22资源时。 |
 | [`PR-REPORT-qilin-rig2d-2026-10-08.md`](PR-REPORT-qilin-rig2d-2026-10-08.md) | 实时2.5D麒麟骨骼、参数、接触约束与原生窗口交付证据。 | 查3.0.0-rig2d历史基线或回滚时；当前动作修复见下方自然度报告。 |
-| [`PR-REPORT-qilin-natural-rig-2026-10-08.md`](PR-REPORT-qilin-natural-rig-2026-10-08.md) | 肩肘翻转、安全运动轨迹、持物停顿、脚底支撑和表情混合修复，105动作曲线/原速播放、3.0.1交付证据。 | 改实时动作、地面IK、头部合成或重建/回滚3.0.1-natural-rig前。 |
+| [`PR-REPORT-qilin-natural-rig-2026-10-08.md`](PR-REPORT-qilin-natural-rig-2026-10-08.md) | 肩肘翻转、安全运动轨迹、持物停顿、脚底支撑和表情混合修复，105动作曲线/原速播放、3.0.1交付证据。 | 改实时动作、地面IK、头部合成或重建/回滚3.0.1-natural-rig前。；电脑接触另见3.0.2报告 |
+| [麒麟电脑与指尖接触修复](PR-REPORT-qilin-keyboard-contact-2026-10-08.md) | 3.0.2电脑平面/指尖键盘接触、固定支撑与本机交付证据 | 改写代码/忙碌点按或电脑布局前必读 |
 | [`PR-REPORT-running-agent-discovery-2026-10-03.md`](PR-REPORT-running-agent-discovery-2026-10-03.md) | 本地增强版运行程序发现、来源热变更、性能和 Windows 实机证据。 | 检查程序识别、跨设备接入或回归来源切换时。 |
 | [`PR-REPORT-codex-link-2026-10-03.md`](PR-REPORT-codex-link-2026-10-03.md) | Codex 进程关联无反馈的根因、只读会话适配、回归及 Windows 实机证据。 | 排查 Codex 联动或变更会话生命周期解析时。 |
 | [`PR-REPORT-qilin-branding-2026-10-03.md`](PR-REPORT-qilin-branding-2026-10-03.md) | 麒麟少女外部角色包、品牌图标与既有模型/Agent 配置保留的实机证据。 | 修改角色素材、部署品牌图标或验证新便携包时。 |
