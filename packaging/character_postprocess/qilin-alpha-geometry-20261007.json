@@ -1,0 +1,2015 @@
+{
+  "character": "qilin",
+  "version": "2.0.20-smooth-aligned",
+  "fps": 24,
+  "canvas": [
+    640,
+    360
+  ],
+  "reference": "待机呼吸休闲 frame 0",
+  "contour_sigma_source_pixels": 0.65,
+  "nominal_standing_feet_y": 330,
+  "boundary_effect_standing_feet_y": 332,
+  "motion_policy": "One fixed uniform transform per clip. Preserve source frame count, rate and within-clip motion. No per-frame normalization.",
+  "tools": {
+    "repair_alpha_fringe.py": "2e923f51b30ed48e3f1ab9ffe056bcd39b845a226d623798009307f42b08c7ef",
+    "repair_alpha_geometry.py": "dbb3038fd63b5652a51390856e10bfab020a14e6cb8fa8d93435bbdec8636b83"
+  },
+  "clips": [
+    {
+      "name": "三球抛接",
+      "source_sha256": "13fcf8ee41c08369ec886635d727751135aa19ba4444bc728bda140d856da94e",
+      "decontaminated_sha256": "cd5463416432d878aa75b0784f0a874ebc78230a9882e1e7eed42e22645ff973",
+      "output_sha256": "941ff600ef025585f2438f513d46e4ba8c1dc51c4c376658a4b98277e0a7279e",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9115403890609741,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "下五子棋",
+      "source_sha256": "d023bc0462882c0c4f8f344f18af4dbd26551bcffa627566f933fe1ed0c4a1fd",
+      "decontaminated_sha256": "41f3c36532ea7a0089ffa687dadbe8f7655ecee43eff8b159453c89a812a4da5",
+      "output_sha256": "1fb41c7c304878eb906347a2aadd5d88c23281085bd1804dbb848615a4bcc2b2",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9108812808990479,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "东张西望",
+      "source_sha256": "dff920bd1444bcd3052a464e1f90415418a8d0ff09e85f5f3263fd73b7163b95",
+      "decontaminated_sha256": "fd780ce23b3f210e512cf068995952211e03c7eabee6a9548fde5d242401cb36",
+      "output_sha256": "de97cc9ca7cf09aedcc98a5e135e6f19e47660a6a8123791969f2a093fe23a97",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": 0.0,
+      "dy": 0.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9152399897575378,
+      "standing_bbox": [
+        221,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "中秋赏月吃月饼",
+      "source_sha256": "96fead52127590cbde457ab1df632d4214f389721b8731abd0fe43abf6cbf13a",
+      "decontaminated_sha256": "484975833ca9506b2af30172884d9764eeb95324edd5a83b6e481d8b914236db",
+      "output_sha256": "5f33beef2f4e26b2c8055eac8825180a1d975f8b7ec470c1235c073ed2758f84",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9111108779907227,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "优雅国风舞",
+      "source_sha256": "f3609c56c06ac74e14bfff6a6ed36d33f36d9830844696d6cdbac26bc7fd8222",
+      "decontaminated_sha256": "4aa4ba4d57047ed642614217c829caec8fcf6dcb930bcfe4f89243ce805d997f",
+      "output_sha256": "43b496c516878353cc512a314e0fe93943c084319440efd85052c09b24ab41f2",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.90913987159729,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "余额-分文不剩",
+      "source_sha256": "fa9d5b9975ce8af88b98297c819a7dae75cc1461050c207273fcbd10955773d0",
+      "decontaminated_sha256": "88611b58331bf7b6dad5e01c595a566412b9bc2ec8d6c4f623258b743dd3e083",
+      "output_sha256": "de70d36bcb7e29fdc7632c43ceb699c4ba2d8de4512e07beea48f359f085ef08",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9112941026687622,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "余额-数金皱眉",
+      "source_sha256": "275b8821266ad3919513828a7f92a7ecc94fce39294d2d65eb81ad42540f77c7",
+      "decontaminated_sha256": "d867fae37e383347db544a4dedbc53a1c1ab7c0d7462c6829dde7b45b8dbc86a",
+      "output_sha256": "845f96066e2141d7feada0067e304fc6a5f3888ad3de905054f4cb5b42c2e335",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9104114174842834,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "余额-袋空如洗",
+      "source_sha256": "f181998f0544a6f60af08ddab3639d7502117ac9e1dac75f4b677e779ee7cf43",
+      "decontaminated_sha256": "6dd979af30af607c034b12bf831ddf48e790a430746add2fe8168e78188db6ad",
+      "output_sha256": "d69e5d0ed4532712e4b3f339d03f5eacf55c665727bf44ca522d3e6552e17ae4",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9104399085044861,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "余额-金袋叮当",
+      "source_sha256": "05a5919e9ed8304550cb5908d72b369e9f1c82d6baa3ffce2fca84c2f27b42ee",
+      "decontaminated_sha256": "f0b89d29368f32b937710cdd8d10836611a553005b549652a2c6e59f8cfc7d6c",
+      "output_sha256": "5a92067359efe88a96b3efd4163c07c016c18e0451249f865c9b142c96cbea25",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.910426139831543,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "余额-钱袋如常",
+      "source_sha256": "52ddd398301e06a40dd24878b5fd87ff6c7d089aff9de0716e146b6f2247b269",
+      "decontaminated_sha256": "c0d7ddd53a2e4438be2f455b28ab332550a421f02119bfeda3e37dc72ec93d7c",
+      "output_sha256": "0cb81e95625393c7758a18ecea5221adfaa654fddbe9537a2ed9c7f425754d0d",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9089853763580322,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "余额-钱袋满溢",
+      "source_sha256": "25e5a21a7cd9982317a05de4a03dc00eaa2abf0b3f684b8c00a064c7d9e1d0a4",
+      "decontaminated_sha256": "496dd7e94b292ed54dd36a77f4bcab7552fed740f98e47bc8247b87e59237a0b",
+      "output_sha256": "983e113caad1ba3d5b3a0c64dab0689c97d0ccd306030a774fad40b61c4c9a2e",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9090319275856018,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "偷吃零食被抓住",
+      "source_sha256": "5052cf359ba5e2337893a98b949dd9d5fba73bc6d8cb4ae41eb22661fdb943a1",
+      "decontaminated_sha256": "752a126c08b1bbb7ab14bb4871d8a5fe93095dc54f0eac6faacceb5e7386a8ac",
+      "output_sha256": "7c888bb6b39d68961116ffa9ddd2784dd14aa9d2e35423d733fc2249b25dadcd",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9112074971199036,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "写代码",
+      "source_sha256": "56b3e1533b1e4c87198be5ee88903bfe6273329dcb55dd8f188680c6e5018ade",
+      "decontaminated_sha256": "f828e6865f9867863d96f6652d0d3fe32b99a7070656df39ef5e5aa2b9d757e2",
+      "output_sha256": "06169455d242f13c2c8a8799ba696ad30b00cb92d27032ee18b2937f7fad45d4",
+      "frames": 241,
+      "scale": 1.1299435028248588,
+      "dx": -59.381355932203405,
+      "dy": -40.62146892655369,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9180814623832703,
+      "standing_bbox": [
+        220,
+        38,
+        201,
+        293
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "写福字",
+      "source_sha256": "7e81e16d3600b9f1b3b97fdac6ca12a04fc05cdc4f0814a34adb8ed4fc2783e7",
+      "decontaminated_sha256": "ac9541bee6fe44c44720e9d311036f50e326e7f860ea92d35299efb0bbb739f4",
+      "output_sha256": "37e41fbbf0293522164db6c1ded665822d86ca9704a39368ea49560b6c40278f",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9113696813583374,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "凭空生花",
+      "source_sha256": "02373423919bb12999fefd1dd2673478856ad4ffcafa6a0e14adf37da9c49a56",
+      "decontaminated_sha256": "bc9ecb87d360bd1349be5b72e8f57bb4222a2442d9cbd776897fbafa801bd0c6",
+      "output_sha256": "069ea6941b124b2aacfd10acf763caf8818992df7851e8ccc958c9b26e8fdb85",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9107044339179993,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "动物环绕",
+      "source_sha256": "962aedf08829c7d7eba792c4e5717686dcaceb98e40f9b87be942cc6994192df",
+      "decontaminated_sha256": "5a5bc2b8a26b091e47f5d39008f898325d6c5670cb344800fb487ab3659c3036",
+      "output_sha256": "dfc3f624b69c61d9462ca08add0aa51f493e6fa9368926499f3206611ee6db2d",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9091677069664001,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "原地专心玩魔方",
+      "source_sha256": "27586a4ae7ce6b7f3153d2cc3c1396197540f066dcf08ed236132af776bc1c92",
+      "decontaminated_sha256": "530b63876172f6f6c79a7b60ff9ca1cff9ff147db642ebf0c01f50681f048d4e",
+      "output_sha256": "031ad8ebf885be26a88779ce22f28c734b477d0e732c7f03d2a711b08138f020",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9101483225822449,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "原地小憩沉眠",
+      "source_sha256": "12f4034dfbbe7ac6ad38e923bbb02d7ea214912df74c3166a4fc9145d669629b",
+      "decontaminated_sha256": "3636c327037831356585a06deaad58a3c6b7ca6f6e062a5f6ad1f79a2cba6611",
+      "output_sha256": "6d4a7da6e62076b2f1764fc51c7004e4b48fc0930b925ecbca6bb8c120aca368",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": 0.0,
+      "dy": 0.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9158595204353333,
+      "standing_bbox": [
+        221,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "原地敲击桌面互动",
+      "source_sha256": "3831792191b3f8eb4afda52d5f554d0c895895c54a75150dcce4d9521ae9525b",
+      "decontaminated_sha256": "795ee770b9e6418da0b41d3c59a7d6ad12d24b6ae8496b18debd33865240f5cb",
+      "output_sha256": "4195ecaa9a9b59931fe58c1035714cb0b54bde996590cde6be2d87f636eacf7b",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9096826314926147,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "原地跳跃抓碎头顶物品",
+      "source_sha256": "8cb61ca48a7f9c0ecae29e734347be23d231e5a3b84fcf2a1b921ecfa5fde0be",
+      "decontaminated_sha256": "ae02c2fb5a4ac2f1aa45349d304204dda1e090026f703304c202ece40000a733",
+      "output_sha256": "35cdb458be5709604f7447ce5c95f4553ae0a4680037736d91153da0c7b06f36",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": 1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9105167388916016,
+      "standing_bbox": [
+        220,
+        42,
+        200,
+        291
+      ],
+      "boundary_adjustment": "Original particle effects already touch y=0 and connect to the silhouette. Keep a fixed 1px top margin; standing feet stay within 2px of the idle reference. No per-frame recentering or scaling."
+    },
+    {
+      "name": "原地蹲下玩玩具汽车",
+      "source_sha256": "3b31567c8c147a1a6efad413a583f633b60a432cfba20235ff6b8bed1a3ccf4f",
+      "decontaminated_sha256": "43843fe0a00197212059253f52dd4c1643b24222cb6e1fc95795d34458cbd7dc",
+      "output_sha256": "e00a38ca1610bc4d737a614e93d966de7cea9a879068d645e5675064c4e8e903",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9093749523162842,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "原地重力下蹲压缩",
+      "source_sha256": "7faebe14751ba7b3f2efc7b5cd5b88f7950c850f15e242ed9e6c2b51aaffe495",
+      "decontaminated_sha256": "a90b512c652ab907fdfd87aedc3aed378e7b9f276540045ed94775984ac1a7dd",
+      "output_sha256": "91a9cb9e8a1a065154a6fc615b07b072a5d7de1a0d16bd8ff978606778b4b566",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9093379974365234,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "变鸽子",
+      "source_sha256": "e05b4d4c0cdbbfbe09bf0ba2ea93d7efdfce631166102f54bc87703a5d6b7399",
+      "decontaminated_sha256": "61c2707900d004163bb8f648d2cdd77f8400c944aecc4c53c01e9e70cb5485f2",
+      "output_sha256": "21e19f6dc6cba8426e08bf6564a9d8d85d38342eff7fbe2c71acb672ce8b95d7",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9110347032546997,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "可爱宅舞",
+      "source_sha256": "c21beedd2867aa643d97267a4f8d8afd7fcbbbcab336bb5dd72e9dc40b39f6c0",
+      "decontaminated_sha256": "764dd27b6df34552d3a8a4b6a914db94357285b609fbf4661588ed2fc228078b",
+      "output_sha256": "200997619bdfbe2764de7a4377ab4ca2a21fd9f2aabab948bb1d34e9e28c09dd",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9117867946624756,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "吃Token",
+      "source_sha256": "2ec9151b2cba69791120910ce4fc68e42b8d720c35e0be5cd21507236ce943bd",
+      "decontaminated_sha256": "a8464ce727aade5b2aa87c3c006fa1192a7a92876ba618adf083e5a1c8af4132",
+      "output_sha256": "64e39df579c1863778a57ccad5fec81eb818f5af7929f2f6dc106b237aa9301b",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9106337428092957,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "吃冰淇淋融化",
+      "source_sha256": "dd13071034e748b13a69ca8ef5ee17162e0565b489cd55ecd68648185fefb261",
+      "decontaminated_sha256": "609f08e3b55ad0996e96b4a314baeecd9be4e173467d799bfb3dbb4927d3c4cb",
+      "output_sha256": "8342d01254b033340f0f11a24988ec00e3094f039b3d7f1c476dcc0260ca7ffd",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9111416339874268,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "吃午餐",
+      "source_sha256": "637e8e459e06744c2883906c92a4d8836aaae8b2a305f150dd26adab2a46f3d9",
+      "decontaminated_sha256": "be7d9334b4099142300ce5f1d387a212ea72dfa7ecd15a66e7d506b18364a6d7",
+      "output_sha256": "b7f51157aca0efd86693a81f82e9d44b85d3af9cfb92039a810e181214fc58d5",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.912096381187439,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "吃大闸蟹",
+      "source_sha256": "f456345806470d53b0c09c30f03323bef342e73c0cf12f721d57ef8f6eb5c753",
+      "decontaminated_sha256": "1f775567677437a1e8673cc2eff2917c06f6c830d49d6b61f832684d3e70cebd",
+      "output_sha256": "d2ab93f7aff7d8a71ed97e75a7fb515e9199a16345c18449af2f07c79390b123",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9098972082138062,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "吃年糕",
+      "source_sha256": "211e4bc83a4ad0a7c79c94a482876df3093feccf5fe896e79730e560eab823fb",
+      "decontaminated_sha256": "1329ce1c899359acbf109efa76f53a94ff5ea379d933cc5f9524fb82dda2d8ae",
+      "output_sha256": "8a5a89e78ea32f70c0a19568975f7ed00b905118f1a5b945c2a2dbc3906cedd8",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9093717932701111,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "吃早餐",
+      "source_sha256": "d51ae062a5fbdff0078951457e14a1fe85f164a82fae051621baf81c30bbdd45",
+      "decontaminated_sha256": "1ff5fe620d4483ff16fa6a5d85dae2e34492b0878df51068a597a46cd2934069",
+      "output_sha256": "fcc38939543481b302334c007244d1af21b969597905a2a662545fdf5eaec158",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9121651649475098,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "吃晚餐",
+      "source_sha256": "8b98c8c72ff96ddc1cfb5a42ee184197e0373feaa0002222cd15dfcef5859d2d",
+      "decontaminated_sha256": "855e63ad58e7a13228375e7df0bb852245e6b0e9341de90750fe0f8b79041371",
+      "output_sha256": "6b49ed7b37a755b7f7f57b755200072724b917386ee1cb040bf0b2dacef23cff",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9105432033538818,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "吃汤圆",
+      "source_sha256": "c861dfc1d1633a467866f57e8a71f661e194d4453cc5685f12454f3f08b021b3",
+      "decontaminated_sha256": "2283c9853afc21e2fa880661e4de2893a2991b9df92dbc626564b7c5584ac284",
+      "output_sha256": "35896ad7f95b0e42a3df8c2c7b87037c7f61c2e110603d0b83d83cbc8548fe6d",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9099243879318237,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "吃白饭",
+      "source_sha256": "45a7d666a582b01be13ec81fa6cc93b49e5783c07d4e3a989c17fc1bf9fd1a3c",
+      "decontaminated_sha256": "953adad3449a1e7fd324d7e1d9ff47b8c7647b02d01486bb3b2bc28a3047f863",
+      "output_sha256": "9369cab5f777c894d750461a3e9fff05ded62f478da64300be62b3434dfa9eb9",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9112013578414917,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "吃粽子",
+      "source_sha256": "4f6ca2769ff986b922cd26a19779e668c828a098b15af2715d7793bd3f51822a",
+      "decontaminated_sha256": "bc48c9c4ac7cd1ce761b96a0f87847778a4b2d939c40cd4cea3a6d419b0d8f20",
+      "output_sha256": "f847f430bef2248ddac4866b2a0283447674209252c1bcf42154c22d1f9172f0",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9106546640396118,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "吃糖葫芦",
+      "source_sha256": "f7e55b64848c1c06a95f42a70eadf2b77084ceaf0ea6eedf56f15adc3253e078",
+      "decontaminated_sha256": "14eb47fd204974682ba5be385a292f5ba5b7a14f249c208b18b5600f26c8790b",
+      "output_sha256": "648caad112c21b5114f0dc3bd6a748247916eaa0964de182664e475ce8386b34",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.910746693611145,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "吃腊八粥",
+      "source_sha256": "cfbd04fb2b7cf62af9cdb35fec9774dcaa9cfa1061930a6aac3d3f31cfab94b5",
+      "decontaminated_sha256": "8b27373f19335657d530e14ad5de866f3ed20c7a793ef4fa2bfb7fe3a2ba4bcc",
+      "output_sha256": "b841ac2dcfbdb0937a0cf3b46eef19a4183fd310c051b271d7ec241a570fb7ca",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9111663699150085,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "吃西瓜",
+      "source_sha256": "690598fdacc4de67eda7d4c4354af105793ecd04224bf715ba36f04deecc527b",
+      "decontaminated_sha256": "623766c6fa820d63fc9f0390345e2e5eab9b3f66dfb7358ee108259ec8cf0e14",
+      "output_sha256": "3c30a5553109430711597e6dc8562d089abafce294fdc2a93348cd67a591f94c",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9105900526046753,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "吃重阳糕",
+      "source_sha256": "60121813d0810f3662df17fc86757248b6ba678dca6da99adc1f744b00284978",
+      "decontaminated_sha256": "82bb9dd788961206f96ad8788c13e04f643806336a7ab0ffdff21aa5d0617c67",
+      "output_sha256": "03ef2ba3c0702e02a21d66a5a4858d5c0d88ba396d397f0265ed62537c3af87d",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9100325703620911,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "吃长寿面",
+      "source_sha256": "1e8bb60fd9a93ec44585c5905168a60cad5400e4c7702d8cef3fe1b886ecd0e5",
+      "decontaminated_sha256": "d2d07a43afe74a786d55f30d9d7ddde1ac384099236ba42a42e3e22516d28250",
+      "output_sha256": "2118560bf425340bb4eba7d2660782c8f39e12660e5a7bedc406344d84f09c98",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9096653461456299,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "吃青团",
+      "source_sha256": "f8b5e01057af5ea19e630b0f3672af9b62ad2b8525bb514f5643ee7ba6d4aadb",
+      "decontaminated_sha256": "4b5695b8711d5878b6dcdf7698d264b3f66b7e566393e8d65cc93979399ba7cd",
+      "output_sha256": "4e77275b349f71c4943f2878f5ae8695dba13ab9b1eca6e18d149b3d02797900",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9100836515426636,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "吃饺子",
+      "source_sha256": "639f7f32e2377a5c6e9d5c77ea8c4998c0f410f750e17bf1114c59ff7ed24910",
+      "decontaminated_sha256": "13b467d891d7070b5d1c210db80a577850fbafd374ff6be69058de82b06b2b7b",
+      "output_sha256": "8934de35589f22392ac2547e5ba6dc6f15a954afa79e9a3ea597bdf82ff6983c",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9125867486000061,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "吹气球",
+      "source_sha256": "c6d09d5e17cbb1604c1b616ca43b86014d447c095f0c02b19af9f136d3b3627a",
+      "decontaminated_sha256": "c091e9e070b14a30fd77bcdab14989458ecfa72276e15f50bbfb6f40cf7fc806",
+      "output_sha256": "2ad28782ca9b15a21d6b0525db606bac0b37b2c1f75b6c79a646d1bab814d566",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.910048246383667,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "吹笛子",
+      "source_sha256": "530e8dda0ca2aab93fa1ec52594aa8327528fa031b4bcfe761227057404c4bdf",
+      "decontaminated_sha256": "92c6bc9b5960f20138ba42f832bf34f5dac4569adc04f114847adcd67ed939d6",
+      "output_sha256": "79e23a1e446a64cf8c135da47b84cac2c52fd6a366b3b94821cee4f909262569",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9112570285797119,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "哈欠连天",
+      "source_sha256": "54438868f33ea98ffb999f902f87b9295bf752feedc0465c2b4c2d2bb0167ec0",
+      "decontaminated_sha256": "3f6e91a19fe046ab951af6499d95e89da4099991c7e84ea739144fc19991a25e",
+      "output_sha256": "1f25ba76a0eaee534d785e8b11436519b1a1eafc4670259b00ca8bb6c5e96d3c",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -0.5,
+      "dy": 0.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9183967113494873,
+      "standing_bbox": [
+        221,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "国风屈膝礼仪",
+      "source_sha256": "d5628ccaa4ed0b4f8fa66c95b3f618fbdd7143d52d879b80df1840ce34f88225",
+      "decontaminated_sha256": "e9f2c3eb0b4f30d0c908227896e8a38d25a7726a3a26e3172fad4d53f8766747",
+      "output_sha256": "5a0c427f5de6e963c6edfe9b830d39d45f9d1df97379afa2cc417196466c67cd",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9106196165084839,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "堆雪人",
+      "source_sha256": "d777f1c78bd01d28178e0bbe02e7c0ced2e06dd767bc53347fdea7d65fbe609e",
+      "decontaminated_sha256": "29cf64af0014d28c7ac86a27911dbb2f757d0d16023b7e6b7503c956ce0b68d1",
+      "output_sha256": "c69afb2cf1e88060d532bd5662ba9fcfe061f43d5b64e24a9b0c5aee7840f326",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9090368151664734,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "大口吃零食",
+      "source_sha256": "b3022cc3598eafbbe32ebd3767ba27147cfc9040f8649fd2ddf972b83e0ed2a2",
+      "decontaminated_sha256": "eac380d15bdeb0ce3bdae570419e5b06afc9afddc3b33be64fe4bb2d899b36d2",
+      "output_sha256": "9c90fdb7c6757d445144ae94d64e350dfdcce7226cec92de29950b66ede40ff1",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9107731580734253,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "小幅度原地360度旋转展示",
+      "source_sha256": "ea05721862c00978015519829af6a1502db9b51d3550b7749c2aa9f2b4f93cf7",
+      "decontaminated_sha256": "625f7d1e1452da7a60c272c8e623ac8f98c70a48d995b40c7f732c3ff4c51f65",
+      "output_sha256": "476f9a7fbea3aced6f41c09338b56ab5bff0eba9793024ae057c431dc81786a5",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9100413918495178,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "小提琴演奏",
+      "source_sha256": "3ae1b4f039c56940dd6584019250a87de5aa4e2239a0ea342f17b3d36e2f52a4",
+      "decontaminated_sha256": "f09367b80073374fbe4014d4a79806be6f9dd34dceb317b0399bd95a7fa3214e",
+      "output_sha256": "e7fb1d9e10dcbfc6f15b465953d90f2d3f25c0d05645a1a0a9c293e9e39785db",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9106118679046631,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "工作状态-原地踱步张望",
+      "source_sha256": "a92152e422bffd8861344d2878dec94631e143c912476d59d162261fff6916ec",
+      "decontaminated_sha256": "5481aba388abd85c5c8e3317e9df7bd9d25ae25cdbced3143f555d82d32cea45",
+      "output_sha256": "9dfedc882765b8d95dc29efd7464c6118faa4ed4eff6ff967012f64835dd78c6",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": 0.0,
+      "dy": 0.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9188175201416016,
+      "standing_bbox": [
+        221,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "工作状态-垂头叹气冒汗（失败反馈）",
+      "source_sha256": "aa7c1d74350528208ad572efa8987983b12e18d7191c4b493ab63f4781d4ffde",
+      "decontaminated_sha256": "a1341923185c662fc1c27bd2993b5d7a8ddbce129e397dec16832491d4da707d",
+      "output_sha256": "3b47bc962828385e21114a08eaa2f57ffe384157bcd1d40f75c629541d638158",
+      "frames": 118,
+      "scale": 1.0,
+      "dx": -7.0,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9167522192001343,
+      "standing_bbox": [
+        221,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "工作状态-忙碌点按",
+      "source_sha256": "e0c87187be4db1cf36f9b8ef69934fb1013d82932592f207191bd2e77288cb2a",
+      "decontaminated_sha256": "4c5876cc3ad2c53cff58b86ac4a704ab81c9ab4ce048aec70618b544eb789eea",
+      "output_sha256": "7dc9377337d6ba7d5da8d0d3c1d83a8b563d25aba4f156492fc48a9266a8519e",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -9.0,
+      "dy": 21.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9141358137130737,
+      "standing_bbox": [
+        220,
+        40,
+        201,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "工作状态-思考冒泡",
+      "source_sha256": "d9dbb62dad43462c0058b2ca1cda5a49bf59858e6570c5d2fbf93283d61b619a",
+      "decontaminated_sha256": "56436b37906930e5a0635b3046f30b8473813b78df4e72cbee4fb477f3fc504d",
+      "output_sha256": "3ee21c1526c809861ed51d541ee6a946abf3894ec6a1b5b128a1dae8127b021f",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -0.5,
+      "dy": 0.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9182273149490356,
+      "standing_bbox": [
+        221,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "工作状态-清点归档",
+      "source_sha256": "16ccecd72c4511740aaea53e12a5ed23b96be87e93ead66d8ee078f483fa0298",
+      "decontaminated_sha256": "0ac09be20cfe122d3605c2d5e26c64f7332aa151a460bcd688242abed887ed00",
+      "output_sha256": "b1d3f2a234b5fe180ece924914ca48947f9e7f66dfbe45150cf3dbeaf8066956",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -9.0,
+      "dy": 21.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9146840572357178,
+      "standing_bbox": [
+        221,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "工作状态-雀跃庆祝",
+      "source_sha256": "ebb2bdd97afd1eeb413102f1ef9d7c3f4793e8ff0d13938092092ec9c253cd9b",
+      "decontaminated_sha256": "6cc5b688393ddc5fed81fdb1f198b09500da2f78089b13fa5d6aef1c5a9d252e",
+      "output_sha256": "bfe6c3102928674b9b05b30332e83f31e9db5dc43171707bde8a5dc97cf1be60",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": 1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9102012515068054,
+      "standing_bbox": [
+        220,
+        42,
+        200,
+        291
+      ],
+      "boundary_adjustment": "Original particle effects already touch y=0 and connect to the silhouette. Keep a fixed 1px top margin; standing feet stay within 2px of the idle reference. No per-frame recentering or scaling."
+    },
+    {
+      "name": "待机呼吸休闲",
+      "source_sha256": "2d67d245ff881d36b762eeb80b97f07625c285cb7aa51be4bcbbad60a206fdb6",
+      "decontaminated_sha256": "ed69b23ba6c5d5a550c9e0f814fec2a4498f61b7df6d94e447281228a5283467",
+      "output_sha256": "a72786c06af0d643bed29e715d23ccb4ca8fb8b3fe923f398ab436cf79b5a49a",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": 0.0,
+      "dy": 0.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9999998807907104,
+      "standing_bbox": [
+        220,
+        40,
+        202,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "悠闲哼歌",
+      "source_sha256": "8532c53383bc52e879abf2825521142279c4c014569ca660f146213844170ef6",
+      "decontaminated_sha256": "59697156c5ec85d1c0d331d25a3b126344e9f51c2156c92d3d56a8f500328834",
+      "output_sha256": "acd820b0d7655c7d10cd318d47de8cf6a5b47d31fc713155ac914bf05e21bbbe",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9110671877861023,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "扑克魔术",
+      "source_sha256": "7828c0bb8e07b17731e814e5ca74fe8bc86219dc6fa277d4a7b1198e64ad5001",
+      "decontaminated_sha256": "05231a11629f163d9ebcdc72caf0126e8b051e38d01f576a667a09bbf8df237b",
+      "output_sha256": "1cf781a2b2248494703b9b832ca123be85ce2690741f700115d9d56e47d7cdf8",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9109763503074646,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "打瞌睡被惊醒",
+      "source_sha256": "57f3a820d16cab1ecae73e0d24d64eb84a5e6cd96bc99d8b9ca5ff77f125e66c",
+      "decontaminated_sha256": "01b380664b95df88dc4b49bd5f50c12fbcdb9f087acdf90d550b2927d6ea30aa",
+      "output_sha256": "565da9022b1c399d590035e3d46e70052ef99f2e4fe38fda747356b36aa05a8c",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9098160266876221,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "抽陀螺",
+      "source_sha256": "068373f1603fdebbac63837d21886be778bf4c50d4a75d3a907568f303b64c3c",
+      "decontaminated_sha256": "10cd4317f59086dc261e99e0f62e02994c2acfe47cb32dcff4982ab4eeb0c809",
+      "output_sha256": "8834f7ec14bdd173ec4cd1b536c8363fe70df5d86e43bcbfdb68a6c915a1751a",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9109722375869751,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "拆礼物",
+      "source_sha256": "f674ab0f2e7e1647576e0d43b2dd6df24ae16262af3c6db87e94a43ec317225a",
+      "decontaminated_sha256": "d9479e037ac7bbc28e8df4cb06dbc5b975c78da368a07eccb9d08f90aeabd084",
+      "output_sha256": "85c34ea9fa54263fb207ed3ea48eee0486e4a710f607c535790f5872fa332196",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9091895222663879,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "插茱萸赏菊",
+      "source_sha256": "43888fa879d0d70356d20fde8e85630afb5a8d44a5f8534c33eb4de7d234f9ef",
+      "decontaminated_sha256": "a1438c8ac34641b59d15a43a8975945777d784ec2f6b4532595ada33243a0041",
+      "output_sha256": "890704e5c96f15ef7601c9fcc403fd9ed2f12a3f865a851c9e1020e4e9ae56c9",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9110314846038818,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "摇扇纳凉",
+      "source_sha256": "6840564a7cc328d37e72185f7c930ef43d4c5a0500665d8b41505fb80265cb83",
+      "decontaminated_sha256": "161bca3c1a7bd2a29dbdaa67ec11541d6524768f1acf31def1bc1a0c388d6481",
+      "output_sha256": "3797e2036c7befff3ee45429724740effbe5fffcf2c3e8de785f0a4f61bb6322",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.90826016664505,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "撸猫",
+      "source_sha256": "bb4de879b3637a75b36a90203bfbe6697303422bdb05ad10007be1f6ceeb6406",
+      "decontaminated_sha256": "f26a9926041ee9ffba1a9a63783c7f4ca285c7764026292f56f522f491337a1f",
+      "output_sha256": "e8b9d959d352abfb582a7163062cf4252dd356214728c9b3bace83f6729d6c5b",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9099512696266174,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "收红包",
+      "source_sha256": "fe35ff14b66be7239fd253b30709b3514ba94375104b16c79d73fe779455994e",
+      "decontaminated_sha256": "a95117f6e95eb98da45421eee025887df8c5dff6eb772ade2f2bcdea8c8c1808",
+      "output_sha256": "f31bd7f0d18ae20f50802bc830ab95119f639c7ca3b1a9d6fa98a2817e008f83",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9119643568992615,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "放孔明灯",
+      "source_sha256": "61f9c8fb00383813a1aae3aa5ab1637118b92a3cf249385697874d36c80e2ac0",
+      "decontaminated_sha256": "cc720e819fccaa44f8649c35bde5d37e378f8f23ed26a1f8c75123302d4bf34d",
+      "output_sha256": "46f9ac3e4ef6938439c307b3fbd4fbcafd7140fa1185bc159734ea677b72a25c",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9133698344230652,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "放河灯",
+      "source_sha256": "ba9faabee8a8b96787a22c9f03139a78f4942e6e6d30fa0bd30ed746717dccfc",
+      "decontaminated_sha256": "cd0725fdd8a29fd03e10f2566717b35c0d8179688ad5183ad8e94d0a5b38a745",
+      "output_sha256": "89c12fcb9c5975fb12e0e10f93cf06e9cb850751c9909575d8114dbb1d878393",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9105477333068848,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "放烟花",
+      "source_sha256": "68f47aeb4f0a9b1be3e48364642731358ed582101c2590a1a892eed5662b3bac",
+      "decontaminated_sha256": "93c173c6ab9292f32689ff67578a6597288ec6d1b05850b8708d8cddbcdba1c2",
+      "output_sha256": "b5f6dec9cb2135f9863a1ca8321d6317757da84ca32988afa09560e8adb6f516",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.910230278968811,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "放风筝",
+      "source_sha256": "31804e07464379987c735591a0b9b9727e26bfe4e1a4b0ceac4bad616dcbc226",
+      "decontaminated_sha256": "ae62ee9ce571891b442dc22c7e90e491f1d93aba6a74dd9ca8bdf73f190d404c",
+      "output_sha256": "0d4db55081471b8781761ee14b960379a4c180da8b9068d27d7a67326dfde845",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": 1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9115998148918152,
+      "standing_bbox": [
+        220,
+        42,
+        200,
+        291
+      ],
+      "boundary_adjustment": "Original particle effects already touch y=0 and connect to the silhouette. Keep a fixed 1px top margin; standing feet stay within 2px of the idle reference. No per-frame recentering or scaling."
+    },
+    {
+      "name": "整体换装试色",
+      "source_sha256": "5f7358a2efa8856e551b438b43677f1644fed7940cc6409d7d1d5c04d889d093",
+      "decontaminated_sha256": "38795ff66c43dd2077c6c0215f1e90252f7b2a053c788d5b8b151c13e89cbd52",
+      "output_sha256": "410315729d4b41c13e3fae8d3ef8064839f5c296782d3d58777b3d85971dc72c",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9109451174736023,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "是啊，吃什么",
+      "source_sha256": "0fc456f89fcceac0ee30aa515c6ac4d51457240ad4ec11e76f53ea7c16f1fd8d",
+      "decontaminated_sha256": "b90bd81eb59f202f6d98de829e937444cb90a70023459a334717645e2234e83f",
+      "output_sha256": "5d12b0ad06552b4f9ed8a7b8fe19c03827074b31ff1687ad4c1c1722791c6284",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9096502661705017,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "晨间刷牙",
+      "source_sha256": "04f4e9f9b451dcd7c856b39d0fc6d11012263c1581f7dc224d956c9949427d6c",
+      "decontaminated_sha256": "113825acfd0c01f9e64b5aea39f129d708bd4a1e4f97cbebd5b3440bccd1a772",
+      "output_sha256": "4df554fd8046241e386c87b6d643515d8dd6671808c55b615d5fbb432dd4091d",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.910099983215332,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "涮火锅",
+      "source_sha256": "9925b4a6758a49a48624fcfaea993006a24da4cd2f319abbef8aa24e9a652648",
+      "decontaminated_sha256": "74f19e0811a1df8789af80f0940525ad2994d306779f20891e251b834c45c6ef",
+      "output_sha256": "458aeed7e0eef8d0c7b8e4d51af3ae5f898c44f8bf80a3d98639d479fadf68ef",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9100362062454224,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "深度思考碎碎念",
+      "source_sha256": "e871aaa3c9bfe18c1cc6df7006a010844a1240666adf78b9875271f09d3b4095",
+      "decontaminated_sha256": "603c9c6e826a1483908cc9104bb11f88cf9aab31a024794ec6ac00b1c2de3220",
+      "output_sha256": "985e4e80a4f17f81e2a9511bec21df341f576e93669226da345055b36eb3c000",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9106633067131042,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "漂浮踏步",
+      "source_sha256": "e824b56ef7fc21df3f46f4652652a8eb783532269214d12a1eb97ba841589549",
+      "decontaminated_sha256": "85022129ac2a5300c02d42a19ee367eb6082551c505568ac1f2e5da18b7c5e12",
+      "output_sha256": "9d2087b362cfd6d600508a5a5f266114db8473cd65938cd7aff03453b73ee022",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": 0.5,
+      "dy": 1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9678073525428772,
+      "standing_bbox": [
+        221,
+        41,
+        201,
+        290
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "点击回应-傲娇生气",
+      "source_sha256": "08eb3cdda8b0ce7fa3a7f0389bfcd1cb2946ea802825a107096f8f059c642862",
+      "decontaminated_sha256": "e3fd620b2b5b3d69c0a3d43d2a9bb9dcac753d1ea87d59561a78cf4b87909c2f",
+      "output_sha256": "a21d64d836f6e0ed6cbed504ace8e4b3224ca9fa267c720c6f0a7af3efda0047",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -46.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.7019262313842773,
+      "standing_bbox": [
+        220,
+        40,
+        202,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "点击回应-元气挥手",
+      "source_sha256": "9400800b2edba077e942925d345585483daa61b9860592337677a4284197c887",
+      "decontaminated_sha256": "f7a6dafd7796a8ea6f90fd404848c4c414141d25474adb768e48d6b74b96b0f8",
+      "output_sha256": "bd32c40aa1b6519fb41ec5a619a060dc53436df4f23965f57b44e836637784d4",
+      "frames": 241,
+      "scale": 1.1299435028248588,
+      "dx": -59.381355932203405,
+      "dy": -40.62146892655369,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9161227941513062,
+      "standing_bbox": [
+        220,
+        38,
+        201,
+        293
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "点击回应-害羞惊讶",
+      "source_sha256": "36e1ee98c02422bb6fc7af965813d2ebd99747e0408b0a35c0cc0179f93d8946",
+      "decontaminated_sha256": "7aa24a5bc5cbe8356e0efea1254a71afcf3a6366ab6074c3b3882f348e8a83c5",
+      "output_sha256": "1771ef72311c59c8142b5b9b24a3ddf9d7f9778fd3cdf4108bd3bb7234ea0f7d",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9101555347442627,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "点击回应-开心跃动",
+      "source_sha256": "5767cba06a1c6cb4ecf7d68ecbc785ce6bda0210c53c5b38bfb9268fa1e7ecb1",
+      "decontaminated_sha256": "0c4cf854c8606b76cb9a6e981f2eb1aa6881534cdf8706560a9ce6a0c05feb7a",
+      "output_sha256": "0bd13ca690eb533c73fbb88f6eeaf1b4550234b4f0eb09b656f0bf75cd075028",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": 1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9098849892616272,
+      "standing_bbox": [
+        220,
+        42,
+        200,
+        291
+      ],
+      "boundary_adjustment": "Original particle effects already touch y=0 and connect to the silhouette. Keep a fixed 1px top margin; standing feet stay within 2px of the idle reference. No per-frame recentering or scaling."
+    },
+    {
+      "name": "点击回应-挠痒咯咯笑",
+      "source_sha256": "fd29d801419cb2ef98f475fe7a436785479272a48982c8469efb945a1b6850ef",
+      "decontaminated_sha256": "6de529b50c907a2b0de2427d86300f4fe80a6f550e38e0c3bb3d44e2e3b33cec",
+      "output_sha256": "86a4197841bc0bfa967ee389147216826313c6236d21b0126cfaac1124fc54db",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": 0.0,
+      "dy": 0.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9167174100875854,
+      "standing_bbox": [
+        221,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "照镜子",
+      "source_sha256": "bde62cff5add704a0389f27a2cc16a97b90f79dc152b3793bfee5246f3fde064",
+      "decontaminated_sha256": "f42730abfeb190f547f813c679cd6717cddc24b5e23b530845537cfb16a871aa",
+      "output_sha256": "ce5fbbde53675c10cb306391dc072031d7f933cedf90bc78ecfabeadc0a0bc99",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9110197424888611,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "玩水枪",
+      "source_sha256": "766c3ea8bdeb81e9bb25b116ccf0396b0fc648e4ef8f8a4c9b19609df02dfd2c",
+      "decontaminated_sha256": "a9e9bdc8f22a833ceb64838f7fe585c2c24e806e21e57c5731014ad7072d137a",
+      "output_sha256": "c8d6204f01305f5d03f7af2b12273cbfb25dead2dfc73b035ef5426d549af5b0",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9106665849685669,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "玩游戏气急败坏",
+      "source_sha256": "b9fca21c542a75a0fa0d957248a72fa374a1e364fef963e2a1bd7e19339de249",
+      "decontaminated_sha256": "7db2319589b30f80c364d7bba6eaa4e21b1f18bb3ab6fb5b320c892e466a57cb",
+      "output_sha256": "2575ecdfe84cd10828d5bc58ababaaf7b69cc7337c5f538194bdaa089be61191",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9104641675949097,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "瑞麟吐泡泡特效",
+      "source_sha256": "6173ecca0f9ecaeb049f415882437344bbb7e479248896733c56ede68aebf5d9",
+      "decontaminated_sha256": "2a7f19983eda33575704bfac5109922ad0e57b5495e7e9bcaa0aa4b2b8c43871",
+      "output_sha256": "9bbce9caded7878169656eb7dab5b05e295a3f52404b389e9ba5963b738d0d47",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9085929989814758,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "瑞麟现世",
+      "source_sha256": "d20ea3d77bc87316820cedb30fba5b4ebc5f29a5779a1477e4a7264999334ad6",
+      "decontaminated_sha256": "d33d89e8b1cc4da60ffacde8a9a4f6e8105240f77ad48b63fd7d451f668cac51",
+      "output_sha256": "54e5257b97c3d7d28245ab58309c1c16105a837638cc8af6d7331f5297472260",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -49.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9225712418556213,
+      "standing_bbox": [
+        221,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "用龙尾拍打地面",
+      "source_sha256": "5f3e8fefbde6604c908ecc48ea71e979e328d18d4940e9cc03defdc51394572a",
+      "decontaminated_sha256": "9d3c39cea90a6434f3bca392c8ce8a6beed1939760cfe5bd012302dcbbf9d8b4",
+      "output_sha256": "ea60d3bb3a1a391f285ea478d583cdac591d31b05a5bd046a13216e500147c49",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9091011881828308,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "碎碎念-发呆碎碎念",
+      "source_sha256": "64aaba016127c51e330ce25a45bf6f95faeeb839c40d6e0e7205efa2fd1dc655",
+      "decontaminated_sha256": "0213f6793f0a24eba8c59397e985a3a03930efb78c5b51a7f9c9cddfa76040a3",
+      "output_sha256": "d5143648d0fff5f65692f2c95f7fdeea9fc13bcaaa17206c838514ec4ff24789",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9102526903152466,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "碎碎念-对屏碎碎念",
+      "source_sha256": "9ebbda12c92746cf4a64319f6ede408567bfc84dab45555b939510bbe8859297",
+      "decontaminated_sha256": "80f94c2632c3b7d4bbc998fa9db5fa8c3b2885b34baa9ec7861dba780576a674",
+      "output_sha256": "28ec83d4ab2a90a3a8d7892e8af5bb55432e3ce1107137feb566f462ec0830e8",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9109669923782349,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "碎碎念-擦桌碎碎念",
+      "source_sha256": "cb306a8613af4129554cc1906b7b6cd64526968c4ab9bf07bfc99fbb4aeee1db",
+      "decontaminated_sha256": "718f9de144881a5e7b3e492f6b2e2b17da03845e19603fdbf1ac171f74325dee",
+      "output_sha256": "753124e4dfdf6c561f8cbf639280b5b57d4e3155f1b0a229efcb56e31012cef8",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9104708433151245,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "穿针乞巧",
+      "source_sha256": "4b2b14fc7521fabc2805fd1b3e6e8de32dc198063776024668fe86efbab75579",
+      "decontaminated_sha256": "7371e01145533d04a457db602d3b40043bad71028829a30eedb3a14eb68178ec",
+      "output_sha256": "6d086d8be51c626fd0bdfcd87c0b4a65fa1f3a6bfc7f3d17b1fb8c3a8f4e64c1",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9108481407165527,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "舞狮头",
+      "source_sha256": "98fabd0f8c146466d5293f74ead5136778ac1300db80078b2b53540af37396cf",
+      "decontaminated_sha256": "e24c067275f80c093b6358856050d7385fc0ce7660544cefdd50b20d2221d531",
+      "output_sha256": "973be0590c514e99f26b6f16675e40206a0733e72eea57c48945298223c5b26a",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9094264507293701,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "荡秋千",
+      "source_sha256": "b4d270b9d9cbd72e96efeb532c907fb8cd858a38f7161e0cd79b4992b6fe54e0",
+      "decontaminated_sha256": "3c9b75305293f5be0fd47379b20f2e8de4cf7e24c345d560f7e6cbc8aad066ca",
+      "output_sha256": "d2e73f5e22804d3d2a8ff8d6254b0318b7eb2411be0fec5328a5247051b32367",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9114184379577637,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "萌化小幽灵",
+      "source_sha256": "c807cd9069acade6537c31ebcaeea5879acea898a928439c4bc8eda4d23253ee",
+      "decontaminated_sha256": "03e7b301ba9be5980c37fca82d10e1940258b5b25b6e7e456a766a18aceea8e3",
+      "output_sha256": "7d1cb3c3bc65cdff1ef350eea87c62736a850f14d809bb9b17588598266637c5",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9117363095283508,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "蝴蝶蜜蜂环绕头顶开花",
+      "source_sha256": "c17cea6e489346f21e9b12837432ba0d5e8891cc1534b48c7cd26d118cf83b1f",
+      "decontaminated_sha256": "e3a46c911b38f5dd77c02b5e6a9e758b51409294a431f65ebc297aca1b2c1c8a",
+      "output_sha256": "bd71e939d739827905a99fc89378102d884597e919296a94535f1a05525181d9",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9108045101165771,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "螃蟹走路",
+      "source_sha256": "07fab3619dc9dd80dd40962e6397d927f8082f4ff06d4e04f10a450cf3adecbe",
+      "decontaminated_sha256": "a1c8399b02a991b40c53ed490d0e77126ab03e15a2ff89b2f0d82262a1943cb1",
+      "output_sha256": "63b54b1ccde68eb7f5c515875027e79ca03129bf586bd63c1b886008236b5905",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -8.5,
+      "dy": 1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.7267304062843323,
+      "standing_bbox": [
+        217,
+        41,
+        191,
+        290
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "被吓一跳",
+      "source_sha256": "817c73a99f1d1d2e081b9e661ac661a8937ffdcded80c9eeb834a3a20eb75dd1",
+      "decontaminated_sha256": "a071265f8b4a4b7ab51bac560c40395a74072f72f1241d01b802c9c1c8edab46",
+      "output_sha256": "5ed4c3dba59b28a820b8cb26ba53e1160fcd17de5a2ddd19cbda64ba9c81e667",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9092786908149719,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "被落叶淹没",
+      "source_sha256": "d2632368a9eb9b90c545b061533200be86bd0b17cea626ebaf90c2d60a77ed7d",
+      "decontaminated_sha256": "cfa27c09b18bd422d9c457ddac0214af97dd6a1409d8ce7fe89fe4bda8191716",
+      "output_sha256": "a6fe173bad0eb8d86dbb906058ff7365900ff74c362838b86033d5e8f23af371",
+      "frames": 241,
+      "scale": 1.0582010582010584,
+      "dx": -78.5634920634921,
+      "dy": -20.264550264550337,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9171132445335388,
+      "standing_bbox": [
+        220,
+        38,
+        201,
+        293
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "被鼠标拖拽悬空反馈",
+      "source_sha256": "be777dc4b8c1c1a4bdf8eae895b6383ae767c3577e44d0c81b17dd9a8362f7c1",
+      "decontaminated_sha256": "118bf6af78a7a71a8da0d3830aa04bd88b3ffd022cd60184f81549b47cade3b8",
+      "output_sha256": "7f974b3910e383862ecaba0a1c8f1227d667c756ea920d602e74923e4f5d0e24",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": 0.0,
+      "dy": 0.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9155059456825256,
+      "standing_bbox": [
+        221,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "装点圣诞树",
+      "source_sha256": "6afedbc2a2dee4f65400c78cfa487ba0ef7744850f2f4fa5bf48c54af8fe80cd",
+      "decontaminated_sha256": "dba9e5454c2460bf3a94ccab3aadcab222a03ea0fa3c21fb177f0cad54cbe358",
+      "output_sha256": "d785f6684745440ea22fa2a15d4ca51307b716f2b432bab90db303fe31bf12a0",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -49.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9206576347351074,
+      "standing_bbox": [
+        221,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "讨糖南瓜灯",
+      "source_sha256": "f96ecaa36767fba23ac63f0ffafcfb02a407f7549b51c809bb7c608138435358",
+      "decontaminated_sha256": "7173e1e1d335c5b55cb8ef7efad38ec9bfb7d8de2287996afc5b6271b84b7884",
+      "output_sha256": "b536d87eac6c972268ab65d26ef761f4df3638b34e736e6c63b356d66cc51d07",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9096299409866333,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "超大伸懒腰",
+      "source_sha256": "b26c1e529d18f14326555f62cfd462ef4e428d0ee89bb72d1b78d964cd2019f6",
+      "decontaminated_sha256": "05f263c92d7f030f0ffef02aa2c26306b5fca382489357cbb0e0744ce5a0802f",
+      "output_sha256": "7c426076b5769e89c322181971b9abace80a35ce175cda5fc6ed3606c8a5a4a1",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -0.5,
+      "dy": 0.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9196068644523621,
+      "standing_bbox": [
+        221,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "踢毽子",
+      "source_sha256": "df258d101754309febebd2ac375668cb85d9b58b8ea29b4b7e8393855b7712d8",
+      "decontaminated_sha256": "f94cd557a2ae13c45f0fc6e95a716514242ad2325d2bc276364cadd7b6f385e2",
+      "output_sha256": "48393081f4ac121e38cb8af6e5754b5733a38f511f08109806e770f53b8dc6a1",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": -1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9119042754173279,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "轻快摇摆舞",
+      "source_sha256": "700282219fad6c556f7d8041c8bca63fcd2ced79e8e96ed9af43658ad311637b",
+      "decontaminated_sha256": "970695215995db96ea1dfe14dddb33f4bb94aa0299c9922d71bf748bbf8298cb",
+      "output_sha256": "17b53efc6780032bdae2351dcd1e426bf1ce4700f9706ebbe5bb738eb3908c19",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -1.0,
+      "dy": 0.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.7058448791503906,
+      "standing_bbox": [
+        220,
+        40,
+        200,
+        291
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "轻快记录",
+      "source_sha256": "ede00f7f4fc95951c29a71023bafb4951724277309f2db263999c1270276fc10",
+      "decontaminated_sha256": "325a3293d8e08d16dc859cda92baa1824cd2530c6c9aa02fff21c1b6b6c6ecf0",
+      "output_sha256": "9e7e2a4692cffe6b07a6a7c0519e4c2f5ed2c4009a25d18df4be73e0a0ed6f16",
+      "frames": 241,
+      "scale": 1.1299435028248588,
+      "dx": -59.381355932203405,
+      "dy": -40.62146892655369,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9172370433807373,
+      "standing_bbox": [
+        220,
+        38,
+        201,
+        293
+      ],
+      "boundary_adjustment": ""
+    },
+    {
+      "name": "骑木马",
+      "source_sha256": "de3db835327d7e2af81f3465a20cf508dac0c53ca0c059986b7b7c13e02ade22",
+      "decontaminated_sha256": "0af20e756eb072cf498541e3e814540bb3f9b2caa55d5f853a1f3cb473f1b771",
+      "output_sha256": "b314802a80e138d886f55f193871b6bcdecbdb4e8530144cb10d21826e5191dd",
+      "frames": 241,
+      "scale": 1.0,
+      "dx": -48.5,
+      "dy": 1.0,
+      "sigma": 0.65,
+      "reference_registration_score": 0.9097915887832642,
+      "standing_bbox": [
+        220,
+        42,
+        200,
+        291
+      ],
+      "boundary_adjustment": "Original particle effects already touch y=0 and connect to the silhouette. Keep a fixed 1px top margin; standing feet stay within 2px of the idle reference. No per-frame recentering or scaling."
+    }
+  ]
+}

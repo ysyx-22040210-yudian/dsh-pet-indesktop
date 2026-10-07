@@ -133,6 +133,7 @@
 | 文档 | 一句话内容 | 何时必读 |
 |---|---|---|
 | [`PR-REPORT-qilin-codex-repair-2026-10-07.md`](PR-REPORT-qilin-codex-repair-2026-10-07.md) | Codex修复与实机安装：退休旧服务/品牌、8张麒麟表情和背景、配置及子槽迁移、双击/岛碰撞、SSL/ICU、105动作中2项新增验收、性能和便携包SHA。 | 继续麒麟动画修复、复现品牌迁移、重建/安装或回滚时。 |
+| [`PR-REPORT-qilin-alpha-geometry-2026-10-07.md`](PR-REPORT-qilin-alpha-geometry-2026-10-07.md) | 105段去绿边、平滑alpha、固定大小与站立位置校准，逐帧/Qt/明暗采样、2.0.20实机与便携包SHA。 | 继续处理麒麟轮廓、跨动画大小位置，制作/安装或回滚角色资源时；道具与姿态问题仍单独在台账跟踪。 |
 | [`PR-REPORT-running-agent-discovery-2026-10-03.md`](PR-REPORT-running-agent-discovery-2026-10-03.md) | 本地增强版运行程序发现、来源热变更、性能和 Windows 实机证据。 | 检查程序识别、跨设备接入或回归来源切换时。 |
 | [`PR-REPORT-codex-link-2026-10-03.md`](PR-REPORT-codex-link-2026-10-03.md) | Codex 进程关联无反馈的根因、只读会话适配、回归及 Windows 实机证据。 | 排查 Codex 联动或变更会话生命周期解析时。 |
 | [`PR-REPORT-qilin-branding-2026-10-03.md`](PR-REPORT-qilin-branding-2026-10-03.md) | 麒麟少女外部角色包、品牌图标与既有模型/Agent 配置保留的实机证据。 | 修改角色素材、部署品牌图标或验证新便携包时。 |
