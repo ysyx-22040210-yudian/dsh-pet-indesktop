@@ -3209,6 +3209,13 @@ class PetWindow(QWidget, WindowFeatureGateMixin):
         self._drag_move_timer.stop()
         self._drag_move_pending = None
 
+    # 双击开设置面板：事件在 WindowFeatureGateMixin，回调由 AppShell 注入。
+    show_island_requested: Any = None
+
+    def mouseDoubleClickEvent(self, event) -> None:  # noqa: N802
+        # MRO 中 QWidget 的 C++ 实现遮蔽 mixin 同名方法，这里显式桥接。
+        WindowFeatureGateMixin.mouseDoubleClickEvent(self, event)
+
     def mousePressEvent(self, event) -> None:  # noqa: N802
         # 任何到达桌宠窗口的按下都是"鼠标命中"：立即回满帧率（闲置降帧锚点）。
         # 窗口透明区域在 Windows 逐像素穿透/非 Windows mask 下不会收到事件，

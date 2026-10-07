@@ -15,41 +15,14 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
 
 THEMES: dict[str, dict] = {
-    'whale': {
-        'name': '蓝色幻想 · 鲸鱼娘',
-        'file': 'whale.jpg',
-        'accent': '#4a5fa8',
-        'focus': (0.56, 0.04, 0.38, 0.94),  # 主体框（归一化）
-        'anchor': 'right',      # Q版鲸鱼娘在画面右侧
+    'qilin': {
+        'name': '瑞麟花园',
+        'file': 'qilin-garden.png',
+        'accent': '#e28d2e',
+        'focus': (0.58, 0.10, 0.36, 0.85),
+        'anchor': 'right',
         'dark': False,
         'scrim': (253, 246, 236, 128),
-    },
-    'whale-v2': {
-        'name': '星海鲸裙',
-        'file': 'whale-v2.jpg',
-        'accent': '#5a7fc8',
-        'focus': (0.04, 0.05, 0.42, 0.9),  # 主体框（归一化）
-        'anchor': 'left',       # 少女在画面左侧
-        'dark': False,
-        'scrim': (240, 244, 252, 118),
-    },
-    'whale-mom': {
-        'name': '鲸鱼妈妈',
-        'file': 'whale-mom.jpg',
-        'accent': '#d9a53c',
-        'focus': (0.25, 0.05, 0.5, 0.95),  # 主体框（归一化）：取景偏左，保住对白气泡
-        'anchor': 'center',     # 人物居中偏右，左侧对白气泡入镜也无妨
-        'dark': False,
-        'scrim': (247, 244, 252, 128),
-    },
-    'whale-song': {
-        'name': '鲸吟',
-        'file': 'whale-song.jpg',
-        'accent': '#4d8fd4',
-        'focus': (0.02, 0.05, 0.45, 0.9),  # 主体框（归一化）
-        'anchor': 'left',       # 少女与鲸群在画面左半
-        'dark': False,
-        'scrim': (244, 248, 253, 118),
     },
     'furina': {
         'name': '芙宁娜',
@@ -152,7 +125,7 @@ def theme_names() -> list[tuple[str, str]]:
 # 对话窗口风格标识 → 展示名，设置界面的唯一来源：主设置窗的风格下拉项、裁切行
 # 标签/编辑器标题、老聊天设置对话框的裁切入口都从这里派生，避免多处字面量走样。
 # 顺序即下拉框顺序（modern 在前，classic 在后）。
-CHAT_UI_STYLE_LABELS: dict[str, str] = {'modern': '肥鱼版 DeepSeek', 'classic': '肥鱼牌小手机'}
+CHAT_UI_STYLE_LABELS: dict[str, str] = {'modern': '麒麟工作台', 'classic': '麒麟小窗'}
 
 # 对话窗口风格 → 裁切选区纵横比（宽/高），按各风格窗口默认尺寸取值（窗口可缩放，
 # 渲染端 cover 兜底）：
@@ -208,7 +181,7 @@ def build_modern_custom_overlay_qss(accent: str, card_opacity: int = 84) -> str:
     alpha = round(255 * max(10, min(100, int(card_opacity))) / 100)
     return f"""
 QFrame#phone-shell, QFrame#chat-main {{ background: transparent; }}
-QFrame#deepseek-sidebar {{ background: rgba(248, 250, 253, 218); }}
+QFrame#chat-sidebar {{ background: rgba(248, 250, 253, 218); }}
 QFrame#chat-main-header {{ background: rgba(255, 255, 255, 218); }}
 QScrollArea#message-scroll,
 QScrollArea#message-scroll QWidget#qt_scrollarea_viewport,

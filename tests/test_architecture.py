@@ -112,7 +112,10 @@ PET_DIR = Path(__file__).resolve().parents[1] / "pet"
 # duration 退化值守卫 + 注释，+9）与 A2 飞行加速按用户「播放速率」复合
 # （表达式改写 + getattr 防御测试替身，+2）。净增为守卫与注释，未拆控制器
 # （守卫必须贴着 _try_move 的建计划点才有效），按预算规则校准。实测 4648。
-WINDOW_PY_LINE_BUDGET = 4648
+# 2026-10-07：双击桌宠开设置面板：类属性声明 + MRO 桥接共 6 行（事件本体在
+# WindowFeatureGateMixin；PetWindow(QWidget, Mixin) 的 C++ 基类遮蔽需显式桥接），
+# 按拆分指南校准预算 4648 → 4655。
+WINDOW_PY_LINE_BUDGET = 4655
 
 # modern_settings_dialog.py 行数预算：按结构线拆分后实测 1857 行（拆分前 4811 行）。
 # 主对话框 ModernSettingsDialog + 对话框装配/配置写回 + 为 pet/ 与 tests/ 保留的

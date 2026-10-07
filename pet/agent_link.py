@@ -511,7 +511,7 @@ def _manifest_set_bundle(pkg: dict, profile_dir: Path, present: bool) -> bool:
 # dsh-app-boot initProfile 的等价产物（见该包 lib/index.js）：新装 dsh 从未
 # 运行时没有任何 profile，全新用户第一次开联动会被「没有可用的 dsh profile」
 # 挡住——安装桥接前先按同一套三件套补出默认 web profile。
-_WEB_PROFILE_BUNDLES = ["@deepseek-ai/dsh-base", "@deepseek-ai/dsh-web-app"]
+_WEB_PROFILE_BUNDLES = []  # Retired service profiles are never installed.
 _PROFILE_PATCH_TEMPLATE = (
     "# Your patch layer for this dsh profile, applied after every bundle layer:\n"
     "# a top-level YAML array of loader patch entries (id-targeted config\n"
@@ -1536,7 +1536,7 @@ class BaseAgentMonitor(QObject):
 # ----------------------------------------------------------------------
 
 class DshMonitor(BaseAgentMonitor):
-    """DeepSeek Harness (DSH) 监视器。
+    """旧版桥接服务 (DSH) 监视器。
 
     事件来源：随桌宠内置的桥接插件（integrations/dsh-pet-bridge），开启联动时
     经用户同意后通过 `dsh plugin --profile web install <dir>` 一键安装（关闭时自动卸载）。
@@ -2111,8 +2111,11 @@ class OpenCodeMonitor(BaseAgentMonitor):
     同时保留统一 jsonl 通道（agent-events/opencode.jsonl）作为兼容路径。
     """
 
-    def __init__(self, config_dir: Path, parent=None, db_path: Path | None = None) -> None:
-        super().__init__("opencode", config_dir, parent)
+    def __init__(self, config_dir: Path, parent=None, db_path: Path | None = None, *,
+                 agent_key="opencode", jsonl_fallback=True) -> None:
+        super().__init__(agent_key, config_dir, parent)
+        self._jsonl_fallback = jsonl_fallback
+        self._mkdir_on_start = jsonl_fallback
         self.db_path = db_path or (
             Path.home() / ".local" / "share" / "opencode" / "opencode.db"
         )
@@ -2127,7 +2130,8 @@ class OpenCodeMonitor(BaseAgentMonitor):
 
     def _poll(self, gen: int | None = None) -> None:
         # 统一 jsonl 通道（兼容未来插件/手动注入）
-        super()._poll(gen=gen)
+        if self._jsonl_fallback:
+            super()._poll(gen=gen)
         emit_gen = self._emit_gen if gen is None else gen
 
         if not self.db_path.is_file():
@@ -2147,7 +2151,7 @@ class OpenCodeMonitor(BaseAgentMonitor):
 
         try:
             # 只读连接；WAL 模式下只读不阻塞 OpenCode 写入
-            db = sqlite3.connect(f"file:{self.db_path}?mode=ro", uri=True)
+            db = sqlite3.connect(self.db_path.resolve().as_uri() + "?mode=ro", uri=True)
             try:
                 if not self._db_ready:
                     # backfill 防护：启动时跳到当前末尾，不回放历史事件
@@ -2219,7 +2223,8 @@ class CustomAgentMonitor(BaseAgentMonitor):
 
     def __init__(self, agent_key: str, config_dir: Path, events_path: str, parent=None) -> None:
         super().__init__(agent_key, config_dir, parent)
-        self.events_file = Path(events_path).expanduser()
+        from .agent_discovery import expand_agent_path
+        self.events_file = expand_agent_path(events_path)
         self.events_dir = self.events_file.parent
         self._tailer = ByteOffsetTailer(self.events_file)
         self._mkdir_on_start = False
@@ -2285,7 +2290,7 @@ class AgentLinkManager(QObject):
     _exploration_control_result = Signal(str, str, bool, str)
 
     # 联动气泡展示名
-    AGENT_NAMES = {"dsh": "DSH", "claude": "Claude Code", "cursor": "Cursor", "opencode": "OpenCode"}
+    AGENT_NAMES = {"claude": "Claude Code", "cursor": "Cursor", "opencode": "OpenCode"}
     # 过程汇报：工具名 → 用户可读文案（不展示原始命令/路径）
     TOOL_LABELS = {
         "read": "正在读文件", "write": "正在写文件", "edit": "正在改代码",
@@ -2316,6 +2321,7 @@ class AgentLinkManager(QObject):
         self.cfg = config
         self.config_dir = config.dir
         self._shutdown = False
+        self._paused = False
         # Agent 本轮消费统计：用余额差值估算，网络查询走后台线程。
         self._cost = agent_cost_mod.AgentCostTracker(clock=clock)
         self._cost_balance_ready.connect(self._on_cost_balance)
@@ -2379,15 +2385,15 @@ class AgentLinkManager(QObject):
         # 自定义联动 Agent：配置驱动的只读监视器（key/path 已在 config 清洗时
         # 保证合法唯一）；显示名合并进实例级 agent_names，类级 AGENT_NAMES
         # 保持仅内置（modern_settings_dialog 等按内置枚举处不受影响）。
-        # 注意：运行中新增/修改 custom_agents 需重启桌宠生效。
         self.agent_names: dict[str, str] = dict(self.AGENT_NAMES)
+        self._custom_specs: dict[str, dict] = {}
+        self._custom_generations: dict[str, int] = {}
         for item in (self.cfg.get("agent_link", {}).get("custom_agents") or []):
             key = str(item.get("key") or "")
             if not key or key in self.monitors:
                 continue
-            self.monitors[key] = CustomAgentMonitor(
-                key, self.config_dir, str(item.get("path") or ""), self,
-            )
+            self.monitors[key] = self._make_custom_monitor(item)
+            self._custom_specs[key] = dict(item)
             self.agent_names[key] = str(item.get("name") or key)
 
         # 卡住检测（stuck_detector）：DSH 专属，消费桥接增强记录推断「人工介入更快」。
@@ -2421,17 +2427,7 @@ class AgentLinkManager(QObject):
         self._exploration_names: dict[str, str] = {}
 
         for mon in self.monitors.values():
-            mon.raw_record.connect(self._remember_dialogue_record)
-            mon.normalized_event.connect(self._on_normalized_event)
-            mon.state_event.connect(self._on_agent_state_event)
-            mon.activity_event.connect(self._on_agent_activity_event)
-            mon.approval_requested.connect(self._on_approval_request)
-            mon.approval_resolved.connect(self._on_approval_resolved)
-            mon.question_requested.connect(self._on_question_request)
-            mon.question_resolved.connect(self._on_question_resolved)
-            mon.cordis_requested.connect(self._on_cordis_request)
-            mon.cordis_resolved.connect(self._on_cordis_resolved)
-            mon.execution_failed.connect(self._on_execution_failed)
+            self._connect_monitor(mon)
         self.monitors["dsh"].session_meta.connect(self._on_session_meta)
         self.monitors["dsh"].model_access.connect(self._on_model_access)
         self.monitors["dsh"].llm_error.connect(self._on_llm_error)
@@ -2493,12 +2489,69 @@ class AgentLinkManager(QObject):
         else:
             log.debug("interaction/resolved unmatched source=%s session=%s", event.source, event.session_id)
 
+    def _make_custom_monitor(self, item):
+        from .agent_discovery import expand_agent_path
+        if item.get("adapter") == "codex":
+            from .codex_monitor import CodexMonitor
+            monitor = CodexMonitor(item["key"], self.config_dir, expand_agent_path(item["path"]), self)
+        elif item.get("adapter") == "opencode":
+            monitor = OpenCodeMonitor(self.config_dir, self, expand_agent_path(item["path"]),
+                                      agent_key=item["key"], jsonl_fallback=False)
+        else:
+            monitor = CustomAgentMonitor(item["key"], self.config_dir, item["path"], self)
+        # Replaced sources keep increasing generations so already queued Qt
+        # state/activity events from the previous monitor cannot drive the pet.
+        monitor._gen = self._custom_generations.get(item["key"], 0)
+        return monitor
+
+    def _connect_monitor(self, mon):
+        mon.raw_record.connect(self._remember_dialogue_record)
+        mon.normalized_event.connect(self._on_normalized_event)
+        mon.state_event.connect(self._on_agent_state_event)
+        mon.activity_event.connect(self._on_agent_activity_event)
+        mon.approval_requested.connect(self._on_approval_request)
+        mon.approval_resolved.connect(self._on_approval_resolved)
+        mon.question_requested.connect(self._on_question_request)
+        mon.question_resolved.connect(self._on_question_resolved)
+        mon.cordis_requested.connect(self._on_cordis_request)
+        mon.cordis_resolved.connect(self._on_cordis_resolved)
+        mon.execution_failed.connect(self._on_execution_failed)
+
+    def _sync_custom_monitors(self, items):
+        desired = {item["key"]: item for item in items if item.get("key") not in self.AGENT_NAMES}
+        for key, previous in list(self._custom_specs.items()):
+            item = desired.get(key)
+            if item and (item.get("adapter"), item["path"]) == (previous.get("adapter"), previous["path"]):
+                continue
+            monitor = self.monitors.pop(key)
+            self._custom_generations[key] = monitor._gen
+            monitor.stop()
+            monitor.deleteLater()
+            self._cancel_done_check(key)
+            self._last_raw.pop(key, None)
+            self._last_applied.pop(key, None)
+            self.agent_names.pop(key, None)
+            self._custom_specs.pop(key)
+            for interaction_id, interaction in list(self._pending_interactions.items()):
+                if interaction.get("agent_key") == key:
+                    self._resolve_interaction(interaction_id)
+        for key, item in desired.items():
+            if key not in self._custom_specs:
+                monitor = self._make_custom_monitor(item)
+                self.monitors[key] = monitor
+                self._connect_monitor(monitor)
+            self._custom_specs[key] = dict(item)
+            self.agent_names[key] = item.get("name") or key
+
     def apply_config(self) -> None:
         """根据配置启停各个 Agent 监视器。
 
         注意用 _running（生命周期状态）而非 is_running()（会被 pause 置 False）——
         否则"隐藏期间关配置"不会真正 stop，恢复显示时又会被 resume 拉起。"""
         agent_cfg = self.cfg.get("agent_link", {})
+        if self._shutdown:
+            return
+        self._sync_custom_monitors(agent_cfg.get("custom_agents") or [])
         # 手动指定的 pnpm 入口（config.pnpm_bin）：空 = 回到内置自动发现。
         # 在这里同步而非在探测时读配置，是为了让 agent_link 的探测保持
         # "纯函数 + 模块状态"的可测形态（不必到处传 cfg）。
@@ -2506,9 +2559,11 @@ class AgentLinkManager(QObject):
         if not agent_cfg.get("dsh", False):
             self._clear_model_access_alerts()
         for key, monitor in self.monitors.items():
-            should_run = bool(agent_cfg.get(key, False))
+            should_run = key != "dsh" and bool(agent_cfg.get(key, False))
             if should_run and not monitor._running:
                 monitor.start()
+                if self._paused:
+                    monitor.pause()
                 if isinstance(monitor, DshMonitor):
                     # 启动自检（后台、每实例一次）：重新打包/换构建目录后，profile 里
                     # 记的 link 可能已指向旧构建；只在陈旧时刷新，绝不新建安装。
@@ -2564,6 +2619,9 @@ class AgentLinkManager(QObject):
     def _on_install_finished(self, agent_key: str, ok: bool, msg: str,
                              token: int | None = None) -> None:
         """安装完成：成功则正式开启联动，失败则提示。"""
+        if agent_key == 'dsh':
+            self._install_pending.pop(agent_key, None)
+            return
         if self._shutdown:
             return
         if token is not None and self._install_pending.get(agent_key) != token:
@@ -2597,7 +2655,7 @@ class AgentLinkManager(QObject):
         """开启或关闭指定 Agent 监视器（必要时弹出确认框）。
 
         返回 False 表示未生效（用户拒绝授权 / hooks 安装失败），调用方应回滚 UI 勾选态。"""
-        if agent_key not in self.monitors:
+        if agent_key == "dsh" or agent_key not in self.monitors:
             return False
 
         if enabled:
@@ -2624,7 +2682,7 @@ class AgentLinkManager(QObject):
                 res = QMessageBox.question(
                     self.win if hasattr(self.win, "winId") else None,
                     "开启 DSH 联动",
-                    "开启联动需要向 DeepSeek Harness 安装一个桥接小插件\n"
+                    "开启联动需要向 旧版桥接服务 安装一个桥接小插件\n"
                     "（把 DSH 的运行状态写到本地文件给桌宠读，仅本地、无网络）。\n\n"
                     "是否允许一键安装？（关闭联动时会自动卸载）",
                     QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
@@ -2683,6 +2741,7 @@ class AgentLinkManager(QObject):
     def pause(self) -> None:
         """桌宠隐藏时暂停所有监视器，丢弃待播联动动作，并取消所有完成确认计时器
         （否则隐藏期间计时器到期会在隐藏窗口上切动画/弹气泡）。"""
+        self._paused = True
         for mon in self.monitors.values():
             mon.pause()
         self._stuck_detector.pause()
@@ -2699,6 +2758,7 @@ class AgentLinkManager(QObject):
 
     def resume(self) -> None:
         """桌宠恢复显示时恢复活动的监视器。"""
+        self._paused = False
         for mon in self.monitors.values():
             mon.resume()
         self._stuck_detector.resume()
@@ -2959,7 +3019,6 @@ class AgentLinkManager(QObject):
         "cursor": ("cursor.exe",),
     }
     AGENT_TITLE_HINTS = {
-        "dsh": ("deepseek harness",),
     }
 
     def busy_agent_owns_process(self, process_name: str, title: str = "") -> bool:
@@ -2967,6 +3026,11 @@ class AgentLinkManager(QObject):
         agent_cfg = self.cfg.get("agent_link", {})
         p = str(process_name or "").lower()
         t = str(title or "").lower()
+        for item in agent_cfg.get("custom_agents") or []:
+            key = item["key"]
+            if p in {name.lower() for name in item.get("process_names", [])} and agent_cfg.get(key) \
+                    and self._last_raw.get(key) in self._BUSY_STATES:
+                return True
         for agent_key, procs in self.AGENT_PROCESS_HINTS.items():
             if p and p in procs and agent_cfg.get(agent_key) \
                     and self._last_raw.get(agent_key) in self._BUSY_STATES:
@@ -2981,7 +3045,7 @@ class AgentLinkManager(QObject):
     # 联动气泡（开始干活可选 / 任务完成通知）
     # ------------------------------------------------------------------
     # 各 Agent 的默认 thinking 文案；DSH 用角色梗，其他用烧烤梗
-    _THINKING_DEFAULTS = {"dsh": "大肥鱼正在深度思考……"}
+    _THINKING_DEFAULTS = {"dsh": "麒麟正在认真思考……"}
 
     def _remember_dialogue_record(self, agent_key: str, record: object) -> None:
         """Expose the latest upstream record to phrase templates."""
@@ -3874,63 +3938,11 @@ class AgentLinkManager(QObject):
     _cost_balance_ready = Signal(str, str, object)
 
     def _cost_enabled(self) -> bool:
-        """消费统计是否启用：开关打开 + 当前 provider 是 DeepSeek。
-
-        只有 DeepSeek 有余额接口；别的 provider 查不到，直接不启用，
-        避免留下"开关开着却永远没数字"的困惑。
-        """
-        if not bool(self.cfg.get("agent_cost_enabled", False)):
-            return False
-        return self._deepseek_provider() is not None
-
-    def _deepseek_provider(self):
-        """取当前激活且支持余额查询的 provider（仅 DeepSeek）。"""
-        try:
-            settings = self.cfg.chat_settings()
-            provider = settings.active_config
-        except Exception:
-            return None
-        base = str(getattr(provider, "base_url", "") or "")
-        if "deepseek.com" not in base:
-            return None
-        return provider
+        """The retired provider-specific balance estimator is disabled."""
+        return False
 
     def _query_cost_balance(self, agent_key: str, purpose: str) -> None:
-        """后台线程查一次余额，结果经信号回主线程。
-
-        **必须绕过余额缓存**：现成的查询入口有 30 秒缓存，而一轮对话常在
-        30 秒内结束，读缓存会让差值恒为 0。这里直接调底层 ``fetch_balance``。
-        """
-        provider = self._deepseek_provider()
-        if provider is None:
-            return
-        try:
-            api_key = self.cfg.resolve_api_key(provider)
-        except Exception:
-            api_key = ""
-        if not api_key:
-            return
-
-        def worker() -> None:
-            total = None
-            try:
-                from .balance import fetch_balance
-
-                data = fetch_balance(
-                    provider.base_url, api_key,
-                    verify_ssl=bool(getattr(provider, "verify_ssl", True)),
-                )
-                total = float(str(data.get("total") or 0) or 0)
-            except Exception:
-                log.debug("消费统计：余额查询失败", exc_info=True)
-            try:
-                self._cost_balance_ready.emit(agent_key, purpose, total)
-            except RuntimeError:
-                pass  # 对象已销毁
-
-        threading.Thread(
-            target=worker, name="agent-cost-balance", daemon=True,
-        ).start()
+        """Compatibility seam: no balance request or worker is created."""
 
     def _on_cost_balance(self, agent_key: str, purpose: str, total) -> None:
         """余额查询回到主线程：按用途写入基线或结算本轮消费。"""

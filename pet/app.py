@@ -35,6 +35,8 @@ from PySide6.QtCore import QObject, QPoint, QTimer, Qt, Signal
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QMenu, QMessageBox, QSystemTrayIcon
 
+from .branding import load_application_logo
+
 from . import autostart as autostart_mod
 from . import balance as balance_mod
 from . import catalog
@@ -44,9 +46,7 @@ from . import slot_manager as slot_manager_mod
 from . import updater
 from . import webm_clip as webm_clip_mod
 from .config import APP_DIR_NAME, Config, _default_base
-from .context_menus.shared import open_deepseek_web
 from .desktop_notify import DesktopNotification, position_stack
-from .harness_launcher import launch_harness_gui
 from .instance_launcher import launch_new_pet
 from .library import MovieLibrary
 from .window import PetWindow
@@ -58,7 +58,6 @@ from .decode_fanout import DecodeFanoutHub
 from .festival_service import FestivalReminderService
 from .todo_reminder import TodoReminderService
 from .voice_chime_service import VoiceChimeService
-from .dsh_state import DshStateTracker
 from .persona_phrases import PhrasePicker
 
 
@@ -172,11 +171,11 @@ def _show_balance_payload(win, payload) -> None:
     peak_label, idle_label = balance_mod.resolve_tier_labels(mode, custom_peak, custom_idle)
     color_enabled = bool(cfg.get("balance_tier_color_enabled", True)) if cfg is not None else True
     if color_enabled:
-        subtitle = balance_mod.deepseek_pricing_hint_html(
+        subtitle = balance_mod.legacy_pricing_hint_html(
             peak_label=peak_label, idle_label=idle_label,
         )
     else:
-        subtitle = balance_mod.deepseek_pricing_hint(
+        subtitle = balance_mod.legacy_pricing_hint(
             peak_label=peak_label, idle_label=idle_label,
         )
     win.show_bubble(
@@ -453,7 +452,7 @@ class PetInstance:
         win.on_open_chat = self._slot_wrap(self.open_chat) if self.enable_chat else None
         win.on_open_quick_chat = self._slot_wrap(self.open_quick_chat) if self.enable_chat else None
         win.on_open_chat_settings = self._slot_wrap(self.open_chat_settings) if self.enable_chat else None
-        win.on_show_balance = self._slot_wrap(self.shell.show_balance) if self.enable_chat else None
+        win.on_show_balance = None
         win.on_check_update = self._slot_wrap(self.shell.check_update)
         win.on_look_synced = self._slot_wrap(self.sync_look_to_chat) if self.enable_chat else None
         win.on_look_screen = win.look_at_screen if self.enable_chat and hasattr(win, "look_at_screen") else None
@@ -464,6 +463,8 @@ class PetInstance:
         win.hidden_bubble_redirect = self.shell._island_feedback_bubble
         # 反馈面可用性探针：隐藏期联动监视器是否跳过低功耗暂停（mixin 消费）。
         win.island_feedback_available = self.shell._island_feedback_available
+        # 双击桌宠 → 打开现代设置面板（灵动岛已彻底移除）。
+        win.show_island_requested = self.shell._open_settings_from_pet
         win.on_spawn_pet = self._slot_wrap(self.shell.spawn_pet)
         # 「退出子肥鱼」只挂给主肥鱼（instance_id 为空）：子肥鱼进程里该入口的
         # pid==os.getpid() 自我保护会跳过子鱼自己、把主鱼当子鱼 taskkill 掉
@@ -1029,6 +1030,9 @@ class AppShell:
                  slot_handle=None, slot_id: int | None = None,
                  spawn_offset: int = 0) -> None:
         self.app = app
+        self._brand_icon = load_application_logo()
+        if not self._brand_icon.isNull():
+            self.app.setWindowIcon(self._brand_icon)
         self.config = config
         self._enable_chat = bool(enable_chat)
         self._slot_id = slot_id
@@ -1059,13 +1063,11 @@ class AppShell:
         self._balance_cache = None
         self._balance_bridge = None
         self._on_about_to_quit_connected = False
-        self._dsh_state_tracker = DshStateTracker(config.dir)
+        self._dsh_state_tracker = None
         # 订阅 DSH 统一状态（d04fc10 曾接线，post-merge 重构时丢失，本分支恢复）：
         # 收敛出的 thinking → 联动管线补 legacy 没有的思考气泡/对话开始反应；
         # offline → 收掉已失效的常驻审批/问题气泡。真人消息经 user_message
         # 信号做与状态边沿竞态解耦的稳定触发。
-        self._dsh_state_tracker.state_changed.connect(self._on_dsh_state_changed)
-        self._dsh_state_tracker.user_message.connect(self._on_dsh_user_message)
         self._balance_timer = QTimer()
         self._balance_timer.timeout.connect(self.show_balance)
         self._update_bridge = None
@@ -1661,7 +1663,6 @@ class AppShell:
             self.app.aboutToQuit.connect(self._on_about_to_quit)
             self._on_about_to_quit_connected = True
         self.instance.collision_ipc.start()
-        self._dsh_state_tracker.start()
         character_id = str(self.config.get('character', catalog.DEFAULT_CHARACTER))
         logging.info('当前形象: %s', character_id)
         self._create_ui_with_character_fallback(character_id)
@@ -1682,7 +1683,6 @@ class AppShell:
         # 合并进运行期（开关关闭时不装，完全走旧路径）。
         self._install_config_watcher()
         QTimer.singleShot(3500, self.instance._check_autostart_wanted)
-        QTimer.singleShot(4000, self._maybe_autostart_harness)
         # 启动时补一次：点击动画绑定对话框不走设置页保存信号，改动要等下次启动才被
         # 发现（合成一句约 20 秒，放晚一点，别和首帧/动画预热抢资源）。
         QTimer.singleShot(9000, self._precache_self_talk_voice_on_start)
@@ -1782,28 +1782,6 @@ class AppShell:
             self.config.set('character', character_id)
             self.instance._create_ui(character_id)
 
-    def _maybe_autostart_harness(self) -> None:
-        """「随桌宠启动 dsh 服务」：主窗就绪后拉起 dsh web（只起服务，全程静默）。
-
-        机器级语义：仅主窗就绪时调度一次（进程内新窗不重复触发）；本机已有
-        实例（含官方默认 3080）则跳过。静默 = CREATE_NO_WINDOW 隐藏控制台 +
-        launch_harness(open_browser=False) 不开浏览器，无任何弹窗。
-        """
-        if not self.enable_chat or not bool(self.config.get("harness_autostart", False)):
-            return
-
-        def _run() -> None:
-            try:
-                from . import harness_launcher as harness_mod
-                if any(harness_mod.is_running(p) for p in harness_mod._candidate_ports()):
-                    return
-                harness_mod.launch_harness(open_browser=False)
-            except Exception:
-                logging.exception("随桌宠自动拉起 dsh 服务失败")
-
-        threading.Thread(target=_run, daemon=True, name="pet-harness-autostart").start()
-
-    # ------------------------------------------------------------ DSH 状态接线
     def _dsh_link_manager(self):
         """当前主窗的 Agent 联动管理器（无窗/未创建时为 None）。"""
         win = self.win
@@ -1950,7 +1928,8 @@ class AppShell:
         if self.festival_service is not None:
             self.festival_service.stop()
         try:
-            self._dsh_state_tracker.stop()
+            if self._dsh_state_tracker is not None:
+                self._dsh_state_tracker.stop()
         except Exception:
             logging.exception("退出时停止 DSH 状态跟踪器失败")
         try:
@@ -2102,52 +2081,19 @@ class AppShell:
             logging.exception("把窗口接入共享 Agent 联动链失败")
 
     def _sync_dynamic_island(self) -> None:
-        """按配置创建/隐藏灵动岛；桌宠隐藏后灵动岛仍可常驻。"""
-        island_cfg = self.config.get("dynamic_island", {})
-        enabled = bool(island_cfg.get("enabled", True)) if isinstance(island_cfg, dict) else False
-        if not enabled:
-            if getattr(self, "island", None) is not None:
-                self.island.hide()
-            body = getattr(self, "island_collision", None)
-            if body is not None and body.has_local_island:
-                body.stop()
-            # 本进程无岛 ≠ 岛上没有墙：多进程下 slot 配置只对主进程开岛
-            # （子宠进程 enabled=False），但岛在别的进程真实存在——远端
-            # 硬墙照样要挂（几何经碰撞快照回喂），否则子肥鱼直接穿岛。
-            self._sync_island_collision(island_cfg)
-            return
-        if getattr(self, "island", None) is None:
-            from .dynamic_island import DynamicIsland
+        """Retire both visible islands and their local/remote collision services."""
+        island = getattr(self, "island", None)
+        if island is not None:
+            island.hide()
+        body = getattr(self, "island_collision", None)
+        if body is not None:
+            body.stop()
 
-            self.island = DynamicIsland(self.config)
-            # 岛图标默认取鱼本体头像（图片路径不碰 emoji 字体栈，见 dynamic_island
-            # 的 _icon_pixmap 注释）；帧未就绪时岛侧只画底圈并稍后重试
-            self.island.set_icon_provider(self._island_icon_pixmap)
-            self.island.clicked.connect(self._toggle_pet_from_island)
-            self.island.toggle_pet_requested.connect(self._toggle_pet_from_island)
-            self.island.open_chat_requested.connect(self._open_chat_from_island)
-            self.island.open_settings_requested.connect(self._open_settings_from_island)
-            # 桌宠隐藏时单击岛：弹/收锚定岛的对话气泡（hidden_chat 开启时）
-            self.island.chat_requested.connect(self._chat_from_island)
-            # 卡片展开 → 静默刷新余额（不冒泡、不播动画，只更新岛卡片）
-            self.island.card_expanded.connect(self._quiet_balance_refresh)
-            # 进程级聊天完成订阅：AI 回复到达 → 岛播事件动效并记录最近消息。
-            # 无聊天功能的打包变体会排除 pet.chat（参照 config.py 的同款守卫），
-            # 那里跳过订阅即可，灵动岛本体照常可用。
-            try:
-                from .chat.service import ChatService
-            except ImportError as exc:
-                if str(getattr(exc, "name", "") or "").startswith("pet.chat"):
-                    ChatService = None  # 无聊天打包变体：跳过订阅，岛本体照常
-                else:
-                    raise
-            if ChatService is not None:
-                ChatService.register_global_finished(self._on_global_chat_finished)
-        self.island.refresh_from_config()
-        # 批5.2a：灵动岛按**聚合**可见态同步（任一窗可见 = 可见），替代只看主窗。
-        self.island.set_pet_visible(self._aggregate_pet_visible())
-        self.island.show()
-        self._sync_island_collision(island_cfg)
+    def _open_settings_from_pet(self) -> None:
+        """双击桌宠 → 打开现代设置面板（灵动岛已彻底移除）。"""
+        inst = self.instance
+        if inst is not None and callable(getattr(inst, "open_modern_settings", None)):
+            inst.open_modern_settings()
 
     def _sync_island_collision(self, island_cfg) -> None:
         """果冻墙：按配置创建/启停岛的碰撞体（island_collision.py）。
@@ -2357,9 +2303,6 @@ class AppShell:
 
     def _apply_balance_timer(self) -> None:
         self._balance_timer.stop()
-        minutes = max(0, int(self.config.get("balance_refresh_minutes", 0) or 0))
-        if minutes:
-            self._balance_timer.start(minutes * 60000)
 
     def _island_icon_pixmap(self):
         """灵动岛"鱼本体头像"：取首个桌宠窗的当前帧图标；无窗/无帧返回 None（岛侧会重试）。"""
@@ -2378,7 +2321,7 @@ class AppShell:
             str(self.config.get("balance_tier_label_peak", "") or ""),
             str(self.config.get("balance_tier_label_idle", "") or ""),
         )
-        return balance_mod.deepseek_pricing_hint(
+        return balance_mod.legacy_pricing_hint(
             peak_label=peak_label, idle_label=idle_label,
         )
 
@@ -3096,13 +3039,17 @@ class AppShell:
     def _build_tray(self, win: PetWindow, tray: QSystemTrayIcon | None = None) -> QSystemTrayIcon:
         # 批5.2：可复用已有托盘（_refresh_tray_menu 传 self.tray），避免多窗各自
         # 建托盘图标；新建时绑定双击切换，复用时不重复连接（activated 只接一次）。
+        brand_icon = getattr(self, "_brand_icon", QIcon())
         if tray is None:
-            tray = QSystemTrayIcon(QIcon(win.icon_pixmap()))
+            tray = QSystemTrayIcon(brand_icon if not brand_icon.isNull() else QIcon(win.icon_pixmap()))
             tray.activated.connect(
                 lambda reason: self._toggle_primary_pet_visible()
                 if reason == QSystemTrayIcon.ActivationReason.DoubleClick
                 else None
             )
+
+        if not brand_icon.isNull():
+            tray.setIcon(brand_icon)
 
         def toggle_visible() -> None:
             if win.isVisible():
@@ -3181,12 +3128,6 @@ class AppShell:
         menu.aboutToShow.connect(sync_tray_checks)
 
         menu.addSeparator()
-        if self.enable_chat:
-            menu.addAction('DeepSeek 余额', lambda: self.show_balance(win))
-            menu.addAction('启动 DeepSeek Harness', lambda: launch_harness_gui(win))
-        else:
-            # 纯桌宠版本不提供本地 DSH 启动入口，只保留网页版入口
-            menu.addAction('打开网页版 DeepSeek', open_deepseek_web)
         menu.addAction('检查更新', lambda: self.check_update(win))
 
         # 批5.2a §③.3：多窗时单托盘 + 每窗一个子菜单（显示/隐藏、切换角色、退出这只），
@@ -3226,7 +3167,7 @@ class AppShell:
         menu.addAction('退出', self.app.quit)
 
         tray.setContextMenu(menu)
-        tray.setToolTip('dsh-pet 独立桌宠')
+        tray.setToolTip('麒麟桌宠')
         tray.show()
         # F5：菜单已由新菜单接管后，显式记录所有权并释放被替换的旧菜单
         #（owner 生命周期：强引用保活到替换，旧菜单延迟销毁防泄漏）。
@@ -3362,7 +3303,7 @@ def main(argv: list[str] | None = None, enable_chat: bool = True) -> int:
             slot_id, slot_handle = slot_manager_mod.acquire_pet_slot(config_dir, preferred_slot=preferred_slot)
         except Exception as exc:
             logging.exception("获取桌宠槽位锁失败")
-            _show_startup_error("dsh-pet-standalone", str(exc))
+            _show_startup_error("麒麟桌宠", str(exc))
             return 1
 
         instance_id = slot_manager_mod.slot_to_instance_id(slot_id)
@@ -3393,7 +3334,7 @@ def main(argv: list[str] | None = None, enable_chat: bool = True) -> int:
             controller.start()
         except Exception as exc:
             logging.exception("启动失败")
-            _show_startup_error("dsh-pet-standalone", str(exc))
+            _show_startup_error("麒麟桌宠", str(exc))
             return 1
 
         logging.info("进入事件循环")

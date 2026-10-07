@@ -83,7 +83,7 @@ def _linux_desktop_content() -> str:
     return (
         "[Desktop Entry]\n"
         "Type=Application\n"
-        f"Name=dsh-pet ({APP_DIR_NAME})\n"
+        "Name=麒麟桌宠\n"
         f"Exec={command}\n"
         "Terminal=false\n"
         "X-GNOME-Autostart-enabled=true\n"

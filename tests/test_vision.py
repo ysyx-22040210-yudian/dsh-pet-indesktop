@@ -6,17 +6,17 @@ from pet.vision import resolve_vision_model
 
 
 def _p(model, **kw):
-    raw = {'model': model}
+    raw = {'model': model, 'base_url': 'https://api.example.test'}
     raw.update(kw)
     return ProviderConfig.from_dict('test', raw)
 
 
-def test_deepseek_flash_maps_to_preview_vision():
-    assert resolve_vision_model(_p('deepseek-v4-flash')) == 'deepseek-v4-flash-vision-exp'
+def test_text_model_is_not_rewritten_to_another_vendor_model():
+    assert resolve_vision_model(_p('example-text')) == 'example-text'
 
 
-def test_other_deepseek_models_use_default_vision():
-    assert resolve_vision_model(_p('deepseek-v4-pro')) == 'deepseek-v4-flash-vision-exp'
+def test_provider_model_passes_through_without_vendor_fallback():
+    assert resolve_vision_model(_p('example-pro')) == 'example-pro'
 
 
 def test_already_vision_model_passes_through():
@@ -34,7 +34,7 @@ def test_manual_override_wins():
 
 def test_manual_empty_falls_back_to_derivation():
     p = _p('deepseek-v4-flash', vision_same_as_chat=False, vision_model='  ')
-    assert resolve_vision_model(p) == 'deepseek-v4-flash-vision-exp'
+    assert resolve_vision_model(p) == 'deepseek-v4-flash'
 
 
 def test_capture_screen_bytes_in_memory(tmp_path):
@@ -168,7 +168,7 @@ def test_vision_request_includes_self_recognition_hint(monkeypatch):
         return _FakeResponse({"choices": [{"message": {"content": "好"}, "finish_reason": "stop"}]})
 
     monkeypatch.setattr("urllib.request.urlopen", fake_urlopen)
-    p = ProviderConfig.from_dict("test", {"model": "deepseek-v4-flash", "api_key": "sk-x"})
+    p = ProviderConfig.from_dict("test", {"model": "example", "base_url": "https://api.example.test", "api_key": "sk-x"})
     vision._post_vision_request(b"fake-jpeg", "code.exe | t", "sys", p, pet_name="大肥鱼")
     user_msg = captured["body"]["messages"][1]["content"][0]["text"]
     assert "那就是你自己「大肥鱼」" in user_msg

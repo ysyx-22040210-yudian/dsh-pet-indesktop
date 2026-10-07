@@ -272,7 +272,7 @@ EXPORT_GUIDE: dict[str, Any] = {
         "未标注的参数保证会被替换；标注「上游记录提供时可用」的条件参数，在上游未提供/为空/为 null 时会自动隐藏"
         "（占位符不会原样露出，无需自己写回退）。"
         "upstream 是上游事件记录附带字段，审批/提问/模型访问失败/硬失败/工具类文案在事件触发时可读，其他场景不保证有值。",
-        "3. 想整体换风格：改 mode（legacy=默认模式 / whale_maid=鲸鱼娘女仆模式 / custom=自定义台词），"
+        "3. 想整体换风格：改 mode（legacy=默认模式 / whale_maid=麒麟陪伴模式 / custom=自定义台词），"
         "并顺带改 name / description；导入后会自动切到「自定义台词」。",
         "4. 想精确改某一句：到 entries 按 key 找到同一项，参考 sources（什么事件触发）与 parameters（该项可用变量），"
         "再改顶层 phrases 中同名 key（两处应保持一致）。",
@@ -288,7 +288,7 @@ EXPORT_GUIDE: dict[str, Any] = {
     "顶层字段涵义": {
         "_说明": "本段注释，导入时忽略，可保留或删除。",
         "template": "模板格式版本标识 persona-phrases/v1，导入时校验用，请勿改动。",
-        "mode": "表达风格：legacy=默认模式；whale_maid=鲸鱼娘女仆模式；custom=自定义台词。",
+        "mode": "表达风格：legacy=默认模式；whale_maid=麒麟陪伴模式；custom=自定义台词。",
         "name": "这套台词的名字，仅作标识，可随意修改。",
         "description": "整份模板用途的一句话说明，可随意修改或删除。",
         "variables": "各事件保证可用的 {变量} 占位符及含义，写文案时对照参考，一般无需改动。",

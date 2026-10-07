@@ -137,11 +137,11 @@ def test_content_cache_key_covers_colors_and_style(tmp_path, monkeypatch):
                         lambda *a, **k: ("idle", None))
     monkeypatch.setattr(balance_mod, "format_switch_time",
                         lambda *a, **k: "12:00")
-    monkeypatch.setattr(balance_mod, "deepseek_pricing_tier",
+    monkeypatch.setattr(balance_mod, "legacy_pricing_tier",
                         lambda *a, **k: "peak")
     peak = island2._content_cache()
     text_peak = island2._info_text()
-    monkeypatch.setattr(balance_mod, "deepseek_pricing_tier",
+    monkeypatch.setattr(balance_mod, "legacy_pricing_tier",
                         lambda *a, **k: "idle")
     assert island2._info_text() == text_peak, "前提：文案不随档位变化"
     assert island2._content_cache() is not peak, "峰谷信息色变化必须重建缓存"

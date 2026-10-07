@@ -723,11 +723,11 @@ def test_modern_pet_context_menu_has_spawn_action_with_avatar_icon(monkeypatch):
     direct_actions = [action for action in menu.actions() if not action.isSeparator()]
     assert direct_actions
     controls = next(action.menu() for action in direct_actions if action.text() == "桌宠控制")
-    spawn_action = next(action for action in controls.actions() if action.text() == "生小肥鱼")
+    spawn_action = next(action for action in controls.actions() if action.text() == "召唤小麒麟")
     assert not spawn_action.icon().isNull()
     spawn_action.trigger()
     assert pet.spawn_count == 1
-    clear_action = next(action for action in controls.actions() if action.text() == "退出子肥鱼")
+    clear_action = next(action for action in controls.actions() if action.text() == "退出小麒麟")
     assert not clear_action.icon().isNull()
     clear_action.trigger()
     assert pet.clear_count == 1
@@ -892,7 +892,7 @@ def test_modern_context_menu_has_compact_semantic_groups(monkeypatch):
     window_mod._populate_context_menu(menu, pet)
     labels = [action.text() for action in menu.actions() if not action.isSeparator()]
     expected_labels = [
-        "厉害了我的鲸",
+        "麒麟表情包",
         "AI 对话",
         "看看屏幕",
         "播放动画",
@@ -927,8 +927,8 @@ def test_modern_context_menu_has_compact_semantic_groups(monkeypatch):
     assert next(action for action in menu.actions() if action.text() == "播放速率").menu() is not None
     assert next(action for action in menu.actions() if action.text() == "大小").menu() is not None
     tools = next(action.menu() for action in menu.actions() if action.text() == "工具与帮助")
-    next(action for action in tools.actions() if action.text() == "打开网页版 DeepSeek").trigger()
-    assert opened_urls == [shared_menu_mod.DEEPSEEK_WEB_URL]
+    assert not any("DeepSeek" in action.text() for action in tools.actions())
+    assert opened_urls == []
     # 模板模式已迁入设置；默认菜单不再用低频迁移命令占据根菜单。
     assert all("旧版菜单" not in action.text() for action in menu.actions())
     menu.close()
@@ -981,7 +981,7 @@ def test_pure_pet_context_menu_keeps_web_but_hides_harness():
     assert "DeepSeek Harness" not in labels
     assert "启动并打开页面" not in labels
     assert "停止服务" not in labels
-    assert "打开网页版 DeepSeek" in labels
+    assert "打开网页版 DeepSeek" not in labels
     menu.close()
     app.processEvents()
 
@@ -1234,14 +1234,14 @@ def test_modern_menu_starts_with_ojingjing_entry_and_uses_pet_avatar(monkeypatch
     pet = Pet()
     populate_context_menu(menu, pet)
     first_action = menu.actions()[0]
-    assert first_action.text() == "厉害了我的鲸"
+    assert first_action.text() == "麒麟表情包"
     entry = menu.findChild(QWidget, "ojingjingMenuEntry")
     assert entry is not None
     assert entry.height() == 39
     assert entry.findChild(QWidget, "ojingjingAvatar") is not None
     assert entry.findChild(QWidget, "ojingjingClickAccessory") is not None
     controls = next(action.menu() for action in menu.actions() if action.text() == "桌宠控制")
-    spawn = next(action for action in controls.actions() if action.text() == "生小肥鱼")
+    spawn = next(action for action in controls.actions() if action.text() == "召唤小麒麟")
     pixmap = spawn.icon().pixmap(18, 18)
     center = pixmap.toImage().pixelColor(pixmap.width() // 2, pixmap.height() // 2)
     assert center.blue() > center.red() + 80
@@ -1279,7 +1279,7 @@ def test_ojingjing_uses_popup_directory_random_images_and_drag_helpers(monkeypat
     app = QApplication.instance() or QApplication([])
     paths = popup_mod.popup_image_paths()
     assert len(paths) >= 2
-    assert popup_mod.oijingjing_image_path() == Path("assets/big_blue_fat_fish/ojingjing.jpg").resolve()
+    assert popup_mod.oijingjing_image_path() == Path("assets/qilin_memes/praise.png").resolve()
     picks = iter((paths[0], paths[1]))
     monkeypatch.setattr(popup_mod.random, "choice", lambda _paths: next(picks))
     manager = popup_mod.OjingjingWindowManager()
@@ -1410,7 +1410,7 @@ def test_modern_settings_panel_uses_sidebar_and_includes_ai_settings(tmp_path, m
     assert isinstance(dialog.sidebar, QListWidget)
     assert isinstance(dialog.pages, QStackedWidget)
     # 2026-09-19 新增「文件识别」域（拖文件解读，settings_file_interpret）。
-    expected_pages = ["常规", "桌宠", "互动", "菜单", "桌面组件", "AI 与对话", "自动化与联动", "语音", "文件识别"]
+    expected_pages = ["常规", "桌宠", "互动", "菜单", "AI 与对话", "自动化与联动", "语音", "文件识别"]
     assert [dialog.sidebar.item(i).text() for i in range(dialog.sidebar.count())] == expected_pages
     assert dialog.pages.count() == len(expected_pages)
     assert dialog.search_edit.placeholderText() == "搜索设置…"
@@ -1482,8 +1482,8 @@ def test_modern_settings_panel_uses_sidebar_and_includes_ai_settings(tmp_path, m
     assert page_index(dialog.findChild(settings_mod.SettingRow, "settingRow_playback_speed")) == 1
     assert page_index(dialog.findChild(settings_mod.SettingRow, "settingRow_self_talk_texts")) == 2
     assert page_index(dialog.findChild(settings_mod.SettingRow, "settingRow_scale")) == 1
-    assert page_index(dialog.findChild(settings_mod.SettingRow, "settingRow_chat_ui_style")) == 5
-    assert page_index(dialog.findChild(settings_mod.SettingRow, "settingRow_api_url")) == 5
+    assert page_index(dialog.findChild(settings_mod.SettingRow, "settingRow_chat_ui_style")) == 4
+    assert page_index(dialog.findChild(settings_mod.SettingRow, "settingRow_api_url")) == 4
     if settings_mod.sys.platform != "win32":
         assert dialog.auto_hide_fullscreen_check is None
         assert dialog.stream_capture_check is None
@@ -1524,7 +1524,7 @@ def test_modern_settings_panel_uses_sidebar_and_includes_ai_settings(tmp_path, m
     dialog.self_talk_duration_spin.setValue(8.5)
     dialog.self_talk_image_dir_picker.setText(str(tmp_path.resolve()))
     dialog.ai_page.url.setText("https://example.test/v1")
-    dialog.ai_page.model.setText("deepseek-test")
+    dialog.ai_page.model.setText("example-test")
     dialog._save()
     assert config.get("scale") == 0.85
     assert config.get("on_top") is False
@@ -1535,7 +1535,7 @@ def test_modern_settings_panel_uses_sidebar_and_includes_ai_settings(tmp_path, m
     assert config.get("self_talk_duration_seconds") == 8.5
     assert config.get("self_talk_image_dir") == str(tmp_path.resolve())
     assert config.chat_settings().active_config.base_url == "https://example.test/v1"
-    assert config.chat_settings().active_config.model == "deepseek-test"
+    assert config.chat_settings().active_config.model == "example-test"
     assert autostart_values == [True]
     app.processEvents()
 
@@ -1642,31 +1642,6 @@ def test_modern_settings_toggle_dependencies_hide_complete_setting_groups(tmp_pa
         assert result is not None
         return result
 
-    island_children = [
-        row(key) for key in (
-            "dynamic_island_icon", "dynamic_island_name", "dynamic_island_info",
-            "dynamic_island_status", "dynamic_island_info_mode",
-            "dynamic_island_style", "dynamic_island_opacity",
-            "dynamic_island_accent", "dynamic_island_icon_value",
-            "dynamic_island_custom_text", "dynamic_island_click_action",
-            "dynamic_island_event_effects", "dynamic_island_edge_dock",
-            "dynamic_island_collision",
-        )
-    ]
-    dialog.island_enabled_check.setChecked(False)
-    assert all(child.isHidden() for child in island_children)
-    dialog.island_enabled_check.setChecked(True)
-    assert not row("dynamic_island_icon_value").isHidden()
-    assert row("dynamic_island_custom_text").isHidden()
-    dialog.island_icon_check.setChecked(False)
-    assert row("dynamic_island_icon_value").isHidden()
-    dialog.island_info_check.setChecked(False)
-    assert row("dynamic_island_info_mode").isHidden()
-    dialog.island_info_mode_select.setCurrentData("custom")
-    assert row("dynamic_island_custom_text").isHidden()
-    dialog.island_info_check.setChecked(True)
-    assert not row("dynamic_island_custom_text").isHidden()
-
     egg_children = [row(key) for key in ("egg_title", "egg_hint", "egg_avatar", "egg_image_dir")]
     dialog.egg_enabled_check.setChecked(False)
     assert all(child.isHidden() for child in egg_children)
@@ -1741,13 +1716,13 @@ def test_chat_appearance_options_follow_selected_window_and_persist_independentl
     dialog = settings_mod.ModernSettingsDialog(config, include_ai=True)
 
     assert [dialog.ai_page.chat_ui_style.itemText(index) for index in range(2)] == [
-        "肥鱼版 DeepSeek", "肥鱼牌小手机",
+        "麒麟工作台", "麒麟小窗",
     ]
     assert dialog.ai_page.chat_ui_style.width() >= 180
     window_row = dialog.findChild(settings_mod.SettingRow, "settingRow_chat_ui_style")
     assert "宽屏现代体验" in window_row.hint_label.text()
     assert "紧凑经典体验" in window_row.hint_label.text()
-    # 内置主题两种风格都可选（肥鱼版 DeepSeek 与肥鱼牌小手机一致）
+    # 内置主题两种风格都可选（麒麟工作台 与麒麟小窗一致）
     modern_options = [
         dialog.ai_page.background_select.itemText(index)
         for index in range(dialog.ai_page.background_select.count())
@@ -1768,7 +1743,7 @@ def test_chat_appearance_options_follow_selected_window_and_persist_independentl
     assert classic_options[0] == "纯色背景"
     assert classic_options[-1] == "自定义图片"
     assert len(classic_options) > 2
-    dialog.ai_page.background_select.setCurrentData("builtin:whale")
+    dialog.ai_page.background_select.setCurrentData("builtin:qilin")
     assert not opacity_row.isHidden()
     assert not fill_row.isHidden()
     dialog.ai_page.background_opacity.setValue(68)
@@ -1782,7 +1757,7 @@ def test_chat_appearance_options_follow_selected_window_and_persist_independentl
     dialog.ai_page.background_fill.setCurrentData("stretch")
     dialog._save()
 
-    assert config.get("chat_background") == "builtin:whale"
+    assert config.get("chat_background") == "builtin:qilin"
     assert config.get("modern_chat_background") == modern_background
     assert config.get("chat_background_opacity") == 68
     assert config.get("chat_background_fill") == "contain"
@@ -2013,7 +1988,7 @@ def test_modern_settings_search_locates_rows_and_return_does_not_close(tmp_path,
     dialog.search_edit.setFocus()
     dialog.search_edit.setText("API 地址")
     app.processEvents()
-    assert dialog.sidebar.currentRow() == 5  # 稳定的“AI 与对话”能力域
+    assert dialog.sidebar.currentItem().text() == "AI 与对话"
     api_row = dialog.findChild(settings_mod.SettingRow, "settingRow_api_url")
     assert api_row.property("searchMatch") is True
     QTest.keyClick(dialog.search_edit, Qt.Key.Key_Return)
@@ -2058,12 +2033,12 @@ def test_legacy_config_value_dispatches_legacy_layout(monkeypatch):
     menu = QMenu()
     window_mod._populate_context_menu(menu, Pet())
     labels = [action.text() for action in menu.actions() if not action.isSeparator()]
-    # legacy 布局：无图标、无现代专属入口（看看屏幕/更新与帮助/生小肥鱼层级不同）
+    # legacy 布局：无图标、无现代专属入口（看看屏幕/更新与帮助/召唤小麒麟层级不同）
     # Pet 无 on_open_chat，属于纯桌宠版：不显示 DeepSeek Harness 子菜单，保留网页版
-    assert labels.index("生小肥鱼") == labels.index("开机自启") + 1
+    assert labels.index("召唤小麒麟") == labels.index("开机自启") + 1
     assert "DeepSeek Harness" not in labels
     assert "停止服务" not in labels
-    assert "打开网页版 DeepSeek" in labels
+    assert "打开网页版 DeepSeek" not in labels
     assert menu.styleSheet() == ""
     icon_actions = [action.text() for action in menu.actions() if not action.icon().isNull()]
     assert icon_actions == []
@@ -2145,10 +2120,10 @@ def test_windows_build_regenerates_the_icon_before_pyinstaller():
     make_icon = build_script.index("scripts\\make_icon.py")
     pyinstaller = build_script.index("python -m PyInstaller")
     assert make_icon < pyinstaller
-    assert "assets\\big_blue_fat_fish;assets\\big_blue_fat_fish" in build_script
-    assert "pet\\menu_templates;pet\\menu_templates" in build_script
+    assert "assets\\qilin_memes" in build_script
+    assert "pet\\menu_templates" in build_script
     mac_build_script = Path("scripts/build_macos.sh").read_text(encoding="utf-8")
-    assert 'assets/big_blue_fat_fish:assets/big_blue_fat_fish' in mac_build_script
+    assert 'assets/qilin_memes:assets/qilin_memes' in mac_build_script
     assert "pet/menu_templates:pet/menu_templates" in mac_build_script
 
 
@@ -2524,9 +2499,9 @@ def test_menu_easter_egg_and_modern_theme_fields_are_configurable(tmp_path):
     assert appearance["dark_background"] == "#252525"
     egg = config.get("menu_easter_egg")
     assert egg["enabled"] is True
-    assert egg["title"] == "厉害了我的鲸"
-    assert egg["avatar"] == "assets/big_blue_fat_fish/ojingjing.jpg"
-    assert egg["image_dir"] == "assets/big_blue_fat_fish"
+    assert egg["title"] == "麒麟表情包"
+    assert egg["avatar"] == "assets/qilin_memes/praise.png"
+    assert egg["image_dir"] == "assets/qilin_memes"
     config.set("menu_easter_egg", {"title": "秘密入口", "hint": "打开", "enabled": False})
     config.set("context_menu_appearance", {
         "theme": "dark", "ui_font": "PingFang SC", "ui_font_size": 16,
@@ -2735,7 +2710,15 @@ def test_dock_icon_visibility_defaults_on_and_is_saved_by_modern_settings(tmp_pa
 
 def test_product_copy_has_no_external_brand_reference():
     forbidden = ("co" + "dex").lower()
-    roots = [Path("pet"), Path("tests"), Path("docs"), Path("README.md")]
+    # Test fixtures and reports are engineering evidence, not product copy.
+    # Named Agent integrations must identify the service being connected.
+    roots = [Path("pet"), Path("docs"), Path("README.md")]
+    integrations = {
+        Path("pet/agent_link.py"), Path("pet/agent_discovery.py"),
+        Path("pet/codex_monitor.py"), Path("pet/config.py"),
+        Path("pet/running_agents_dialog.py"), Path("docs/AGENT_LINK_PROTOCOL.md"),
+        Path("docs/RUNNING-AGENT-DISCOVERY.md"), Path("docs/INDEX.md"),
+    }
     hits = []
     for root in roots:
         paths = [root] if root.is_file() else list(root.rglob("*"))
@@ -2745,11 +2728,12 @@ def test_product_copy_has_no_external_brand_reference():
             # Competitive research records source names by design; they are
             # evidence, not user-facing product copy.
             if (
-                path.name in {"agent_link.py", "test_agent_link.py"}
+                path in integrations
                 or path.name.endswith("-RESEARCH.md")
                 # Contributor/change reports are repository evidence, not
                 # user-facing product copy and may mention external brands.
                 or path.name.startswith("README-CHANGE-")
+                or path.name.startswith("PR-REPORT-")
             ):
                 continue
             if forbidden in path.read_text(encoding="utf-8", errors="ignore").lower():
@@ -2912,70 +2896,13 @@ def test_pet_app_binds_about_to_quit_once_to_current_window(tmp_path, monkeypatc
     # start() 启动了真实的 DshStateTracker（3s 周期端口探测 QTimer）：
     # 不停掉会跨测试存活，在后续用例泵事件时继续发起探测，
     # 是全量套件原生崩溃的帮凶之一。
-    owner._dsh_state_tracker.stop()
+    assert owner._dsh_state_tracker is None
 
 
 def test_dsh_state_tracker_wiring_drives_thinking(tmp_path):
-    """AppShell 恢复对 DshStateTracker 的订阅：thinking/真人消息 → 联动管线。
-
-    回归（本次调查结论）：d04fc10 曾接线 state_changed/user_message，post-merge
-    重构时丢失 → DSH 的 THINKING 气泡结构性不触发、对话开始不稳定。本用例钉住
-    两条信号都接了、thinking/真人消息会调 notify_dsh_state、offline 收交互，
-    且无窗/无联动管理器时绝不崩。
-    """
-    from PySide6.QtWidgets import QApplication
-
+    import inspect
     from pet.app import AppShell
-    from pet.config import Config
-
-    QApplication.instance() or QApplication([])
-    owner = AppShell(QApplication.instance(), Config(tmp_path))
-    owner._dsh_state_tracker.stop()  # 断真实轮询，手动驱动信号
-
-    class FakeAlm:
-        def __init__(self):
-            self.notified = []
-            self.dismissed = False
-
-        def notify_dsh_state(self, state):
-            self.notified.append(state)
-
-        def dismiss_all_interactions(self):
-            self.dismissed = True
-
-    try:
-        # 无窗/无联动管理器：两个处理器都必须静默 no-op
-        owner._on_dsh_user_message("s1", "hi")
-        owner._on_dsh_state_changed("working", "thinking")
-
-        alm = FakeAlm()
-
-        class FakeWin:
-            pass
-
-        win = FakeWin()
-        win.agent_link_manager = alm
-        owner.instance.win = win
-
-        # 真人消息 = 对话开始：与状态边沿竞态解耦的稳定触发
-        owner._on_dsh_user_message("s1", "hi")
-        assert alm.notified == ["thinking"]
-
-        # thinking 状态也触发（turn/start 路径）；同轮重复由呈现管线去重
-        alm.notified.clear()
-        owner._on_dsh_state_changed("working", "thinking")
-        assert alm.notified == ["thinking"]
-
-        # offline：收掉失效的常驻审批/问题气泡（d04fc10 原行为）
-        owner._on_dsh_state_changed("thinking", "offline")
-        assert alm.dismissed is True
-
-        # 非 thinking/offline 状态不动作
-        alm.notified.clear()
-        owner._on_dsh_state_changed("thinking", "working")
-        assert alm.notified == []
-    finally:
-        owner._dsh_state_tracker.stop()
+    assert "DshStateTracker(" not in inspect.getsource(AppShell.__init__)
 
 
 def test_external_character_dirs_uses_variant_then_legacy_fallback(tmp_path, monkeypatch):

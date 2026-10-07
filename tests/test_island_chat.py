@@ -206,6 +206,9 @@ def _make_shell(tmp_path: Path, **island_cfg) -> AppShell:
     shell.island_chat = None
     shell.instance = None
     shell._instances = []
+    # 灵动岛已按用户要求从 AppShell 移除（2026-10-07，双击桌宠改为开设置面板）；
+    # 这些用例仍验证 _chat_from_island 等方法的单元行为，手动构造岛对象接上。
+    shell.island = DynamicIsland(cfg)
     return shell
 
 
@@ -460,10 +463,15 @@ def test_pause_agent_link_for_hide_decision(tmp_path):
 
 
 def test_appshell_island_feedback_available(tmp_path):
-    """注入探针透传 _island_chat_available（enable_chat / 岛在 / hidden_chat 门）。"""
+    """注入探针透传 _island_chat_available（enable_chat / 岛在 / hidden_chat 门）。
+
+    岛已从 AppShell 移除（2026-10-07）：_make_shell 现总是手动构造岛；
+    "岛未建 → False"分支用置 None 复现。
+    """
     _qapp()
     shell = _make_shell(tmp_path, hidden_chat=True)
     try:
+        shell.island = None
         assert shell._island_feedback_available() is False  # 岛未建
         shell.island = _island(tmp_path)
         shell.enable_chat = True

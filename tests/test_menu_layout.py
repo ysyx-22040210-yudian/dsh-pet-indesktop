@@ -475,7 +475,7 @@ def test_default_layout_populates_real_qmenu_hierarchy(monkeypatch):
 
     root = [action.text() for action in menu.actions() if not action.isSeparator()]
     expected_root = [
-        "厉害了我的鲸",
+        "麒麟表情包",
         "AI 对话",
         "看看屏幕",
         "播放动画",
@@ -499,7 +499,7 @@ def test_default_layout_populates_real_qmenu_hierarchy(monkeypatch):
     assert root == expected_root
     rendered = ["|" if action.isSeparator() else action.text() for action in menu.actions()]
     expected_rendered = [
-        "厉害了我的鲸", "|",
+        "麒麟表情包", "|",
         "AI 对话", "看看屏幕", "|",
         "播放动画", "切换角色", "播放速率", "大小", "音乐", "|",
         "桌宠控制", "快捷启动", "|",
@@ -521,35 +521,20 @@ def test_default_layout_populates_real_qmenu_hierarchy(monkeypatch):
         "开机自启",
         "回到右下角",
         "隐藏桌宠",
-        "生小肥鱼",
-        "退出子肥鱼",
-        "显示本轮消费",
+        "召唤小麒麟",
+        "退出小麒麟",
         "黄金回旋",
         "边缘探头",
     ]
     tools = next(action.menu() for action in menu.actions() if action.text() == "工具与帮助")
     expected_tools = [
-        "DeepSeek 余额",
-        "DeepSeek Harness",
-        "打开网页版 DeepSeek",
         "检查更新",
         "GitHub 项目页",
     ]
     if sys.platform == "win32":
         expected_tools.append("夸克网盘下载")
     assert [action.text() for action in tools.actions() if not action.isSeparator()] == expected_tools
-    # Harness 现在是子菜单（挂在既有 harness id 上，用户老布局无需迁移）：
-    # 启动 / 重启 / 停止三件套必须齐全——「停止」是用户关掉静默常驻服务的唯一入口。
-    harness_action = next(
-        action for action in tools.actions() if action.text() == "DeepSeek Harness"
-    )
-    harness_menu = harness_action.menu()
-    assert harness_menu is not None
-    assert [action.text() for action in harness_menu.actions()] == [
-        "启动并打开页面",
-        "重启服务",
-        "停止服务",
-    ]
+    assert not any("DeepSeek" in action.text() for action in tools.actions())
     # 音乐子菜单里的「歌词对齐」：实测网易云音乐完全不上报播放进度，快进 / 中途
     # 开始播放后只能手动对准，五个手柄必须齐全（同样挂在单一 id 上，老布局免迁移）。
     music_action = next(action for action in menu.actions() if action.text() == "音乐")
@@ -830,7 +815,7 @@ def test_settings_sidebar_uses_stable_domains_and_owns_representative_rows(tmp_p
     monkeypatch.setattr(settings_mod.autostart_mod, "is_enabled", lambda: False)
     dialog = ModernSettingsDialog(Config(tmp_path), include_ai=True)
     # 2026-09-19 新增「文件识别」域（拖文件解读，settings_file_interpret）。
-    expected = ["常规", "桌宠", "互动", "菜单", "桌面组件", "AI 与对话", "自动化与联动", "语音", "文件识别"]
+    expected = ["常规", "桌宠", "互动", "菜单", "AI 与对话", "自动化与联动", "语音", "文件识别"]
     assert [dialog.sidebar.item(i).text() for i in range(dialog.sidebar.count())] == expected
 
     def owner(setting_id):
@@ -846,7 +831,7 @@ def test_settings_sidebar_uses_stable_domains_and_owns_representative_rows(tmp_p
     assert owner("self_talk_image_chance") == "互动"
     assert owner("menu_theme") == "菜单"
     assert owner("quick_launch_apps") == "菜单"
-    assert owner("dynamic_island_enabled") == "桌面组件"
+    assert dialog.findChild(SettingRow, "settingRow_dynamic_island_enabled") is None
     assert owner("api_url") == "AI 与对话"
     assert owner("voice_chime_enabled") == "语音"
     assert owner("file_interpret_enabled") == "文件识别"
@@ -1048,7 +1033,7 @@ def test_click_sound_rows_return_to_interaction_click_feedback(tmp_path, monkeyp
             "点击音效 4 行原本排在 click_self_talk 之前"
         )
         # click_ 前缀里另有余额 / 点击台词绑定，同样留在「互动」。
-        for setting_id in ("click_balance", "click_talk_bindings"):
+        for setting_id in ("click_talk_bindings",):
             keep_row = dialog.findChild(settings_mod.SettingRow, f"settingRow_{setting_id}")
             assert keep_row is not None, f"{setting_id} 行必须存在"
             assert interaction_page.isAncestorOf(keep_row), f"{setting_id} 必须留在「互动」域"
@@ -1202,7 +1187,7 @@ def test_menu_domain_uses_in_page_task_tabs_without_changing_sidebar(tmp_path, m
     monkeypatch.setattr(settings_mod.autostart_mod, "is_enabled", lambda: False)
     dialog = ModernSettingsDialog(Config(tmp_path), include_ai=True)
 
-    expected_sidebar = ["常规", "桌宠", "互动", "菜单", "桌面组件", "AI 与对话", "自动化与联动", "语音", "文件识别"]
+    expected_sidebar = ["常规", "桌宠", "互动", "菜单", "AI 与对话", "自动化与联动", "语音", "文件识别"]
     assert [dialog.sidebar.item(i).text() for i in range(dialog.sidebar.count())] == expected_sidebar
     tabs = dialog.pages.widget(3).findChild(SettingsTabContainer, "settingsTaskTabs")
     assert tabs is not None
@@ -1292,7 +1277,8 @@ def test_ai_settings_content_expands_to_the_shared_page_width(tmp_path, monkeypa
     monkeypatch.setattr(settings_mod.autostart_mod, "is_enabled", lambda: False)
     dialog = ModernSettingsDialog(Config(tmp_path), include_ai=True)
     dialog.resize(1100, 760)
-    dialog.sidebar.setCurrentRow(5)
+    labels = [dialog.sidebar.item(i).text() for i in range(dialog.sidebar.count())]
+    dialog.sidebar.setCurrentRow(labels.index("AI 与对话"))
     dialog.show()
     app.processEvents()
 
@@ -1424,7 +1410,8 @@ def test_compact_ai_provider_controls_stay_inside_their_setting_row(tmp_path, mo
     monkeypatch.setattr(settings_mod.autostart_mod, "is_enabled", lambda: False)
     dialog = ModernSettingsDialog(Config(tmp_path), include_ai=True)
     dialog.resize(720, 760)
-    dialog.sidebar.setCurrentRow(5)
+    labels = [dialog.sidebar.item(i).text() for i in range(dialog.sidebar.count())]
+    dialog.sidebar.setCurrentRow(labels.index("AI 与对话"))
     for control in (
         dialog.ai_page.provider_combo,
         dialog.ai_page.add_provider_btn,
@@ -1567,7 +1554,6 @@ def test_settings_domains_use_semantic_sidebar_icons():
         ("桌宠", "pet"),
         ("互动", "interaction"),
         ("菜单", "application"),
-        ("桌面组件", "island"),
         ("AI 与对话", "chat"),
         ("自动化与联动", "automation"),
         ("语音", "sound"),

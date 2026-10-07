@@ -61,7 +61,7 @@ def test_modern_settings_dialog_round_trip(qapp, tmp_path: Path):
         assert dialog.agent_sound_volume_spin.value() == 65
         assert dialog.agent_sound_cooldown_spin.value() == 2.0
         assert dialog.spawn_inherit_size_check.isChecked() is True
-        assert dialog.spawn_inherit_dynamic_island_check.isChecked() is False
+        assert not hasattr(dialog, "spawn_inherit_dynamic_island_check")
 
         # 2. 模拟用户修改各个设置项
         dialog.slingshot_check.setChecked(False)
@@ -70,7 +70,6 @@ def test_modern_settings_dialog_round_trip(qapp, tmp_path: Path):
         dialog.click_sound_picker.set_pack({"kind": "builtin", "id": "duck", "path": ""})
         dialog.spawn_inherit_size_check.setChecked(False)
         dialog.spawn_scale_combo.setCurrentData(0.5)
-        dialog.spawn_inherit_dynamic_island_check.setChecked(True)
 
         dialog.agent_sound_check.setChecked(True)
         dialog.agent_sound_start_check.setChecked(True)
@@ -94,7 +93,7 @@ def test_modern_settings_dialog_round_trip(qapp, tmp_path: Path):
     assert reloaded_cfg.get("click_sound_pack") == {"kind": "builtin", "id": "duck", "path": ""}
     assert reloaded_cfg.get("spawn_inherit_size") is False
     assert abs(reloaded_cfg.get("spawn_scale") - 0.5) < 1e-6
-    assert reloaded_cfg.get("spawn_inherit_dynamic_island") is True
+    assert reloaded_cfg.get("spawn_inherit_dynamic_island") is False
 
     agent_cfg = reloaded_cfg.get("agent_link")
     assert agent_cfg["sound_enabled"] is True
@@ -154,7 +153,7 @@ def test_import_dialogue_template_reads_entries_and_top_level_phrases(tmp_path, 
 
 
 def test_spawn_size_controls_visibility(qapp, tmp_path: Path):
-    """生小肥鱼继承大小开启时隐藏自定义大小；关闭后显示。"""
+    """召唤小麒麟继承大小开启时隐藏自定义大小；关闭后显示。"""
     cfg_root = tmp_path / "appdata"
     cfg = Config(cfg_root)
     dialog = ModernSettingsDialog(cfg, include_ai=False)
@@ -361,7 +360,7 @@ def test_dialogue_scope_switch_edits_agent_delta(qapp, tmp_path):
     try:
         assert dialog.dialogue_scope_select.currentData() == ""
         # 切到 DSH 专属层
-        dialog.dialogue_scope_select.setCurrentData("dsh")
+        dialog.dialogue_scope_select.setCurrentData("claude")
         # flush+load 后编辑区为空（dsh 尚无覆盖）→ 填 start 差异
         assert dialog.dialogue_phrase_edits["start"].toPlainText() == ""
         dialog.dialogue_phrase_edits["start"].setPlainText("DSH 专属 start")
@@ -377,9 +376,9 @@ def test_dialogue_scope_switch_edits_agent_delta(qapp, tmp_path):
     reloaded = Config(tmp_path / "appdata")
     phrases = reloaded.get("dialogue_phrases")
     assert phrases["global"]["start"] == ["全局 start"]
-    assert phrases["agents"]["dsh"]["start"] == ["DSH 专属 start"]
+    assert phrases["agents"]["claude"]["start"] == ["DSH 专属 start"]
     # 未覆盖的 thinking 不进 dsh delta
-    assert "thinking" not in phrases["agents"]["dsh"]
+    assert "thinking" not in phrases["agents"]["claude"]
 
 
 def test_import_dialogue_template_with_agents_populates_scopes(qapp, tmp_path, monkeypatch):
@@ -404,7 +403,7 @@ def test_import_dialogue_template_with_agents_populates_scopes(qapp, tmp_path, m
             "mode": "custom",
             "phrases": {"start": ["全局 start"]},
             "agents": {
-                "dsh": {"start": ["导入的 DSH start"], "thinking": ["导入的 DSH thinking"]},
+                "claude": {"start": ["导入的 DSH start"], "thinking": ["导入的 DSH thinking"]},
             },
         }
         dialog.dialogue_template_import_edit.setPlainText(json.dumps(template, ensure_ascii=False))
@@ -413,7 +412,7 @@ def test_import_dialogue_template_with_agents_populates_scopes(qapp, tmp_path, m
         # 编辑区当前在 global scope → 显示顶层 phrases
         assert dialog.dialogue_phrase_edits["start"].toPlainText() == "全局 start"
         # 切到 dsh scope → 显示导入的 agents delta
-        dialog.dialogue_scope_select.setCurrentData("dsh")
+        dialog.dialogue_scope_select.setCurrentData("claude")
         assert dialog.dialogue_phrase_edits["start"].toPlainText() == "导入的 DSH start"
         assert dialog.dialogue_phrase_edits["thinking"].toPlainText() == "导入的 DSH thinking"
     finally:
@@ -433,13 +432,13 @@ def test_dialogue_agent_scope_restore_and_public_rows_hidden(qapp, tmp_path):
     cfg.set("dialogue_mode", "custom")
     cfg.set("dialogue_phrases", {
         "global": {"start": ["全局 start"]},
-        "agents": {"dsh": {"start": ["DSH start"], "thinking": ["DSH thinking"]}},
+        "agents": {"claude": {"start": ["DSH start"], "thinking": ["DSH thinking"]}},
     })
-    cfg.set("dialogue_last_scope", "dsh")
+    cfg.set("dialogue_last_scope", "claude")
     dialog = ModernSettingsDialog(cfg, include_ai=False)
     try:
         # 恢复上次编辑层：下拉停在 dsh，编辑框载入该层专属文案
-        assert dialog.dialogue_scope_select.currentData() == "dsh"
+        assert dialog.dialogue_scope_select.currentData() == "claude"
         assert dialog.dialogue_phrase_edits["start"].toPlainText() == "DSH start"
         # Agent 层隐藏公共事件行；Agent 事件行可见
         public_row = dialog.findChild(SettingRow, "settingRow_dialogue_balance.result")

@@ -100,9 +100,9 @@
     "{name} 已顺利完成当前任务。"
   ],
   "dsh.writeback.failed": [
-    "结果未能成功回写到 DSH，请到 DSH 界面检查。",
-    "DSH 回写失败，请手动确认当前状态。",
-    "消息没有成功传回 DSH，请检查连接或前往 DSH 处理。"
+    "结果未能成功回写到 Agent，请到 Agent 界面检查。",
+    "Agent 回写失败，请手动确认当前状态。",
+    "消息没有成功传回 Agent，请检查连接或前往 Agent 处理。"
   ],
   "failure.generic": [
     "当前会话 {sessionName} 中，{name} 本轮执行失败，失败类型：{failureType}。",

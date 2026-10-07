@@ -123,7 +123,7 @@ class OjingjingMenuEntry(QWidget):
         avatar_path = resolve_fun_asset(self._config.get("avatar"), oijingjing_image_path())
         avatar.setPixmap(_circle_photo(avatar_path, 27, self.devicePixelRatioF() or 1.0))
         layout.addWidget(avatar)
-        self.title_label = ElidedLabel(str(self._config.get("title") or "厉害了我的鲸"), self)
+        self.title_label = ElidedLabel(str(self._config.get("title") or "麒麟表情包"), self)
         self.title_label.setObjectName("ojingjingTitle")
         self.title_label.setFixedWidth(105)
         self.title_label.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents, True)
@@ -223,7 +223,7 @@ class OjingjingMenuEntry(QWidget):
 def add_ojingjing_entry(menu: QMenu, config: dict | None = None) -> QWidgetAction:
     config = dict(config or {})
     action = QWidgetAction(menu)
-    action.setText(str(config.get("title") or "厉害了我的鲸"))
+    action.setText(str(config.get("title") or "麒麟表情包"))
     action.setDefaultWidget(OjingjingMenuEntry(menu, config))
     menu.addAction(action)
     return action

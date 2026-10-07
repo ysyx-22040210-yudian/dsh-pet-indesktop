@@ -10,6 +10,7 @@ import logging
 from typing import Any
 
 import shiboken6
+from PySide6.QtCore import Qt
 
 from .window_effects import (
     begin_rotation,
@@ -31,6 +32,21 @@ class WindowFeatureGateMixin:
     hidden_bubble_redirect: Any = None
     # 桌宠隐藏期间灵动岛反馈面是否可用（AppShell 注入 → _island_chat_available）。
     island_feedback_available: Any = None
+
+    def mouseDoubleClickEvent(self, event) -> None:  # noqa: N802
+        # 双击桌宠 = 打开现代设置面板（灵动岛已彻底移除）。Qt 会先按单击序列
+        # 走 press/release（点击反馈照常播一次），第二次按下被本方法拦截。
+        if event.button() != Qt.MouseButton.LeftButton:
+            event.ignore()
+            return
+        if not self._is_in_interactive_area(event.position().toPoint()):
+            event.ignore()
+            return
+        self.mark_activity()
+        cb = getattr(self, "show_island_requested", None)
+        if callable(cb):
+            cb()
+        event.accept()
 
     def pause_agent_link_for_hide(self) -> None:
         """桌宠隐藏时的联动监视器处置（_pause_activity 委托）。

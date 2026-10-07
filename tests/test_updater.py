@@ -104,5 +104,5 @@ def test_config_persists_click_behavior_keys(tmp_path):
 
     reloaded = Config(tmp_path)
     assert reloaded.get("click_sound_enabled", True) is False
-    assert reloaded.get("click_show_balance", False) is True
+    assert reloaded.get("click_show_balance", False) is False
     assert reloaded.get("click_show_self_talk", False) is True

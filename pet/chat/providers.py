@@ -52,6 +52,7 @@ def test_connection(config, timeout: float = 10.0):
     """发送一个最小的非流式请求验证端点连通性（含 TLS 校验）。
     返回 (ok: bool, message: str)，供设置界面"测试连接"使用，不写入任何状态。"""
     try:
+        validate_provider(config)
         endpoint = normalize_chat_endpoint(config.base_url, config.chat_path)
         payload = {'model': config.model, 'messages': [{'role': 'user', 'content': 'ping'}], 'max_tokens': 1, 'stream': False}
         headers = build_browser_headers({'Content-Type': 'application/json'})
@@ -60,6 +61,8 @@ def test_connection(config, timeout: float = 10.0):
         with urllib.request.urlopen(req, timeout=timeout, context=_make_ssl_context(config.verify_ssl)) as resp:
             resp.read(4096)
             return True, f'连接成功（HTTP {resp.status}）'
+    except ProviderError as exc:
+        return False, str(exc)
     except urllib.error.HTTPError as exc:
         detail = exc.read(2048).decode('utf-8', 'replace')
         msg = _safe_error_detail(detail)
@@ -81,6 +84,13 @@ def normalize_chat_endpoint(base_url,chat_path='/v1/chat/completions'):
 
 class ProviderError(RuntimeError):
     def __init__(self,message,status=None): self.status=status; super().__init__(f'HTTP {status}: {message}' if status else message)
+
+
+def validate_provider(config):
+    from urllib.parse import urlsplit
+    base = urlsplit(str(config.base_url or '').strip())
+    if base.scheme not in {'http', 'https'} or not base.hostname or not str(config.model or '').strip():
+        raise ProviderError('请先在 AI 设置填写接口地址和模型名称')
 
 class SSEParser:
     def __init__(self): self._buffer=b''; self.done=False
@@ -113,6 +123,7 @@ class SSEParser:
 
 class OpenAICompatibleProvider:
     def stream(self,messages:list[dict[str,Any]],config:ProviderConfig,cancel_event:threading.Event,response_holder:list|None=None)->Iterator[str]:
+        validate_provider(config)
         endpoint=normalize_chat_endpoint(config.base_url,config.chat_path)
         payload:dict[str,Any]={'model':config.model,'messages':messages,'stream':True,'temperature':config.temperature,'max_tokens':config.max_tokens}
         headers=build_browser_headers({'Content-Type':'application/json','Accept':'text/event-stream'})

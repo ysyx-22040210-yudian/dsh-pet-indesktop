@@ -15,9 +15,7 @@ from .shared import (
     add_autostart,
     add_clear_spawned_pets,
     add_drag_physics,
-    add_deepseek_web,
     add_edge_probe,
-    add_agent_cost,
     add_submenu,
     add_golden_spin,
     add_music_next,
@@ -26,7 +24,6 @@ from .shared import (
     add_music_pause,
     add_music_prev,
     add_music_quit,
-    add_harness,
     add_mouse_through,
     add_no_move,
     add_on_top,
@@ -68,7 +65,6 @@ def build_legacy_menu(menu: QMenu, pet, template: dict) -> None:
     add_spawn_pet(menu, pet)
     add_clear_spawned_pets(menu, pet, icons=False)
     add_golden_spin(menu, pet, icons=False)
-    add_agent_cost(menu, pet, icons=False)
     # legacy 布局约定无图标（测试 test_legacy_config_value_dispatches_legacy_layout 守着）
     music_menu = add_submenu(menu, "音乐")
     add_music_pause(music_menu, pet, icons=False)
@@ -82,11 +78,6 @@ def build_legacy_menu(menu: QMenu, pet, template: dict) -> None:
     build_size_menu(menu, pet, icons=False)
 
     menu.addSeparator()
-    # 纯桌宠（无 Chat/DSH 联动）版本不再显示“启动 DeepSeek Harness”，
-    # 仅保留“打开网页版 DeepSeek”。
-    if getattr(pet, "on_open_chat", None) is not None:
-        add_harness(menu, pet, icons=False)
-    add_deepseek_web(menu, icons=False)
     add_proactive_menu(menu, pet)
     add_agent_link_menu(menu, pet)
 

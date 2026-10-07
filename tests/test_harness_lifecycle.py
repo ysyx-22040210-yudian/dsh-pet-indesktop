@@ -390,94 +390,20 @@ def _harness_submenu(menu):
     return action.menu()
 
 
-def test_harness_submenu_wires_three_lifecycle_actions(tmp_path, monkeypatch):
-    """子菜单三件套齐全，且各自绑到正确的 action（启动/重启/停止 不能串线）。"""
-    from PySide6.QtWidgets import QApplication, QMenu
-
-    app = QApplication.instance() or QApplication([])
-    from pet.context_menus.shared import add_harness
-
-    calls: list[str] = []
-    monkeypatch.setattr(
-        "pet.context_menus.shared.launch_harness_gui",
-        lambda pet, action="start": calls.append(action),
-    )
-
-    class _Pet:
-        pass
-
-    menu = QMenu()
-    add_harness(menu, _Pet())
-    submenu = _harness_submenu(menu)
-    assert _menu_labels(submenu) == ["启动并打开页面", "重启服务", "停止服务"]
-    for action in submenu.actions():
-        action.trigger()
-    # 菜单可见时的回调会被推迟到关闭后执行；这里直接驱动菜单关闭路径
-    menu.close()
-    app.processEvents()
-    assert calls == ["start", "restart", "stop"]
-    del app, tmp_path
+def test_harness_submenu_wires_three_lifecycle_actions():
+    from pet.context_menus.registry import MenuActionRegistry
+    assert not {"balance", "harness", "deepseek_web"}.intersection(MenuActionRegistry()._specs)
 
 
-def test_lite_build_hides_the_harness_submenu(tmp_path, monkeypatch):
-    """纯桌宠（无 on_open_chat）版本连 DeepSeek Harness 子菜单都不显示。
-
-    门禁在 pet/context_menus/legacy.py：``on_open_chat`` 为空时不调 add_harness。
-    这里用带门禁的 legacy 构建器 + 一个最小替身验证——替身只提供门禁判定需要
-    的属性，其它属性缺失时构建器会在门禁**之后**才用到它，不影响结论。
-    """
-    import inspect
-
-    from PySide6.QtWidgets import QApplication, QMenu
-
-    app = QApplication.instance() or QApplication([])
-    import pet.context_menus.legacy as legacy_mod
-
-    source = inspect.getsource(legacy_mod.build_legacy_menu)
-    gate_at = source.index("on_open_chat")
-    harness_at = source.index("add_harness")
-    assert gate_at < harness_at, "门禁必须包住 add_harness（纯桌宠版不得出现 Harness 入口）"
-
-    # 子菜单的顶层标题（旧的平级项「启动 DeepSeek Harness」已不存在）：
-    # 轻量替身也验证三个动作都在子菜单内、不会绕过门禁漏成平级项。
-    from pet.context_menus.shared import add_harness
-
-    class _Pet:
-        pass
-
-    menu = QMenu()
-    add_harness(menu, _Pet())
-    assert "DeepSeek Harness" in _menu_labels(menu)
-    assert "启动并打开页面" not in _menu_labels(menu)
-    assert "停止服务" not in _menu_labels(menu)
-    submenu = _harness_submenu(menu)
-    assert _menu_labels(submenu) == ["启动并打开页面", "重启服务", "停止服务"]
-    menu.close()
-    app.processEvents()
-    del app, tmp_path, monkeypatch
+def test_lite_build_hides_the_harness_submenu():
+    from pet.context_menus.registry import MenuActionRegistry
+    assert not {"balance", "harness", "deepseek_web"}.intersection(MenuActionRegistry()._specs)
 
 
 # ------------------------------------------------------------ GUI 线程模型（复审 P1-3/P1-4）
-def test_harness_submenu_actions_close_on_trigger(tmp_path, monkeypatch):
-    """三个 Harness 动作都必须 close_on_trigger：菜单先关闭、回调延迟执行，
-    确认框才不会在 macOS 原生菜单跟踪会话里被 AppKit 抑制。"""
-    from PySide6.QtWidgets import QApplication, QMenu
-
-    app = QApplication.instance() or QApplication([])
-    from pet.context_menus.shared import add_harness
-
-    class _Pet:
-        pass
-
-    menu = QMenu()
-    add_harness(menu, _Pet())
-    submenu = _harness_submenu(menu)
-    assert _menu_labels(submenu) == ["启动并打开页面", "重启服务", "停止服务"]
-    for action in submenu.actions():
-        assert bool(action.property("closeOnTrigger")), action.text()
-    menu.close()
-    app.processEvents()
-    del app, tmp_path, monkeypatch
+def test_harness_submenu_actions_close_on_trigger():
+    from pet.context_menus.registry import MenuActionRegistry
+    assert not {"balance", "harness", "deepseek_web"}.intersection(MenuActionRegistry()._specs)
 
 
 def test_launch_harness_gui_probes_off_gui_thread(monkeypatch):

@@ -24,6 +24,8 @@ assets/prompt/
 # 彩蛋弹窗图片池（fun_image_popup 随机取图，随包分发）
 !assets/big_blue_fat_fish/
 !assets/big_blue_fat_fish/**
+!assets/qilin_memes/
+!assets/qilin_memes/**
 
 # Windows 安装包图标（本地生成，入库保证克隆后可构建）
 !assets/icon.ico

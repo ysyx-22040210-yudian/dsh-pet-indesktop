@@ -20,7 +20,7 @@ from PySide6.QtWidgets import (
 
 
 def oijingjing_image_path() -> Path:
-    return Path(__file__).resolve().parents[1] / "assets" / "big_blue_fat_fish" / "ojingjing.jpg"
+    return Path(__file__).resolve().parents[1] / "assets" / "qilin_memes" / "praise.png"
 
 
 def bundled_assets_root() -> Path:
@@ -48,6 +48,9 @@ def store_fun_asset(value, default: Path | str) -> str:
     """
     default = Path(default)
     candidate = str(value or "").strip()
+    from .product_migration import _old_builtin_path
+    if _old_builtin_path(candidate):
+        return 'assets/qilin_memes/praise.png' if Path(candidate).suffix else 'assets/qilin_memes'
     if not candidate:
         return str(default)
     path = Path(candidate).expanduser()
@@ -92,7 +95,7 @@ class OjingjingWindow(QWidget):
         image_path: Path,
         close_all: Callable[[], None],
         on_closed: Callable[[QWidget], None],
-        title: str = "厉害了我的鲸",
+        title: str = "麒麟表情包",
     ) -> None:
         super().__init__(None)
         self._on_closed = on_closed
@@ -100,7 +103,7 @@ class OjingjingWindow(QWidget):
         self._window_start: QPoint | None = None
         self.setObjectName("ojingjingImageWindow")
         self.setProperty("sourceImage", str(image_path))
-        self.setWindowTitle(str(title or "厉害了我的鲸"))
+        self.setWindowTitle(str(title or "麒麟表情包"))
         self.setWindowFlags(
             Qt.WindowType.Window
             | Qt.WindowType.FramelessWindowHint
@@ -221,7 +224,7 @@ class OjingjingWindowManager:
             self.restore_all()
         window = OjingjingWindow(
             random.choice(paths), self.close_all, self._forget,
-            title=str(config.get("title") or "厉害了我的鲸"),
+            title=str(config.get("title") or "麒麟表情包"),
         )
         offset = (len(self.windows) % 7) * 24
         window.setProperty("cascadeOffset", offset)

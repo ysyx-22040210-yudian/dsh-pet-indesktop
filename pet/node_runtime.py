@@ -416,7 +416,7 @@ def global_node_modules_roots() -> list[Path]:
     """真实存在的全局 node_modules 根（各版本管理器 / 包管理器）。
 
     覆盖桌面端最容易漏的 nvm / nvm-windows / volta / fnm / pnpm 全局目录：
-    ``dsh`` 的 ``@deepseek-ai/dsh/lib/bin.js``、``pnpm`` 的 ``bin/pnpm.mjs``
+    工具的入口脚本、``pnpm`` 的 ``bin/pnpm.mjs``
     都在这些根下面。
     """
     env = os.environ

@@ -74,7 +74,7 @@ for variant in "${variant_list[@]}"; do
         --collect-all edge_tts
         --collect-all psutil
         --add-data "$assets:$assets"
-        --add-data "assets/big_blue_fat_fish:assets/big_blue_fat_fish"
+        --add-data "assets/qilin_memes:assets/qilin_memes"
         --add-data "assets/chat:assets/chat"
         --add-data "assets/sounds:assets/sounds"
         --add-data "pet/menu_templates:pet/menu_templates"

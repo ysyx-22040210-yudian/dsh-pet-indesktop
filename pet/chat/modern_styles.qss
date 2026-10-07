@@ -4,11 +4,11 @@ QDialog#chat-window {
     font-family: "SF Pro Text", ".AppleSystemUIFont", "PingFang SC", "Segoe UI", sans-serif;
 }
 QFrame#phone-shell { background: #ffffff; border: 1px solid #e1e4e9; border-radius: 14px; }
-QFrame#deepseek-sidebar {
+QFrame#chat-sidebar {
     background: #f5f7fb; border: none; border-right: 1px solid #e7eaf0;
     border-top-left-radius: 13px; border-bottom-left-radius: 13px;
 }
-QFrame#deepseek-sidebar[overlayDrawer="true"] {
+QFrame#chat-sidebar[overlayDrawer="true"] {
     border: 1px solid #e1e5eb; border-left: none;
     border-top-right-radius: 14px; border-bottom-right-radius: 14px;
 }

@@ -128,30 +128,30 @@ def test_balance_percent_and_event_index():
     assert balance.balance_event_index(100) == 5
 
 
-def test_deepseek_pricing_tier():
+def test_legacy_pricing_tier():
     # 2026-08-31 是周一：9-12 / 14-18 高峰，其余空闲
-    assert balance.deepseek_pricing_tier(_bj(10)) == "peak"
-    assert balance.deepseek_pricing_tier(_bj(11)) == "peak"
-    assert balance.deepseek_pricing_tier(_bj(13)) == "idle"
-    assert balance.deepseek_pricing_tier(_bj(15)) == "peak"
-    assert balance.deepseek_pricing_tier(_bj(20)) == "idle"
+    assert balance.legacy_pricing_tier(_bj(10)) == "peak"
+    assert balance.legacy_pricing_tier(_bj(11)) == "peak"
+    assert balance.legacy_pricing_tier(_bj(13)) == "idle"
+    assert balance.legacy_pricing_tier(_bj(15)) == "peak"
+    assert balance.legacy_pricing_tier(_bj(20)) == "idle"
     # 周六/周日全天空闲
-    assert balance.deepseek_pricing_tier(_bj(10, day=29, month=8, year=2026)) == "idle"
-    assert balance.deepseek_pricing_tier(_bj(15, day=29, month=8, year=2026)) == "idle"
+    assert balance.legacy_pricing_tier(_bj(10, day=29, month=8, year=2026)) == "idle"
+    assert balance.legacy_pricing_tier(_bj(15, day=29, month=8, year=2026)) == "idle"
 
 
-def test_deepseek_pricing_hint_and_next_switch():
-    hint_peak = balance.deepseek_pricing_hint(_bj(10))
-    assert "当前高峰" in hint_peak
+def test_legacy_pricing_hint_and_next_switch():
+    hint_peak = balance.legacy_pricing_hint(_bj(10))
+    assert "高峰" in hint_peak
     assert "下一空闲 12:00" in hint_peak
 
-    hint_idle_midday = balance.deepseek_pricing_hint(_bj(13))
-    assert "当前空闲" in hint_idle_midday
+    hint_idle_midday = balance.legacy_pricing_hint(_bj(13))
+    assert "空闲" in hint_idle_midday
     assert "下一高峰 14:00" in hint_idle_midday
 
     # 周末全天空闲，下一高峰为周一 09:00
-    hint_weekend = balance.deepseek_pricing_hint(_bj(15, day=29, month=8, year=2026))
-    assert "当前空闲" in hint_weekend
+    hint_weekend = balance.legacy_pricing_hint(_bj(15, day=29, month=8, year=2026))
+    assert "空闲" in hint_weekend
     assert "下一高峰 下周一 09:00" in hint_weekend
 
 
@@ -165,23 +165,23 @@ def test_resolve_tier_labels_and_custom_hint():
     assert balance.resolve_tier_labels("custom", "", "") == ("高峰", "空闲")
 
     # 自定义文案会反映到提示里
-    hint = balance.deepseek_pricing_hint(
+    hint = balance.legacy_pricing_hint(
         _bj(10), peak_label="梁文峰", idle_label="梁文谷"
     )
-    assert "当前梁文峰" in hint
+    assert "梁文峰" in hint
     assert "下一梁文谷" in hint
 
 
-def test_deepseek_pricing_hint_html_colors():
+def test_legacy_pricing_hint_html_colors():
     # 默认高峰红、低谷绿，且包含对应文本
-    html = balance.deepseek_pricing_hint_html(
+    html = balance.legacy_pricing_hint_html(
         _bj(10), peak_label="高峰", idle_label="空闲"
     )
     assert "#e5484d" in html
     assert "高峰" in html
     assert "空闲" in html
     # 自定义标签会转义，避免破坏 HTML
-    html_custom = balance.deepseek_pricing_hint_html(
+    html_custom = balance.legacy_pricing_hint_html(
         _bj(10), peak_label="<峰>", idle_label="谷"
     )
     assert "&lt;峰&gt;" in html_custom
@@ -189,8 +189,8 @@ def test_deepseek_pricing_hint_html_colors():
 
 def test_friday_evening_next_peak_skips_weekend():
     # 2026-08-28 是周五，20:00 后下一高峰应为周一 09:00，而不是周六 09:00
-    hint = balance.deepseek_pricing_hint(_bj(20, day=28, month=8, year=2026))
-    assert "当前空闲" in hint
+    hint = balance.legacy_pricing_hint(_bj(20, day=28, month=8, year=2026))
+    assert "空闲" in hint
     assert "下一高峰 下周一 09:00" in hint
     next_tier, next_time = balance._next_pricing_switch(
         _bj(20, day=28, month=8, year=2026)
@@ -242,14 +242,5 @@ def test_balance_worker_start_failure_never_leaves_busy(monkeypatch, tmp_path):
 
 
 def test_menu_balance_action_calls_bound_window_callback():
-    from PySide6.QtWidgets import QApplication, QMenu
-    from pet.context_menus.shared import add_balance
-    app = QApplication.instance() or QApplication([])
-    calls = []
-    pet = type("Pet", (), {"on_show_balance": lambda self, parent=None: calls.append(parent)})()
-    menu = QMenu()
-    action = add_balance(menu, pet, icons=False)
-    assert action is not None
-    action.trigger()
-    app.processEvents()
-    assert calls == [pet]
+    from pet.context_menus.registry import MenuActionRegistry
+    assert not {"balance", "harness", "deepseek_web"}.intersection(MenuActionRegistry()._specs)

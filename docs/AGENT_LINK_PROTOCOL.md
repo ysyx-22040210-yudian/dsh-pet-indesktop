@@ -113,12 +113,15 @@ Agent 侧（写方）                          桌宠侧（读方）
 
 ## 4. 自定义 Agent 通道（不改桌宠代码）
 
-桌宠支持在 `config.json` 的 `agent_link` 块里声明任意数量的自定义联动 Agent：桌宠对其事件文件做**只读监听**（统一协议），不写任何外部配置、无需授权弹窗。
+桌宠支持在 `config.json` 的 `agent_link` 块里声明最多 8 个自定义联动 Agent：桌宠对其数据来源做**只读监听**，不自动写入 Agent 的配置。
+
+基于 v4.2.1 的本地增强版增加了「识别运行中的 Agent…」入口和可选的 OpenCode 数据库、Codex 会话事件适配器。使用步骤见 [运行中 Agent 识别与接入](RUNNING-AGENT-DISCOVERY.md)，验证证据见 [增强版报告](PR-REPORT-running-agent-discovery-2026-10-03.md) 和 [Codex 修复报告](PR-REPORT-codex-link-2026-10-03.md)。
 
 ```jsonc
 // <config.dir>/config.json
 {
   "agent_link": {
+    "gemini": true,
     "custom_agents": [
       {
         "key": "gemini",
@@ -134,9 +137,13 @@ Agent 侧（写方）                          桌宠侧（读方）
 |---|---|
 | `key` | `^[a-z0-9][a-z0-9_-]{0,31}$`，不得与内置键（`dsh`/`claude`/`cursor`/`opencode`）重复，全局唯一 |
 | `name` | 联动气泡/菜单显示名；留空时用 key |
-| `path` | 事件文件路径，支持 `~` 展开；文件不必预先存在（不存在时静默等待） |
+| `path` | 数据来源路径，支持 `~` 和环境变量展开；JSONL 文件不必预先存在（不存在时静默等待） |
+| `adapter` | 本地增强版可选字段。省略表示统一 JSONL；`"opencode"` 表示 SQLite `event(type, data)` 事件表；`"codex"` 表示 Codex 的 sessions 文件夹。不是所有版本/分支都保留相应事件结构 |
+| `process_names` | 本地增强版可选字段。进程名称列表，最多 16 项；用于已启用且正忙的 Agent 的主动识屏避让，不用于推断任务状态 |
 
-配置后重启桌宠（或重新加载配置）即生效：右键菜单「Agent 联动」会出现该 Agent 的开关，行为与内置 Agent 一致（六态映射、开始/过程/完成气泡、音效全部可用）。最多 8 个自定义条目。
+旧版需要重启桌宠或重新加载配置。本地增强版通过识别窗口保存、修改、移除绑定时立即生效；新增的右键菜单开关使用已有六态、气泡和音效处理链。直接编辑配置文件仍需重新加载配置。自定义数据库绑定只读取选中的数据库，不混读同名的旧 JSONL 通道；内置 OpenCode 开关保留原有兼容行为。
+
+Codex 示例条目：`{"key":"agent-codex","name":"Codex","path":"~/.codex/sessions","adapter":"codex","process_names":["codex.exe"]}`，同时设 `"agent-codex": true`。仅读取本地任务生命周期和工具类型，无需外部 hooks 配置或新事件写入器。已有空 JSONL 绑定不会自动成为 Codex 接入。
 
 **接入示例**：让任意 Agent 在干活时执行（或由其 hook 执行）：
 

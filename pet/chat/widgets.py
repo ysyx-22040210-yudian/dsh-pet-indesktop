@@ -968,9 +968,9 @@ class ChatWindow(QDialog):
         root.setContentsMargins(0, 0, 0, 0)
         root.setSpacing(0)
 
-        # DeepSeek-style persistent navigation rail.
+        # Workspace persistent navigation rail.
         context = QFrame(self.phone_shell)
-        context.setObjectName("deepseek-sidebar")
+        context.setObjectName("chat-sidebar")
         context.setFixedWidth(238)
         self.sidebar = context
         context_layout = QVBoxLayout(context)
@@ -985,7 +985,7 @@ class ChatWindow(QDialog):
         self.avatar_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.avatar_label.setFixedSize(34, 34)
         brand.addWidget(self.avatar_label)
-        self.brand_label = QLabel("鲸语 AI")
+        self.brand_label = QLabel("麒麟 AI")
         self.brand_label.setObjectName("brand-label")
         brand.addWidget(self.brand_label)
         brand.addStretch(1)
@@ -1394,7 +1394,8 @@ class ChatWindow(QDialog):
         chat = self._character_manifest.get("chat", {})
         chat = chat if isinstance(chat, dict) else {}
         alias = self.config.character_alias(self.character_id)
-        self.character_name = alias or str(self._character_manifest.get("name") or chat.get("name") or self.character_id)
+        fallback_name = "麒麟" if self.character_id == "qilin" else self.character_id
+        self.character_name = alias or str(self._character_manifest.get("name") or chat.get("name") or fallback_name)
         self.accent_color = _safe_color(chat.get("theme_color"))
         self._base_accent = self.accent_color
         self.brand_label.setText(f"{self.character_name} AI")

@@ -204,6 +204,33 @@ def _make_win(app, tmp_path, **overrides):
     return win
 
 
+@pytest.mark.parametrize(
+    "button,hit,opens_settings",
+    [(Qt.MouseButton.LeftButton, True, True),
+     (Qt.MouseButton.RightButton, True, False),
+     (Qt.MouseButton.LeftButton, False, False)],
+)
+def test_double_click_opens_settings_only_for_left_click_on_pet(
+    app, tmp_path, button, hit, opens_settings,
+):
+    win = _make_win(app, tmp_path)
+    callbacks = []
+    win.show_island_requested = lambda: callbacks.append("settings")
+    win._is_in_interactive_area = lambda pos: hit
+    event = QMouseEvent(
+        QEvent.Type.MouseButtonDblClick, QPointF(10, 10), QPointF(100, 100),
+        button, button, Qt.KeyboardModifier.NoModifier,
+    )
+    try:
+        win.mouseDoubleClickEvent(event)
+        app.processEvents()
+        assert callbacks == (["settings"] if opens_settings else [])
+        assert event.isAccepted() is opens_settings
+    finally:
+        win.close()
+        app.processEvents()
+
+
 def test_lock_position_blocks_drag_but_keeps_click(app, tmp_path):
     win = _make_win(app, tmp_path, lock_position=True)
     assert win.lock_position is True

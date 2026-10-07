@@ -224,12 +224,12 @@ class _AiSettingsPage(QWidget):
         rows = [
             SettingRow(
                 "chat_ui_style", "对话窗口",
-                "肥鱼版 DeepSeek 提供宽屏现代体验；肥鱼牌小手机保留紧凑经典体验。",
+                "麒麟工作台 提供宽屏现代体验；麒麟小窗保留紧凑经典体验。",
                 self.chat_ui_style,
             ),
             SettingRow(
                 "chat_background", "对话背景",
-                "肥鱼版 DeepSeek 与肥鱼牌小手机均支持纯色、内置主题或自定义图片。",
+                "麒麟工作台 与麒麟小窗均支持纯色、内置主题或自定义图片。",
                 self.background_select,
             ),
             SettingRow("chat_background_file", "自定义背景图片", "支持常见图片格式，使用绝对路径。", self.background_picker),
@@ -238,7 +238,7 @@ class _AiSettingsPage(QWidget):
             SettingRow("chat_bg_crops", "裁切取景", "拖拽移动 + 滚轮缩放选区，决定背景取哪一块；不裁则按主题默认主体取景。", self.background_crop_btn),
             SettingRow(
                 "modern_chat_card_opacity", "消息卡片不透明度",
-                "调节肥鱼版 DeepSeek 消息卡片透出背景的程度。",
+                "调节麒麟工作台 消息卡片透出背景的程度。",
                 self.message_card_opacity,
             ),
         ]
@@ -266,7 +266,7 @@ class _AiSettingsPage(QWidget):
         try:
             self.background_select.clear()
             self.background_select.addItem("纯色背景", "")
-            # 内置主题两种对话窗口风格都可用（肥鱼版 DeepSeek 与肥鱼牌小手机一致）
+            # 内置主题两种对话窗口风格都可用（麒麟工作台 与麒麟小窗一致）
             for key, label in self._background_themes:
                 self.background_select.addItem(label, f"builtin:{key}")
             self.background_select.addItem("自定义图片", "custom")

@@ -1,16 +1,5 @@
 # -*- coding: utf-8 -*-
-"""DeepSeek 开放平台余额查询（GET /user/balance）。
-
-余额气泡/小部件显示思路参考 MeteorNOX/DeepSeek-Balance-Whale-Widget
-（见 README「参考项目」致谢），本实现为桌宠内置的轻量版本：
-菜单「DeepSeek 余额」→ 后台查询 → 桌宠气泡显示；可在桌宠设置中
-开启自动刷新（分钟级）。
-
-v4.1 扩展（同步上游 dsh-pet 余额动画）：
-- 余额按 ¥20 满额折算为“已用百分比”，分 6 档触发不同余额动画；
-- DeepSeek 峰谷计价提示（北京时间：工作日 9-12/14-18 高峰，其余空闲；
-  周六/周日全天空闲，下一高峰为下周一 9 点）。
-"""
+"""Legacy balance arithmetic retained for existing animation metadata."""
 
 from __future__ import annotations
 
@@ -24,8 +13,8 @@ from zoneinfo import ZoneInfo
 
 BALANCE_PATH = '/user/balance'
 
-# DeepSeek 满额基准（¥）：余额 ≥ 该值视为 100%（未消耗），余额按比例折算为已用百分比
-DEEPSEEK_FULL_BALANCE_CNY = 20.0
+# 旧版 满额基准（¥）：余额 ≥ 该值视为 100%（未消耗），余额按比例折算为已用百分比
+LEGACY_FULL_BALANCE_CNY = 20.0
 
 # 余额事件动画档位顺序（与上游 assets/config.jsonc 一致）：
 # index = p === 100 ? 5 : Math.floor(p / 20)
@@ -128,7 +117,7 @@ def format_balance(info: dict) -> str:
 
 
 def balance_percent(total: str | float | None) -> float | None:
-    """把 DeepSeek 余额折算为“已用百分比”（0 = 未消耗，100 = 耗尽）。
+    """把 旧版 余额折算为“已用百分比”（0 = 未消耗，100 = 耗尽）。
 
     余额 20 元 → 0%，10 元 → 50%，0 元 → 100%；负数按 0 处理（透支视为已用完）。
     金额非法返回 None，上层不应触发档位动画。
@@ -142,7 +131,7 @@ def balance_percent(total: str | float | None) -> float | None:
         return None
     if value != value:  # NaN
         return None
-    remaining = max(0.0, value) / DEEPSEEK_FULL_BALANCE_CNY * 100.0
+    remaining = max(0.0, value) / LEGACY_FULL_BALANCE_CNY * 100.0
     return max(0.0, min(100.0, 100.0 - remaining))
 
 
@@ -163,8 +152,8 @@ def _beijing_now(now: datetime | None = None) -> datetime:
     return now.astimezone(_BEIJING_TZ)
 
 
-def deepseek_pricing_tier(now: datetime | None = None) -> str:
-    """DeepSeek 峰谷计价档位（北京时间）。
+def legacy_pricing_tier(now: datetime | None = None) -> str:
+    """旧版 峰谷计价档位（北京时间）。
 
     高峰：工作日 9:00–12:00、14:00–18:00；其余为空闲（低谷）。
     周六/周日全天按低谷价计费。
@@ -261,40 +250,40 @@ def resolve_tier_labels(
     return "高峰", "空闲"
 
 
-def deepseek_pricing_hint(
+def legacy_pricing_hint(
     now: datetime | None = None,
     peak_label: str | None = None,
     idle_label: str | None = None,
 ) -> str:
-    """生成余额气泡下方的 DeepSeek 峰谷提示文案。
+    """生成余额气泡下方的 旧版 峰谷提示文案。
 
-    如「DeepSeek 当前高峰 · 下一空闲 12:00」「DeepSeek 当前空闲 · 下一高峰 09:00」。
+    如「旧版时段 高峰 · 下一空闲 12:00」「旧版时段 空闲 · 下一高峰 09:00」。
     peak_label/idle_label 可由设置项自定义（如梁文峰/梁文谷）。
     """
     bj = _beijing_now(now)
-    tier = deepseek_pricing_tier(bj)
+    tier = legacy_pricing_tier(bj)
     next_tier, next_time = _next_pricing_switch(bj)
     peak_text = str(peak_label or "高峰")
     idle_text = str(idle_label or "空闲")
     label = peak_text if tier == 'peak' else idle_text
     next_label = idle_text if next_tier == 'idle' else peak_text
     time_text = _format_switch_time(bj, next_time)
-    return f'DeepSeek 当前{label} · 下一{next_label} {time_text}'
+    return f'旧版时段 {label} · 下一{next_label} {time_text}'
 
 
-def deepseek_pricing_hint_html(
+def legacy_pricing_hint_html(
     now: datetime | None = None,
     peak_label: str | None = None,
     idle_label: str | None = None,
     peak_color: str = "#e5484d",
     idle_color: str = "#30a46c",
 ) -> str:
-    """生成带颜色的 DeepSeek 峰谷提示 HTML（QLabel 可直接渲染）。
+    """生成带颜色的 旧版 峰谷提示 HTML（QLabel 可直接渲染）。
 
     默认高峰红、低谷绿；用户自定义文案会做 HTML 转义，防止破坏富文本。
     """
     bj = _beijing_now(now)
-    tier = deepseek_pricing_tier(bj)
+    tier = legacy_pricing_tier(bj)
     next_tier, next_time = _next_pricing_switch(bj)
     peak_text = escape(str(peak_label or "高峰"))
     idle_text = escape(str(idle_label or "空闲"))
@@ -305,4 +294,4 @@ def deepseek_pricing_hint_html(
     label = span(peak_text, peak_color) if tier == 'peak' else span(idle_text, idle_color)
     next_label = span(idle_text, idle_color) if next_tier == 'idle' else span(peak_text, peak_color)
     time_text = _format_switch_time(bj, next_time)
-    return f'DeepSeek 当前{label} · 下一{next_label} {time_text}'
+    return f'旧版时段 {label} · 下一{next_label} {time_text}'

@@ -340,7 +340,7 @@ class TestScheduling:
 
         manager = AgentLinkManager(Win(), cfg)
         try:
-            assert "dsh" in scheduled
+            assert "dsh" not in scheduled
         finally:
             manager.shutdown()
 
@@ -520,7 +520,5 @@ class TestInstallBridgeScaffoldsMissingProfile:
         assert (web / "pnpm-workspace.yaml").is_file(), "initProfile 三件套之二"
         manifest = json.loads((web / "package.json").read_text(encoding="utf-8"))
         bundles = manifest["dsh"]["profile"]["bundles"]
-        assert bundles[:2] == [
-            "@deepseek-ai/dsh-base", "@deepseek-ai/dsh-web-app",
-        ], "web 预设 bundles 应与 dsh-app-boot 的模板一致"
+        assert not any('deepseek' in bundle.casefold() for bundle in bundles)
         assert agent_link.DSH_PLUGIN_NAME in bundles, "安装后 bundles 层应登记桥接插件"

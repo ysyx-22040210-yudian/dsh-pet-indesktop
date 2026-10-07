@@ -9,6 +9,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+import pytest
 from PySide6.QtWidgets import QApplication
 
 from pet.app import AppShell
@@ -52,32 +53,59 @@ def _teardown_shell(shell) -> None:
         QApplication.processEvents()
 
 
-def test_shell_creates_island_and_local_collision_body(tmp_path):
-    """接线全景：岛创建、本进程碰撞体启动、几何/可见性回调接好。"""
+def test_removed_island_creates_neither_widget_nor_collision_body(tmp_path):
+    """旧配置即使启用岛，也不能创建不可见的岛碰撞服务。"""
     app = _qapp()
     shell = _make_shell(tmp_path)
     try:
         shell._sync_dynamic_island()
-        island = shell.island
-        body = shell.island_collision
-        assert island is not None and island.isVisible()
-        assert body is not None and body._running is True
-        # 几何变化钩子与可见性回调都指向碰撞体
-        assert island.on_geometry_changed == body.submit
-        assert island.on_pet_visibility_changed == body.set_own_pet_visible
-        # pets_provider 返回本进程全部桌宠窗口（无窗时为空）
-        assert body._pets_provider() == []
+        # 灵动岛已按用户要求彻底移除：不再创建岛本体
+        assert getattr(shell, "island", None) is None
+        assert shell.island_collision is None
+        # 双击桌宠 → 打开设置面板（无岛可切）
     finally:
         _teardown_shell(shell)
         app.processEvents()
 
 
-def test_collision_body_restart_after_disable(tmp_path):
+@pytest.mark.parametrize("local", [False, True])
+def test_removed_island_stops_existing_local_and_remote_bodies(tmp_path, local):
+    from types import SimpleNamespace
+
+    from PySide6.QtWidgets import QWidget
+
+    from pet.dynamic_island import DynamicIsland
+
+    app = _qapp()
+    shell = _make_shell(tmp_path)
+    pet = QWidget()
+    shell._instances = [SimpleNamespace(win=pet, collision_ipc=None)]
+    try:
+        if local:
+            shell.island = DynamicIsland(shell.config)
+            shell.island.show()
+        shell._sync_island_collision(shell.config.get("dynamic_island"))
+        body = shell.island_collision
+        assert body._running
+        assert pet._island_clamp_body is not None
+        shell._sync_dynamic_island()
+        app.processEvents()
+        assert not body._running
+        assert pet._island_clamp_body is None
+        assert shell.island is None or not shell.island.isVisible()
+    finally:
+        _teardown_shell(shell)
+        pet.close()
+        app.processEvents()
+
+
+def test_legacy_collision_body_restart_after_disable(tmp_path):
     """关→开果冻墙：本地碰撞体停/开都干净（无定时器、无 IPC session 语义）。"""
     app = _qapp()
     shell = _make_shell(tmp_path)
     try:
-        shell._sync_dynamic_island()
+        # 遗留单元入口仍测试；产品同步入口已不再创建岛或碰撞体。
+        shell._sync_island_collision(shell.config.get("dynamic_island"))
         body = shell.island_collision
         # 关掉碰撞（设置里关果冻墙）
         cfg = dict(shell.config.get("dynamic_island"))
@@ -94,14 +122,14 @@ def test_collision_body_restart_after_disable(tmp_path):
 
 
 def test_island_survives_no_chat_packaging_variant(tmp_path, monkeypatch):
-    """P0-2 回归：pet.chat 被排除的打包变体里创建灵动岛不得抛异常。"""
+    """P0-2 回归（岛已彻底移除后重述）：无 chat 打包变体下同步路径不得抛异常。"""
     app = _qapp()
     monkeypatch.setitem(sys.modules, "pet.chat.service", None)  # 模拟变体排除
     shell = _make_shell(tmp_path)
     try:
         shell._sync_dynamic_island()  # 不应抛 ModuleNotFoundError
-        assert shell.island is not None
-        # 未注册全局订阅（无 chat 可订）
+        # 灵动岛已按用户要求彻底移除：不创建
+        assert getattr(shell, "island", None) is None
         assert shell._on_global_chat_finished not in ChatService._global_finished_listeners
     finally:
         _teardown_shell(shell)
@@ -120,7 +148,11 @@ def test_quiet_balance_refresh_paths(tmp_path, monkeypatch):
     shell._balance_cache = None
     shell._balance_cache_path = Path(shell.config.dir) / "balance_cache.json"
     try:
-        shell._sync_dynamic_island()
+        # 岛已彻底移除；本测试的静默余额路径仍保留（若未来有其他入口复用），
+        # 手动构造岛对象以继续验证 _quiet_balance_refresh 的缓存/静默行为。
+        from pet.dynamic_island import DynamicIsland
+        shell.island = DynamicIsland(shell.config)
+        shell.island.card_expanded.connect(shell._quiet_balance_refresh)
         island = shell.island
 
         provider = SimpleNamespace(id="p", base_url="http://x", api_key="", verify_ssl=True)

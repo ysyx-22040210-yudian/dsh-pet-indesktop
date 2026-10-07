@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 <#
 .SYNOPSIS
     dsh-pet-standalone onedir build + portable zip packaging.
@@ -36,6 +36,10 @@
 #>
 param(
     [string]$Variant = 'webm-chat',
+    [string]$OutputRoot = '',
+    [string]$IconPath = '',
+    [string]$CharacterRoot = '',
+    [switch]$QilinOnly,
     [switch]$SkipBuild,
     [switch]$SkipZip,
     [switch]$SkipCheck,
@@ -67,9 +71,16 @@ if (-not $variants.ContainsKey($Variant)) {
     throw "Unknown variant: $Variant (available: $($variants.Keys -join ', '))"
 }
 $name  = $variants[$Variant].Name
+if ($QilinOnly) { $name = "qilin-pet-$Variant" }
 $entry = $variants[$Variant].Entry
 $isGif = $variants[$Variant].Gif
 $noChat = $variants[$Variant].NoChat
+
+if (-not $OutputRoot) { $OutputRoot = Join-Path $root 'dist-onedir' }
+$OutputRoot = [System.IO.Path]::GetFullPath($OutputRoot)
+$appDir = Join-Path $OutputRoot $name
+$workDir = Join-Path $OutputRoot 'build-work'
+
 
 # Bridge is linked into dsh profiles via pnpm's link: protocol, which does NOT
 # install the linked package's own dependencies, and the link target is usually
@@ -77,6 +88,7 @@ $noChat = $variants[$Variant].NoChat
 # runtime dependency therefore bricks the user's entire dsh plugin tree on load
 # (2026-09 incident: missing @deepseek-ai/dsh-llm, all profiles fail to start).
 # Red line: the bridge must stay ZERO-dependency; enforce it at build time.
+if (-not $QilinOnly) {
 $bridgeManifest = Join-Path $root 'integrations\dsh-pet-bridge\package.json'
 if (-not (Test-Path $bridgeManifest)) { throw "Bridge manifest missing: $bridgeManifest" }
 # PowerShell 5.1 reads Get-Content using the system ANSI codepage by default;
@@ -109,13 +121,26 @@ if ($nodeExe) {
 }
 
 # GIF builds ship assets/characters_gif (webm dir must NOT be bundled, else runtime prefers webm)
-$datas = if ($isGif) { 'assets/characters_gif;assets/characters_gif' } else { 'assets/characters;assets/characters' }
+}
+$assetRelative = if ($isGif) { 'assets/characters_gif' } else { 'assets/characters' }
+$characterSource = if ($CharacterRoot) { [System.IO.Path]::GetFullPath($CharacterRoot) } else { Join-Path $root $assetRelative }
+if ($QilinOnly) {
+    $characterSource = Join-Path $characterSource 'qilin'
+    if (-not (Test-Path -LiteralPath (Join-Path $characterSource 'videos\manifest.json'))) { throw 'Qilin character manifest missing' }
+    $assetRelative += '/qilin'
+}
+$datas = $characterSource + ';' + $assetRelative
+$integrationData = if ($QilinOnly) { @() } else { @('--add-data', ((Join-Path $root 'integrations') + ';integrations')) }
+$chatAssetSource = Join-Path $OutputRoot 'product-chat-assets'
+New-Item -ItemType Directory -Path $chatAssetSource -Force | Out-Null
+Get-ChildItem -LiteralPath (Join-Path $root 'assets\chat') -File | Where-Object { $_.Name -notlike 'whale*' } | Copy-Item -Destination $chatAssetSource -Force
 # No-chat builds exclude the chat subsystem and keyring (kept out of the bundle)
 $excludes = if ($noChat) { @('--exclude-module', 'pet.chat', '--exclude-module', 'keyring') } else { @() }
 # PyOpenGL 与本应用无关（Qt 用自带 OpenGL），但其 freeglut_README.txt 是
 # CP1252 编码，会触发 check_bundle_encoding 的 UTF-8 严格校验（该自检针对
 # 中文资源，第三方 README 属误伤）；排除后包体也更小。
 $excludes += @('--exclude-module', 'OpenGL')
+if ($QilinOnly) { $excludes += @('--exclude-module', 'pet.harness_launcher', '--exclude-module', 'pet.dsh_state') }
 # 本机 Python 环境里的 ML/数据科学全家桶（torch/transformers/datasets/
 # langchain/pandas/spacy/cv2/playwright 等）会被 PyInstaller 模块图连带收集，
 # 包体从 ~350M 膨胀到 5G+。全仓 grep 确认应用代码零引用，一律排除。
@@ -151,8 +176,8 @@ foreach ($m in @('matplotlib','matplotlib_inline','seaborn','IPython','ipykernel
 $keyringCollect = if ($noChat) { @() } else { @('--collect-all', 'keyring') }
 $chatData = if ($noChat) { @() } else {
     @(
-        '--add-data', 'pet\chat\legacy_styles.qss;pet\chat',
-        '--add-data', 'pet\chat\modern_styles.qss;pet\chat'
+        '--add-data', ((Join-Path $root 'pet\chat\legacy_styles.qss') + ';pet\chat'),
+        '--add-data', ((Join-Path $root 'pet\chat\modern_styles.qss') + ';pet\chat')
     )
 }
 # GIF variants: generate GIF assets from webm first (auto when missing, -Gif forces regen)
@@ -165,20 +190,20 @@ if ($Gif -and -not $SkipBuild) {
     if ($LASTEXITCODE -ne 0) { throw "convert_to_gif failed: $LASTEXITCODE" }
 }
 
-# 停掉正在运行的旧 exe：无论是否重跑 PyInstaller，产物都可能被活进程占用
-# （进程加载的 Qt 插件会锁住 PySide6\*.dll / translations，导致瘦身删除报
-#  WinError 5 拒绝访问）。属构建期自愈，不触碰用户数据。
-$running = Get-Process -Name $name -ErrorAction SilentlyContinue
-if ($running) {
-    Write-Host "[build] stopping running $name before build/post-processing..." -ForegroundColor Yellow
-    $running | Stop-Process -Force
-    Start-Sleep -Milliseconds 800
-}
+# Never stop a user instance by process name. Refuse only a locked exact output.
+$targetExe = [System.IO.Path]::GetFullPath((Join-Path $appDir "$name.exe"))
+$running = Get-CimInstance Win32_Process -Filter "Name='$name.exe'" |
+    Where-Object { $_.ExecutablePath -and [System.IO.Path]::GetFullPath($_.ExecutablePath) -eq $targetExe }
+if ($running) { throw "Build output is running: $targetExe. Choose an isolated -OutputRoot." }
 
 if (-not $SkipBuild) {
-    Write-Host "[0/3] Generating app icon..." -ForegroundColor Cyan
-    python scripts\make_icon.py
-    if ($LASTEXITCODE -ne 0) { throw "make_icon failed: $LASTEXITCODE" }
+    if (-not $IconPath) {
+        Write-Host "[0/3] Generating app icon..." -ForegroundColor Cyan
+        python scripts\make_icon.py
+        if ($LASTEXITCODE -ne 0) { throw "make_icon failed: $LASTEXITCODE" }
+        $IconPath = Join-Path $root 'assets\icon.ico'
+    }
+    if (-not (Test-Path -LiteralPath $IconPath)) { throw "App icon missing: $IconPath" }
 
     # DLL 冲突隔离（issue: Qt6Core "procedure not found" / 找不到指定的程序）：
     # conda 的 Library\bin 与 MiKTeX 的 bin\x64 各自携带一套 Qt6/ICU DLL（版本与
@@ -189,13 +214,10 @@ if (-not $SkipBuild) {
     # 注意：若 PySide6 是 conda 包（DLL 在 Library\bin），此剔除会导致 DLL 缺失，
     # 此时应改用 pip 版 PySide6 构建（DLL 在 site-packages\PySide6）。
     $env:PATH = ($env:PATH -split ';' | Where-Object {
-    $_ -and $_ -notmatch '(?i)(conda|miniconda)[\\/].*[\\/]Library[\\/]bin$' -and
-        $_ -notmatch '(?i)[\\/]envs[\\/].*[\\/]Library[\\/]bin$' -and
+        $_ -and $_ -notmatch '(?i)[\\/]Library[\\/]bin[\\/]?$' -and
             $_ -notmatch '(?i)MiKTeX[\\/]miktex[\\/]bin'
     }) -join ';'
 
-    # 注：运行中的旧 exe 已在进入本块之前统一停掉（见上面的 $running 段），
-    # 否则 PyInstaller 无法覆盖 exe，后续瘦身也会因 DLL 被活进程锁定而失败。
     Write-Host "[1/3] PyInstaller --onedir building $name ..." -ForegroundColor Cyan
     # 注入变体标识：配置目录/会话/开机自启按变体隔离（pet/config.py 读取）。
     # 必须写 BOM-free UTF-8：PowerShell 5.1 的 Set-Content -Encoding UTF8 会带
@@ -203,14 +225,15 @@ if (-not $SkipBuild) {
     $variantPy = Join-Path $root 'packaging\build_variant.py'
     [System.IO.File]::WriteAllText(
         $variantPy,
-        "VARIANT = '$Variant'`n",
+        "VARIANT = '$Variant'`nCHARACTER = '$(if ($QilinOnly) { 'qilin' } else { '' })'`n",
         [System.Text.UTF8Encoding]::new($false)
     )
     python -m PyInstaller --noconfirm --clean --onedir --windowed --noupx `
         --name $name `
-        --distpath dist-onedir `
-        --workpath build-onedir `
-        --icon assets\icon.ico `
+        --specpath $OutputRoot `
+        --distpath $OutputRoot `
+        --workpath $workDir `
+        --icon $IconPath `
         --collect-all imageio_ffmpeg `
         --collect-all certifi `
         --collect-all PySide6.QtMultimedia `
@@ -220,20 +243,26 @@ if (-not $SkipBuild) {
         --collect-all psutil `
         @keyringCollect `
         --add-data $datas `
-        --add-data "assets\big_blue_fat_fish;assets\big_blue_fat_fish" `
-        --add-data "pet\persona_presets;pet\persona_presets" `
-        --add-data "pet\menu_templates;pet\menu_templates" `
+        --add-data ((Join-Path $root 'assets\qilin_memes') + ';assets\qilin_memes') `
+        --add-data ((Join-Path $root 'pet\persona_presets') + ';pet\persona_presets') `
+        --add-data ((Join-Path $root 'pet\menu_templates') + ';pet\menu_templates') `
         @chatData `
-        --add-data "assets\sounds;assets\sounds" `
-        --add-data "assets\chat;assets\chat" `
-        --add-data "integrations;integrations" `
+        --add-data ((Join-Path $root 'assets\sounds') + ';assets\sounds') `
+        --add-data ($chatAssetSource + ';assets\chat') `
+        @integrationData `
         @excludes `
-        $entry
+        (Join-Path $root $entry)
     if ($LASTEXITCODE -ne 0) { throw "PyInstaller failed: $LASTEXITCODE" }
 }
 
-$appDir = Join-Path $root "dist-onedir\$name"
 if (-not (Test-Path $appDir)) { throw "Build output missing: $appDir" }
+if ($QilinOnly) {
+    $brandingDir = Join-Path $appDir 'branding'
+    New-Item -ItemType Directory -Path $brandingDir -Force | Out-Null
+    Copy-Item -LiteralPath (Join-Path $root 'assets\qilin_memes\praise.png') -Destination (Join-Path $brandingDir 'logo.png') -Force
+    $brandingIcon = if ($IconPath) { $IconPath } else { Join-Path $root 'assets\icon.ico' }
+    Copy-Item -LiteralPath $brandingIcon -Destination (Join-Path $brandingDir 'logo.ico') -Force
+}
 
 # ---------- Bridge 零依赖防线（2026-09 事故：缺 @deepseek-ai/dsh-llm 导致
 # 用户整个 dsh 插件树加载失败） ----------
@@ -241,10 +270,12 @@ if (-not (Test-Path $appDir)) { throw "Build output missing: $appDir" }
 # --add-data 若把本机残留的 node_modules junction 复制进产物，在这里剥掉；
 # 随后在 dist 副本上跑 hermetic 冒烟（拷进无 node_modules 的临时目录再 import），
 # 任何外部 bare import 都会直接判构建失败，而不是在用户机器上炸掉 dsh。
+if (-not $QilinOnly) {
 Write-Host "[bridge] enforcing zero-dependency bundle..." -ForegroundColor Cyan
 python scripts\fix_bridge_bundle.py --app-dir $appDir
 if ($LASTEXITCODE -ne 0) { throw "Bridge zero-dependency check failed: $LASTEXITCODE" }
 Write-Host "[bridge] zero-dependency bundle OK" -ForegroundColor Green
+}
 
 # =====================================================================
 # Qt runtime post-build (issue: shiboken6 "找不到指定的模块")
@@ -312,20 +343,13 @@ if (Test-Path (Join-Path $condaBin 'Qt6Core.dll')) {
     }
     Write-Host "[Qt] Runtime validation OK" -ForegroundColor Green
 
-    # ---------- Fix Python SSL DLL missing for conda builds ----------
-    # Copy Python SSL dependencies (libcrypto/libssl) from conda Library/bin to bundle _internal root
-    # Required because _ssl.pyd (Python's SSL module) depends on these DLLs, they aren't always collected automatically
-    foreach ($dep in @('libcrypto-3-x64.dll', 'libssl-3-x64.dll')) {
-        $depSrc = Join-Path $condaBin $dep
-        $depDst = Join-Path $appDir "_internal\$dep"
-        if (Test-Path $depSrc) {
-            Copy-Item $depSrc $depDst -Force
-            Write-Host "[SSL] copied $dep to bundle _internal/ (fixes import ssl DLL load error)"
-        }
-    }
 } else {
     Write-Host "[Qt] pip PySide6 (Qt6 DLL bundled), runtime copy skipped" -ForegroundColor Yellow
 }
+
+# Pin Python's SSL extension and DLLs to the actual build interpreter.
+python scripts\bundle_python_ssl.py --internal (Join-Path $appDir '_internal') --record (Join-Path $OutputRoot 'ssl-runtime.json')
+if ($LASTEXITCODE -ne 0) { throw 'Compatible Python SSL runtime bundling failed' }
 
 # ---------- Qt runtime 硬性验证（无论 conda/pip 都执行） ----------
 $qtRequired = @(
@@ -357,17 +381,12 @@ Write-Host "[Qt] Runtime validation OK" -ForegroundColor Green
 # 注：我们主动补进 _internal\PySide6 的 Qt6/ICU DLL（conda Qt 自身运行所需的
 # icu*.dll）属预期，自检白名单排除该 runtime 目录；其他位置出现的意外
 # ICU/Qt6 DLL 仍按原规则报告冲突。
-# pip PySide6 6.11.2 and the bundled Poppler runtime both use ICU 78.3.
-# PyInstaller resolves Poppler's ICU dependencies into _internal root, so
-# location alone is not enough to classify these files as a conflict. Keep
-# rejecting stale/foreign ICU versions, while allowing this known-compatible
-# pair only after checking the file version.
-$allowedIcu = @('icuuc.dll', 'icudt78.dll')
+# Qt's wheel imports Windows' unversioned ICU symbols. A Poppler ICU with
+# the same numeric version exports different names and is incompatible.
 $badIcu = Get-ChildItem -Recurse -Path $appDir -Filter 'icu*.dll' -ErrorAction SilentlyContinue |
     Where-Object {
         if ($_.DirectoryName -like '*\_internal\PySide6') { return $false }
-        $version = $_.VersionInfo.FileVersion
-        -not ($allowedIcu -contains $_.Name -and $version -like '78, 3, 0, 0*')
+        return $true
     }
 $badQt = Get-ChildItem -Recurse -Path $appDir -Filter 'Qt6*.dll' -ErrorAction SilentlyContinue |
     Where-Object {
@@ -425,57 +444,13 @@ python $verifyScript --internal (Join-Path $appDir '_internal')
 if ($LASTEXITCODE -ne 0) { throw "[smoke] bundle DLL chain verification failed" }
 Write-Host "[smoke] bundle DLL chain OK" -ForegroundColor Green
 
-Write-Host "[smoke] Launching $exePath ..." -ForegroundColor Cyan
-$proc = Start-Process -FilePath $exePath -PassThru
-Start-Sleep -Seconds 10
-if ($proc.HasExited) {
-    throw "[smoke] exe exited early (code $($proc.ExitCode)) - runtime dependency broken"
-}
-$proc.Refresh()
-if ($proc.MainWindowHandle -eq 0) {
-    Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
-    throw "[smoke] exe running but no main window appeared - startup failed (likely 'Failed to execute script')"
-}
-Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
-Write-Host "[smoke] exe started OK" -ForegroundColor Green
-
-# ---------- --settings 分流冒烟（设置页进程隔离） ----------
-# exe 必须能按参数分流到独立设置进程：起的是一个设置窗口（不是又一只桌宠），
-# 并且持有 settings.lock。用隔离的 APPDATA，避免冒烟配置写进用户目录。
-Write-Host "[smoke] Launching $exePath --settings ..." -ForegroundColor Cyan
-$smokeBase = Join-Path $env:TEMP ("dsh-settings-smoke-" + [guid]::NewGuid().ToString('N'))
-New-Item -ItemType Directory -Path $smokeBase -Force | Out-Null
-$oldAppData = $env:APPDATA
-$env:APPDATA = $smokeBase
-$settingsProc = $null
-try {
-    $settingsProc = Start-Process -FilePath $exePath -ArgumentList '--settings' -PassThru
-    Start-Sleep -Seconds 10
-    if ($settingsProc.HasExited) {
-        throw "[smoke] --settings exited early (code $($settingsProc.ExitCode)) - arg routing broken"
-    }
-    $settingsProc.Refresh()
-    if ($settingsProc.MainWindowHandle -eq 0) {
-        throw "[smoke] --settings running but no settings window appeared"
-    }
-    # 配置目录名随打包变体走（= $name，如 dsh-pet-standalone-webm-chat），
-    # 写死基础名会让 webm-chat 等变体误报"没拿到锁"（实机踩过）
-    $settingsLock = Join-Path (Join-Path $smokeBase $name) 'settings.lock'
-    if (-not (Test-Path $settingsLock)) {
-        throw "[smoke] --settings did not acquire settings.lock"
-    }
-} finally {
-    if ($settingsProc -and -not $settingsProc.HasExited) {
-        Stop-Process -Id $settingsProc.Id -Force -ErrorAction SilentlyContinue
-    }
-    $env:APPDATA = $oldAppData
-    Remove-Item $smokeBase -Recurse -Force -ErrorAction SilentlyContinue
-}
-Write-Host "[smoke] --settings started OK" -ForegroundColor Green
+Write-Host '[smoke] isolated pet/settings startup and graceful exit' -ForegroundColor Cyan
+python scripts\verify_bundle_startup.py --exe $exePath --config-dir-name "dsh-pet-standalone-$Variant" --evidence-root (Join-Path $OutputRoot 'startup-evidence')
+if ($LASTEXITCODE -ne 0) { throw '[smoke] isolated startup verification failed' }
 
 if (-not $SkipZip) {
     Write-Host "[2/3] Packing portable zip..." -ForegroundColor Cyan
-    $zip = Join-Path $root "dist-onedir\$name-portable.zip"
+    $zip = Join-Path $OutputRoot "$name-portable.zip"
     Remove-Item $zip -Force -ErrorAction SilentlyContinue
     Compress-Archive -Path "$appDir\*" -DestinationPath $zip -CompressionLevel Optimal
     Write-Host "      $zip ($([math]::Round((Get-Item $zip).Length/1MB,1)) MB)" -ForegroundColor Green

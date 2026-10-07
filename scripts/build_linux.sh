@@ -71,7 +71,7 @@ for variant in "${variant_list[@]}"; do
         --add-data "$assets:$assets"
         --add-data "assets/sounds:assets/sounds"
         --add-data "assets/chat:assets/chat"
-        --add-data "assets/big_blue_fat_fish:assets/big_blue_fat_fish"
+        --add-data "assets/qilin_memes:assets/qilin_memes"
         --add-data "pet/menu_templates:pet/menu_templates"
         --add-data "pet/persona_presets:pet/persona_presets"
         --add-data "integrations:integrations"

@@ -67,7 +67,7 @@ def get_cursor_visibility(user32=None) -> str:
 
 MAX_EDGE = 768        # 缩到最长边 768px：够看懂屏幕，token 又不贵
 JPEG_QUALITY = 70
-DEFAULT_VISION_MODEL = 'deepseek-v4-flash-vision-exp'
+DEFAULT_VISION_MODEL = ''
 
 
 class VisionError(RuntimeError):
@@ -79,15 +79,7 @@ def resolve_vision_model(p) -> str:
     否则按聊天模型推导——本身多模态的直接用，ds 文本模型映射到预览版视觉模型。"""
     if not p.vision_same_as_chat and p.vision_model.strip():
         return p.vision_model.strip()
-    m = (p.model or '').strip()
-    low = m.lower()
-    if 'vision' in low:
-        return m
-    if low.endswith('deepseek-v4-flash'):
-        return m + '-vision-exp'
-    if low.startswith('deepseek'):
-        return DEFAULT_VISION_MODEL
-    return m  # kimi 等本身多模态的模型直接用聊天模型
+    return (p.model or '').strip()
 
 
 def foreground_window_info() -> dict | None:
@@ -321,6 +313,10 @@ def _post_vision_request(
     # 视觉独立端点仅在「不同聊天模型」时生效；同聊天模型时强制跟随聊天配置，
     # 否则残留的 GLM 地址会配上 ds 的模型名发出（modelCode 不存在）
     base_url = p.base_url if p.vision_same_as_chat else (p.vision_base_url or p.base_url)
+    from urllib.parse import urlsplit
+    base = urlsplit(str(base_url or '').strip())
+    if base.scheme not in {'http', 'https'} or not base.hostname or not resolve_vision_model(p):
+        raise VisionError('请先在 AI 设置填写接口地址和视觉模型名称')
     endpoint = normalize_chat_endpoint(base_url, p.chat_path)
     b64 = base64.b64encode(jpeg_bytes).decode('ascii')
     note = app_info or '（拿不到前台窗口信息）'
@@ -356,10 +352,6 @@ def _post_vision_request(
         # 给太少（如 512）会 finish_reason=length、content 为空 → 必须留足预算
         'max_tokens': max(4096, min(int(p.max_tokens), 8192)),
     }
-    model_name = payload['model']
-    if model_name.lower().startswith('deepseek') and 'deepseek' in base_url.lower():
-        # ds 视觉模型默认开推理（思考十几秒才说话），关掉后 1~2 秒直答
-        payload['thinking'] = {'type': 'disabled'}
     headers = build_browser_headers({'Content-Type': 'application/json'})
     # 安全（高优先）：独立视觉端点（vision_same_as_chat=False）绝不能把聊天 Key
     # 一起发过去。只有与聊天同模型时才允许复用聊天 Key；独立端点只认视觉自己的

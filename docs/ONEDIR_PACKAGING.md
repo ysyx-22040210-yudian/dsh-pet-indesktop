@@ -11,6 +11,22 @@ AIGC:
 
 # onedir 打包流水线（绿色版 zip + Inno Setup 安装包）
 
+## 麒麟独立构建（2026-10-07）
+
+当前麒麟产品用 `-QilinOnly`：仅打包麒麟角色、8张 `assets/qilin_memes` 表情和麒麟图标；退休服务模块及旧集成资源被排除，聊天背景目录过滤旧鲸鱼图片。用户的变体配置和密钥服务标识保持兼容，菜单、托盘、导出插件和可执行文件显示麒麟名称。
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build_onedir.ps1 `
+  -Variant webm-chat -QilinOnly `
+  -OutputRoot E:/qilin-codex-fix-20261007/build-release `
+  -CharacterRoot E:/qilin-codex-fix-20261007/staging-character `
+  -IconPath D:/AI_helper/dsh-pet-source/assets/icon.ico -SkipZip
+```
+
+输出 `qilin-pet-webm-chat/qilin-pet-webm-chat.exe`，保留用户现有 `dsh-pet-standalone-webm-chat` 数据目录。GUI验收显式传递配置目录名；按新EXE文件名推导锁目录会误判。构建必须完成 DLL/编码/真实设置窗口及正常退出检查，GUI仅向已核对EXE所属窗口线程发WM_QUIT。安装前备份完整旧包和真实配置，先核对完整进程路径。最终便携包的每一成员及安装文件均按SHA比对；本轮命令、性能、安装记录、未完成的动画任务见 [修复报告](PR-REPORT-qilin-codex-repair-2026-10-07.md)。
+
+独立GUI/性能测试使用隔离配置。动画视觉验收逐项记录，105段文件齐全或解码通过分别不能代表全部动作的画面正确。
+
 目标：**运行期零解压**——不再产生 `C:\...\Temp\_MEIxxxxxx` 缓存。
 
 - onefile：每次启动把全部素材解压到系统临时目录；崩溃/强杀/断电残留；启动慢（GIF 版 800MB 每次全解压）

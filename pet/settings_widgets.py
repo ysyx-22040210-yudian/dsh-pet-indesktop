@@ -81,7 +81,6 @@ SETTINGS_DOMAIN_NAV = (
     ("桌宠", "pet"),
     ("互动", "interaction"),
     ("菜单", "application"),
-    ("桌面组件", "island"),
     ("AI 与对话", "chat"),
     ("自动化与联动", "automation"),
     ("语音", "sound"),

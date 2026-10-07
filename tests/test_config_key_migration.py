@@ -60,7 +60,7 @@ def _write_disk_config(tmp_path, providers):
 def test_plaintext_api_key_migrated_to_keyring_on_load(tmp_path):
     """磁盘 config.json 含明文 api_key：加载后迁移进 keyring，内存/磁盘均无明文。"""
     _write_disk_config(tmp_path, {
-        "openai-main": {"name": "DeepSeek", "api_key": "sk-legacy-plaintext"},
+        "openai-main": {"name": "自定义接口", "api_key": "sk-legacy-plaintext"},
     })
 
     config = Config(base=tmp_path)
@@ -83,7 +83,7 @@ def test_plaintext_api_key_migrated_to_keyring_on_load(tmp_path):
 def test_plaintext_kept_in_memory_when_keyring_unavailable(tmp_path):
     """keyring 不可用（set 返回 False）→ 内存保留明文，维持原兜底行为。"""
     _write_disk_config(tmp_path, {
-        "openai-main": {"name": "DeepSeek", "api_key": "sk-legacy-plaintext"},
+        "openai-main": {"name": "自定义接口", "api_key": "sk-legacy-plaintext"},
     })
     FakeStore.set_ok = False
 
@@ -97,7 +97,7 @@ def test_plaintext_kept_in_memory_when_keyring_unavailable(tmp_path):
 def test_existing_keyring_value_not_overwritten(tmp_path):
     """keyring 已有该 ref 的值 → 不覆盖，仅丢弃明文。"""
     _write_disk_config(tmp_path, {
-        "openai-main": {"name": "DeepSeek", "api_key": "sk-legacy-plaintext"},
+        "openai-main": {"name": "自定义接口", "api_key": "sk-legacy-plaintext"},
     })
     FakeStore.shared["provider/openai-main"] = "sk-already-in-keyring"
 
@@ -111,7 +111,7 @@ def test_existing_keyring_value_not_overwritten(tmp_path):
 def test_vision_api_key_migrated_with_default_ref(tmp_path):
     """vision_api_key 迁移：ref 为空时用默认 ref provider/<pid>/vision 并回填。"""
     _write_disk_config(tmp_path, {
-        "openai-main": {"name": "DeepSeek", "vision_api_key": "vk-legacy-plaintext"},
+        "openai-main": {"name": "自定义接口", "vision_api_key": "vk-legacy-plaintext"},
     })
 
     config = Config(base=tmp_path)

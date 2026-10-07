@@ -132,7 +132,7 @@ def test_dynamic_island_balance_tier_color_syncs_to_setting(tmp_path: Path, monk
     from pet.dynamic_island import DynamicIsland
 
     app = QApplication.instance() or QApplication([])
-    monkeypatch.setattr(balance_mod, "deepseek_pricing_tier", lambda: "peak")
+    monkeypatch.setattr(balance_mod, "legacy_pricing_tier", lambda: "peak")
     cfg = _config(tmp_path)
     cfg.set("dynamic_island", {
         "enabled": True,

@@ -131,12 +131,12 @@ def test_petwindow_agent_link_enabled_at_startup_constructs_manager(tmp_path):
 
     app = _qapp()
     cfg = _disabled_config(tmp_path)
-    cfg.set("agent_link", {"dsh": True})
+    cfg.set("agent_link", {"opencode": True})
     win = PetWindow(FakeLibrary(), cfg)
     try:
         assert win.agent_link_manager is not None
         # DSH 通道同样必须真被 apply_config() 启动，而不只是创建了管理器。
-        assert win.agent_link_manager.monitors["dsh"]._running
+        assert win.agent_link_manager.monitors["opencode"]._running
     finally:
         mgr = win.agent_link_manager
         if mgr is not None:

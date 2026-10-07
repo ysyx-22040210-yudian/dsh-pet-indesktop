@@ -12,7 +12,6 @@ import sys
 from PySide6.QtWidgets import (
     QApplication,
     QHBoxLayout,
-    QLineEdit,
     QMessageBox,
     QPlainTextEdit,
     QPushButton,
@@ -72,7 +71,7 @@ def build_pet_controls(host) -> None:
         host.scale_combo.addItem(f"{int(round(catalog.CANVAS_W * scale))} px", scale)
     host.scale_combo.setCurrentIndex(host.scale_combo.findData(current_scale))
 
-    # 生小肥鱼尺寸策略：默认继承主肥鱼大小；关闭后使用 spawn_scale 独立选择。
+    # 召唤小麒麟尺寸策略：默认继承主麒麟大小；关闭后使用 spawn_scale 独立选择。
     host.spawn_inherit_size_check = ToggleSwitch(host)
     host.spawn_inherit_size_check.setChecked(bool(host.config.get("spawn_inherit_size", True)))
     host.spawn_scale_combo = ModernSelect(host, width=132)
@@ -84,16 +83,12 @@ def build_pet_controls(host) -> None:
     for scale in spawn_scales:
         host.spawn_scale_combo.addItem(f"{int(round(catalog.CANVAS_W * scale))} px", scale)
     host.spawn_scale_combo.setCurrentIndex(host.spawn_scale_combo.findData(current_spawn_scale))
-    host.spawn_inherit_dynamic_island_check = ToggleSwitch(host)
-    host.spawn_inherit_dynamic_island_check.setChecked(
-        bool(host.config.get("spawn_inherit_dynamic_island", False))
-    )
     host.clear_spawned_pets_btn = QPushButton("一键退出…", host)
     host.clear_spawned_pets_btn.clicked.connect(host._on_clear_spawned_pets)
     if host.config.instance_id:
-        # 子肥鱼不能关闭主肥鱼进程，只允许主肥鱼执行退出操作。
+        # 小麒麟不能关闭主麒麟进程，只允许主麒麟执行退出操作。
         host.clear_spawned_pets_btn.setEnabled(False)
-        host.clear_spawned_pets_btn.setToolTip("请在主肥鱼的设置里操作")
+        host.clear_spawned_pets_btn.setToolTip("请在主麒麟的设置里操作")
 
     host.on_top_check = ToggleSwitch(host)
     host.on_top_check.setChecked(bool(host.config.get("on_top", True)))
@@ -197,9 +192,6 @@ def build_pet_controls(host) -> None:
     # 听觉反馈——用户关掉后期望立刻静音，而不是等关对话框。
     host.click_sound_check.toggled.connect(host._apply_click_sound_enabled_now)
     host.click_balance_check = None
-    if host.include_ai:
-        host.click_balance_check = ToggleSwitch(host)
-        host.click_balance_check.setChecked(bool(host.config.get("click_show_balance", False)))
     host.click_self_talk_check = ToggleSwitch(host)
     host.click_self_talk_check.setChecked(bool(host.config.get("click_show_self_talk", False)))
     host.click_self_talk_speak_check = ToggleSwitch(host)
@@ -212,8 +204,7 @@ def build_pet_controls(host) -> None:
     host.music_sing_check.setChecked(bool(host.config.get("music_sing_enabled", False)))
     host.music_lyric_check = ToggleSwitch(host)
     host.music_lyric_check.setChecked(bool(host.config.get("music_lyric_enabled", False)))
-    host.agent_cost_check = ToggleSwitch(host)
-    host.agent_cost_check.setChecked(bool(host.config.get("agent_cost_enabled", False)))
+    host.agent_cost_check = None
     host.music_lyric_lead_spin = BrowserDoubleSpinBox(host)
     host.music_lyric_lead_spin.setRange(LEAD_MIN_SECONDS, LEAD_MAX_SECONDS)
     host.music_lyric_lead_spin.setSingleStep(0.1)
@@ -233,26 +224,6 @@ def build_pet_controls(host) -> None:
     host.balance_tier_peak_edit = None
     host.balance_tier_idle_edit = None
     host.balance_tier_color_check = None
-    if host.include_ai:
-        host.balance_refresh_spin = BrowserSpinBox(host)
-        host.balance_refresh_spin.setRange(0, 1440)
-        host.balance_refresh_spin.setSuffix(" 分钟")
-        host.balance_refresh_spin.setValue(int(host.config.get("balance_refresh_minutes", 0) or 0))
-        host.balance_tier_mode_select = ModernSelect(host, width=180)
-        host.balance_tier_mode_select.addItem("空闲 / 高峰（默认）", "default")
-        host.balance_tier_mode_select.addItem("梁文谷 / 梁文峰", "liangwen")
-        host.balance_tier_mode_select.addItem("自定义", "custom")
-        host.balance_tier_mode_select.setCurrentData(
-            str(host.config.get("balance_tier_labels_mode", "default") or "default")
-        )
-        host.balance_tier_peak_edit = QLineEdit(host)
-        host.balance_tier_peak_edit.setPlaceholderText("高峰文本，例如：梁文峰")
-        host.balance_tier_peak_edit.setText(str(host.config.get("balance_tier_label_peak", "") or ""))
-        host.balance_tier_idle_edit = QLineEdit(host)
-        host.balance_tier_idle_edit.setPlaceholderText("空闲文本，例如：梁文谷")
-        host.balance_tier_idle_edit.setText(str(host.config.get("balance_tier_label_idle", "") or ""))
-        host.balance_tier_color_check = ToggleSwitch(host)
-        host.balance_tier_color_check.setChecked(bool(host.config.get("balance_tier_color_enabled", True)))
     host.auto_hide_fullscreen_check = None
     host.stream_capture_check = None
     if sys.platform == "win32":
@@ -339,7 +310,7 @@ def build_pet_controls(host) -> None:
     agent_link_cfg = host.config.get("agent_link", {})
 
     host.dialogue_mode_select = ModernSelect(host, width=190)
-    for label, value in (("默认模式", "legacy"), ("鲸鱼娘女仆模式", "whale_maid"), ("自定义台词", "custom")):
+    for label, value in (("默认模式", "legacy"), ("麒麟陪伴模式", "whale_maid"), ("自定义台词", "custom")):
         host.dialogue_mode_select.addItem(label, value)
     host.dialogue_mode_select.setCurrentData(str(host.config.get("dialogue_mode", "legacy") or "legacy"))
     # 统一预设：global 层是编辑区默认面（flat 旧结构 = global；双层取 global）
@@ -546,7 +517,7 @@ def build_pet_controls(host) -> None:
     egg = host.config.get("menu_easter_egg", DEFAULT_MENU_EASTER_EGG)
     host.egg_enabled_check = ToggleSwitch(host)
     host.egg_enabled_check.setChecked(bool(egg.get("enabled", True)))
-    host.egg_title_edit = _line_edit(str(egg.get("title") or "厉害了我的鲸"), width=240)
+    host.egg_title_edit = _line_edit(str(egg.get("title") or "麒麟表情包"), width=240)
     host.egg_hint_edit = _line_edit(str(egg.get("hint") or "请点击"), width=160)
     avatar = resolve_fun_asset(egg.get("avatar"), oijingjing_image_path())
     image_dir = resolve_fun_asset(egg.get("image_dir"), oijingjing_image_path().parent)
@@ -558,48 +529,6 @@ def build_pet_controls(host) -> None:
 # ------------------------------------------------------------ 主动识屏
     if sys.platform == "win32" and host.include_ai:
         host._build_proactive_controls()
-
-
-# ------------------------------------------------------------ 灵动岛联动控制器
-
-
-def _update_island_controls(host, enabled: bool) -> None:
-    host._set_setting_rows_visible((
-        "dynamic_island_icon", "dynamic_island_name", "dynamic_island_info",
-        "dynamic_island_status", "dynamic_island_info_mode",
-        "dynamic_island_style", "dynamic_island_opacity", "dynamic_island_accent",
-        "dynamic_island_icon_value",
-        "dynamic_island_custom_text", "dynamic_island_click_action",
-        "dynamic_island_event_effects", "dynamic_island_edge_dock",
-        "dynamic_island_collision", "dynamic_island_hidden_chat",
-    ), enabled, dependency="island_enabled")
-    _update_island_icon_controls(host, host.island_icon_check.isChecked())
-    _update_island_info_controls(host, host.island_info_check.isChecked())
-
-
-def _update_island_icon_controls(host, enabled: bool) -> None:
-    host._set_setting_rows_visible(
-        ("dynamic_island_icon_value",),
-        enabled,
-        dependency="island_show_icon",
-    )
-
-
-def _update_island_info_controls(host, enabled: bool) -> None:
-    host._set_setting_rows_visible(
-        ("dynamic_island_info_mode", "dynamic_island_custom_text"),
-        enabled,
-        dependency="island_show_info",
-    )
-    _update_island_custom_text(host)
-
-
-def _update_island_custom_text(host, _index: int | None = None) -> None:
-    host._set_setting_rows_visible(
-        ("dynamic_island_custom_text",),
-        host.island_info_mode_select.currentData() == "custom",
-        dependency="island_info_mode",
-    )
 
 
 # ------------------------------------------------------------ 台词模板控制器

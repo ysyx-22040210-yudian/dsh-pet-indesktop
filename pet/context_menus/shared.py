@@ -10,14 +10,13 @@ import time
 
 import shiboken6
 
-from PySide6.QtCore import QObject, QRunnable, QThreadPool, QTimer, QUrl, Signal, Slot
-from PySide6.QtGui import QActionGroup, QDesktopServices, QIcon, QPixmap
+from PySide6.QtCore import QObject, QRunnable, QThreadPool, QTimer, Signal, Slot
+from PySide6.QtGui import QActionGroup, QIcon, QPixmap
 from PySide6.QtCore import QProcess
 from PySide6.QtWidgets import QMenu
 
 from .. import autostart as autostart_mod
 from .. import catalog
-from ..harness_launcher import launch_harness_gui
 from ..report_gates import REPORT_GATE_DEFAULTS
 from ..updater import QUARK_PAN_URL as QUARK_PAN_URL, REPO_URL as REPO_URL
 from .icons import fitted_pet_pixmap_icon, pet_avatar_menu_icon, vector_menu_icon
@@ -25,7 +24,6 @@ from .menu_styles.common import inherit_menu_style
 
 log = logging.getLogger(__name__)
 
-DEEPSEEK_WEB_URL = "https://chat.deepseek.com/"
 
 
 class _AnimationIconSignals(QObject):
@@ -338,9 +336,13 @@ def add_proactive_menu(menu: QMenu, pet) -> None:
 def add_agent_link_menu(menu: QMenu, pet) -> None:
     """Agent 联动二级菜单（4 个 Agent 独立开关 + 自定义 Agent 三级子菜单 + 气泡提醒选项，失败/拒绝自动回滚勾选）。"""
     sub = add_submenu(menu, "Agent 联动", None)
+    def open_discovery():
+        from ..running_agents_dialog import open_running_agents
+        open_running_agents(pet)
+    add_action(sub, '识别运行中的 Agent…', None, open_discovery, close_on_trigger=True)
+    sub.addSeparator()
     agent_cfg = dict(pet.cfg.get('agent_link', {}))
     for agent_key, agent_label in (
-        ('dsh', 'DeepSeek Harness (DSH)'),
         ('claude', 'Claude Code'),
         ('cursor', 'Cursor'),
         ('opencode', 'OpenCode'),
@@ -423,11 +425,6 @@ def add_look_screen(menu: QMenu, pet, *, icons: bool = True):
     return add_action(menu, "看看屏幕", "screen" if icons else None, callback, close_on_trigger=True)
 
 
-def add_balance(menu: QMenu, pet, *, icons: bool = True):
-    callback = getattr(pet, "on_show_balance", None)
-    if callback is None:
-        return None
-    return add_action(menu, "DeepSeek 余额", "balance" if icons else None, lambda: callback(pet), close_on_trigger=True)
 
 
 def add_no_move(menu: QMenu, pet, *, icons: bool = True):
@@ -477,7 +474,7 @@ def add_spawn_pet(menu: QMenu, pet):
         icon = pet_avatar_menu_icon(menu, pet)
     else:
         icon = QIcon()
-    action = menu.addAction(icon, "生小肥鱼")
+    action = menu.addAction(icon, "召唤小麒麟")
     action.setProperty("closeOnTrigger", True)
     connect_action(action, callback)
     return action
@@ -490,7 +487,7 @@ def add_clear_spawned_pets(menu: QMenu, pet, *, icons: bool = True):
         return None
     return add_action(
         menu,
-        "退出子肥鱼",
+        "退出小麒麟",
         "clear" if icons else None,
         callback,
         close_on_trigger=True,
@@ -520,34 +517,6 @@ def add_edge_probe(menu: QMenu, pet, *, icons: bool = True):
     return action
 
 
-def add_harness(menu: QMenu, pet, *, icons: bool = True):
-    """DeepSeek Harness 子菜单：启动 / 重启 / 停止。
-
-    为什么用子菜单而不是三个平级项：菜单模板（pet/menu_templates/*.json）与用户
-    自己编排过的布局里只有 ``harness`` 这一个 id，新增 id 对老布局不生效；子菜单
-    挂在既有 id 上，老用户的菜单立刻拿到完整生命周期入口。
-
-    重启/停止是破坏性动作（可能结束你自己在终端里跑着的 dsh），带确认框；启动
-    保持原语义（复用本机实例并打开页面）。
-    """
-    start_icon = "harness" if icons else None
-    submenu = add_submenu(menu, "DeepSeek Harness", start_icon)
-    # 三个动作都 close_on_trigger：菜单先关闭、回调延迟到菜单关闭后执行——
-    # 重启/停止的确认框是模态框，macOS 原生菜单跟踪会话中弹模态框会被
-    # AppKit 抑制（与设置对话框首次点击无反应同源）。
-    add_action(submenu, "启动并打开页面", start_icon, lambda: launch_harness_gui(pet),
-               close_on_trigger=True)
-    add_action(
-        submenu, "重启服务", "play" if icons else None,
-        lambda: launch_harness_gui(pet, action="restart"),
-        close_on_trigger=True,
-    )
-    add_action(
-        submenu, "停止服务", "quit" if icons else None,
-        lambda: launch_harness_gui(pet, action="stop"),
-        close_on_trigger=True,
-    )
-    return submenu
 
 
 def _music_controller(pet):
@@ -831,37 +800,10 @@ def add_music_open_qqmusic(menu: QMenu, pet, *, icons: bool = True):
     return _music_player_builder("qqmusic")(menu, pet, icons=icons)
 
 
-def add_agent_cost(menu: QMenu, pet, *, icons: bool = True):
-    """右键菜单开关：本轮结束时显示消费金额。
-
-    与设置页开关同一份配置（``agent_cost_enabled``），两边实时联动。
-    """
-    action = add_action(menu, "显示本轮消费", "balance" if icons else None)
-    action.setCheckable(True)
-    action.setChecked(bool(pet.cfg.get("agent_cost_enabled", False)))
-
-    def _on_toggled(on: bool) -> None:
-        pet.cfg.set("agent_cost_enabled", bool(on))
-        pet.cfg.save()
-        # 让窗口按新配置同步控制器（与设置页走同一条刷新路径）。
-        for name in ("refresh_pet_settings", "sync_optional_services"):
-            fn = getattr(pet, name, None)
-            if callable(fn):
-                try:
-                    fn()
-                except Exception:
-                    pass
-
-    action.toggled.connect(_on_toggled)
-    return action
 
 
-def open_deepseek_web() -> bool:
-    return bool(QDesktopServices.openUrl(QUrl(DEEPSEEK_WEB_URL)))
 
 
-def add_deepseek_web(menu: QMenu, *, icons: bool = True):
-    return add_action(menu, "打开网页版 DeepSeek", "web" if icons else None, open_deepseek_web, close_on_trigger=True)
 
 
 def add_template_switch(menu: QMenu, pet, label: str, target: str, *, icons: bool = True):

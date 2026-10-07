@@ -632,7 +632,7 @@ class TestPhase3VisionLinkAndDryRun:
         monkeypatch.setattr("urllib.request.urlopen", lambda *a, **kw: FakeResponse())
 
         from pet.chat.models import ProviderConfig
-        p = ProviderConfig.from_dict("test", {"model": "deepseek-v4-flash", "api_key": "sk-123"})
+        p = ProviderConfig.from_dict("test", {"model": "example", "base_url": "https://api.example.test", "api_key": "sk-123"})
 
         # 生成一张真实临时图
         img_path = tmp_path / "test.jpg"
@@ -690,7 +690,7 @@ class TestPhase3VisionLinkAndDryRun:
         # 1. 默认情况：vision_same_as_chat=True -> 使用聊天 provider
         eff = effective_proactive_config({"prefer_free_provider": True})
         p, _ = watcher._resolve_vision_provider(eff)
-        assert p.model == "deepseek-v4-flash"
+        assert p.model == ""
 
         # 2. 勾选 prefer_free_provider 且配置独立 GLM 视觉
         chat_data = cfg.data["chat"]
@@ -886,20 +886,20 @@ class TestPhase4UIAndMenuIntegration:
         monkeypatch.setattr(DshMonitor, "install_bridge", classmethod(lambda cls: (True, "ok")))
         monkeypatch.setattr(DshMonitor, "uninstall_bridge", classmethod(lambda cls: None))
 
-        win._toggle_agent_link("dsh", True)
+        win._toggle_agent_link("opencode", True)
         # 安装走后台线程：等 install_finished 信号回来再断言
         import time
         for _ in range(60):
             app.processEvents()
-            if cfg.data["agent_link"]["dsh"]:
+            if cfg.data["agent_link"]["opencode"]:
                 break
             time.sleep(0.05)
-        assert cfg.data["agent_link"]["dsh"] is True
-        assert any(("DSH" in text) or ("联动" in text) or ("实装" in text) for text, _ in bubbles)
+        assert cfg.data["agent_link"]["opencode"] is True
+        assert any(("OpenCode" in text) or ("联动" in text) or ("实装" in text) for text, _ in bubbles)
 
         # 关闭不强制要求气泡，仅需状态落盘
-        win._toggle_agent_link("dsh", False)
-        assert cfg.data["agent_link"]["dsh"] is False
+        win._toggle_agent_link("opencode", False)
+        assert cfg.data["agent_link"]["opencode"] is False
         win.close()
         win.deleteLater()
     def test_apply_config_non_windows_no_timer(self, tmp_path, monkeypatch):
@@ -1281,7 +1281,7 @@ class TestProactiveBudgetPerRequest:
         # 去重试 sleep，避免测试被 2 秒拖慢
         monkeypatch.setattr(vision.time, "sleep", lambda s: None)
 
-        p = ProviderConfig.from_dict("test", {"model": "deepseek-v4-flash", "api_key": "sk-123"})
+        p = ProviderConfig.from_dict("test", {"model": "example", "base_url": "https://api.example.test", "api_key": "sk-123"})
         with pytest.raises(vision.VisionError):
             vision._post_vision_request(
                 b"fake-jpeg", "code.exe | t", "sys", p,
@@ -1304,7 +1304,7 @@ class TestProactiveBudgetPerRequest:
             raise AssertionError("预算耗尽后不应发起请求")
 
         monkeypatch.setattr("urllib.request.urlopen", fake_urlopen)
-        p = ProviderConfig.from_dict("test", {"model": "deepseek-v4-flash", "api_key": "sk-123"})
+        p = ProviderConfig.from_dict("test", {"model": "example", "base_url": "https://api.example.test", "api_key": "sk-123"})
         with pytest.raises(vision.VisionError) as exc_info:
             vision._post_vision_request(b"fake-jpeg", "code.exe | t", "sys", p, consume_budget=lambda: False)
         assert "上限" in str(exc_info.value)

@@ -101,12 +101,12 @@ def test_classic_background_supports_builtin_theme_while_modern_background_is_in
     assert image.save(str(custom))
 
     cfg = Config(tmp_path / 'config')
-    cfg.set('chat_background', 'builtin:whale')
+    cfg.set('chat_background', 'builtin:qilin')
     cfg.set('modern_chat_background', '')
     legacy = LegacyChatWindow(cfg, 'shenshen')
     modern = ModernChatWindow(cfg, 'shenshen')
     assert legacy._bg_pixmap is not None and not legacy._bg_pixmap.isNull()
-    assert legacy._bg_theme['accent'] == THEMES['whale']['accent']
+    assert legacy._bg_theme['accent'] == THEMES['qilin']['accent']
     assert modern._bg_pixmap is None
     legacy.close()
     modern.close()
@@ -116,7 +116,7 @@ def test_classic_background_supports_builtin_theme_while_modern_background_is_in
     assert modern_custom._bg_pixmap is not None and not modern_custom._bg_pixmap.isNull()
     assert modern_custom._bg_theme is None
     assert 'QFrame#chat-main { background: transparent; }' in modern_custom.styleSheet()
-    assert 'QFrame#deepseek-sidebar { background: rgba(' in modern_custom.styleSheet()
+    assert 'QFrame#chat-sidebar { background: rgba(' in modern_custom.styleSheet()
     modern_custom.close()
     app.processEvents()
 
@@ -141,38 +141,38 @@ def test_custom_crop_config_roundtrip(tmp_path):
     from pet.config import Config
 
     cfg = Config(tmp_path)
-    cfg.set('chat_bg_crops', {'builtin:whale': [0.1, 0.2, 0.5, 0.8]})
+    cfg.set('chat_bg_crops', {'builtin:qilin': [0.1, 0.2, 0.5, 0.8]})
     cfg.save()
     loaded = Config(tmp_path).get('chat_bg_crops')
-    assert loaded['builtin:whale'] == [0.1, 0.2, 0.5, 0.8]
+    assert loaded['builtin:qilin'] == [0.1, 0.2, 0.5, 0.8]
 
 
 # ---------------------------------------------------------- 取景框（focus/自定义裁切）
 def test_focus_rect_custom_crop_wins_over_theme_focus():
     from pet.chat.themes import background_focus_rect, get_theme
 
-    theme = get_theme('whale')
-    crops = {'builtin:whale': [0.0, 0.0, 0.25, 1.0]}
-    assert background_focus_rect(theme, crops, 'builtin:whale') == (0.0, 0.0, 0.25, 1.0)
+    theme = get_theme('qilin')
+    crops = {'builtin:qilin': [0.0, 0.0, 0.25, 1.0]}
+    assert background_focus_rect(theme, crops, 'builtin:qilin') == (0.0, 0.0, 0.25, 1.0)
 
 
 def test_focus_rect_falls_back_to_theme_focus_without_crop():
     from pet.chat.themes import background_focus_rect, get_theme
 
-    theme = get_theme('whale')
-    assert background_focus_rect(theme, {}, 'builtin:whale') == tuple(theme['focus'])
+    theme = get_theme('qilin')
+    assert background_focus_rect(theme, {}, 'builtin:qilin') == tuple(theme['focus'])
     # crops 非 dict / 无该背景的条目，同样回退主题
-    assert background_focus_rect(theme, None, 'builtin:whale') == tuple(theme['focus'])
-    assert background_focus_rect(theme, {'builtin:furina': [0, 0, 1, 1]}, 'builtin:whale') == tuple(theme['focus'])
+    assert background_focus_rect(theme, None, 'builtin:qilin') == tuple(theme['focus'])
+    assert background_focus_rect(theme, {'builtin:furina': [0, 0, 1, 1]}, 'builtin:qilin') == tuple(theme['focus'])
 
 
 def test_focus_rect_malformed_crop_falls_back_to_theme_focus():
     from pet.chat.themes import background_focus_rect, get_theme
 
-    theme = get_theme('whale')
+    theme = get_theme('qilin')
     for bad in ([0.1, 0.2, 0.5], 'junk', [0.1, 'x', 0.5, 1.0], 42):
-        crops = {'builtin:whale': bad}
-        assert background_focus_rect(theme, crops, 'builtin:whale') == tuple(theme['focus']), bad
+        crops = {'builtin:qilin': bad}
+        assert background_focus_rect(theme, crops, 'builtin:qilin') == tuple(theme['focus']), bad
 
 
 def test_focus_rect_no_theme_uses_default():

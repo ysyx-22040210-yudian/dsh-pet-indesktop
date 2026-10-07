@@ -254,7 +254,7 @@ def test_dirty_music_and_cost_keys_are_normalized(tmp_path):
     cfg = _dirty_music_cost_config(tmp_path)
 
     assert cfg.data["music_lyric_enabled"] is False, "'false' 不得被 bool() 误开"
-    assert cfg.data["agent_cost_enabled"] is True
+    assert cfg.data["agent_cost_enabled"] is False
     assert isinstance(cfg.data["music_lyric_lead_seconds"], float)
     assert LEAD_MIN_SECONDS <= cfg.data["music_lyric_lead_seconds"] <= LEAD_MAX_SECONDS
     assert isinstance(cfg.data["music_sing_grace_seconds"], float)
@@ -276,7 +276,7 @@ def test_set_normalizes_music_and_cost_keys(tmp_path):
     cfg.set("music_lyric_enabled", "false")
     assert cfg.data["music_lyric_enabled"] is False
     cfg.set("agent_cost_enabled", "yes")
-    assert cfg.data["agent_cost_enabled"] is True
+    assert cfg.data["agent_cost_enabled"] is False
 
 
 def test_dirty_music_and_cost_config_does_not_break_settings_page(tmp_path):

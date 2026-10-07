@@ -27,9 +27,9 @@ DEFAULT_SELF_TALK_MIN_INTERVAL = 20.0
 DEFAULT_SELF_TALK_MAX_INTERVAL = 60.0
 DEFAULT_SELF_TALK_DURATION_SECONDS = 3.2
 DEFAULT_SELF_TALK_TEXTS = [
-    "\u597d\u5973\u5b69\u2026\u2026",
-    "\u597d\u6a21\u578b\u2026\u2026",
-    "\u6b27\u9cb8\u9cb8\u2026\u2026",
+    "麒麟来陪你啦。",
+    "一起认真工作吧。",
+    "瑞麟给你加油。",
     "\u4eca\u5929\u4e5f\u8981\u8ba4\u771f\u5de5\u4f5c\u5440\u3002",
     "\u518d\u966a\u4f60\u4e00\u4f1a\u513f\u3002",
 ]
@@ -72,10 +72,10 @@ DEFAULT_CONTEXT_MENU_APPEARANCE = {
 }
 DEFAULT_MENU_EASTER_EGG = {
     "enabled": True,
-    "title": "厉害了我的鲸",
+    "title": "麒麟表情包",
     "hint": "请点击",
-    "avatar": "assets/big_blue_fat_fish/ojingjing.jpg",
-    "image_dir": "assets/big_blue_fat_fish",
+    "avatar": "assets/qilin_memes/praise.png",
+    "image_dir": "assets/qilin_memes",
 }
 DEFAULT_QUICK_LAUNCH_APPS = [
     {"name": "默认浏览器", "path": "", "kind": "default_browser"},
@@ -311,7 +311,18 @@ def _clean_custom_agents(raw: Any) -> list[dict]:
             continue
         name = str(item.get("name") or "").strip()[:50] or key
         seen.add(key)
-        result.append({"key": key, "name": name, "path": path})
+        entry = {"key": key, "name": name, "path": path}
+        if item.get("adapter") in ("opencode", "codex"):
+            entry["adapter"] = item["adapter"]
+        processes = item.get("process_names")
+        if isinstance(processes, list):
+            processes = list(dict.fromkeys(
+                str(value).strip()[:100] for value in processes[:16]
+                if isinstance(value, str) and value.strip() and "/" not in value and "\\" not in value
+            ))
+            if processes:
+                entry["process_names"] = processes
+        result.append(entry)
     return result
 
 
@@ -360,6 +371,7 @@ def _clean_agent_link_data(raw: Any) -> dict:
     result["report_gates"] = gates
     for legacy_key in (*LEGACY_SWITCH_GATES, *LEGACY_PERCENT_GATES):
         result.pop(legacy_key, None)
+    result['dsh'] = False
     return result
 
 
@@ -400,10 +412,10 @@ def _default_chat_data():
         "history_char_limit": 24000,
         "providers": {
             "openai-main": {
-                "name": "DeepSeek",
-                "base_url": "https://api.deepseek.com",
+                "name": "自定义接口",
+                "base_url": "",
                 "chat_path": "/v1/chat/completions",
-                "model": "deepseek-v4-flash",
+                "model": "",
                 "api_key_ref": "provider/openai-main",
                 "api_key": "",
                 "timeout": 60.0,
@@ -655,7 +667,7 @@ class Config:
         self.path = self.dir / f"config-{self.instance_id}.json" if self.instance_id else self.dir / "config.json"
         self._migrate_legacy_config(base)
         # 副槽落种仅在该槽位还没有个体配置时进行；已有存档的 slot（用户改过
-        # 的）一律不动——「生小肥鱼」复用旧槽位时同样保留原槽设置。
+        # 的）一律不动——「召唤小麒麟」复用旧槽位时同样保留原槽设置。
         if self.instance_id and not self.path.exists():
             self._seed_slot_config_from_main()
         self.data = {
@@ -665,9 +677,9 @@ class Config:
             "screen_name": None,
             "facing": "left",
             "scale": catalog.DEFAULT_SCALE,
-            "spawn_inherit_size": True,  # 生小肥鱼继承主肥鱼大小（False 用 spawn_scale）
-            "spawn_scale": catalog.DEFAULT_SCALE,  # 关闭继承时生小肥鱼使用的尺寸
-            "spawn_inherit_dynamic_island": False,  # 生小肥鱼继承主肥鱼灵动岛（默认关=不开灵动岛）
+            "spawn_inherit_size": True,  # 召唤小麒麟继承主肥鱼大小（False 用 spawn_scale）
+            "spawn_scale": catalog.DEFAULT_SCALE,  # 关闭继承时召唤小麒麟使用的尺寸
+            "spawn_inherit_dynamic_island": False,  # 召唤小麒麟继承主肥鱼灵动岛（默认关=不开灵动岛）
             "user_customized": False,  # 批 C：仅当用户在该子肥鱼自己的设置界面保存过才置真
             "on_top": True,
             "show_dock_icon": True,
@@ -683,7 +695,7 @@ class Config:
             "self_talk_image_chance": DEFAULT_SELF_TALK_IMAGE_CHANCE,  # 出图概率百分比（0~100）
             "bubble_text_scale": 100,  # 气泡文字显示尺寸百分比（50~300，100 = 默认；气泡与字号一起放大）
             "self_talk_texts": list(DEFAULT_SELF_TALK_TEXTS),
-            "self_talk_image_dir": "assets/big_blue_fat_fish",
+            "self_talk_image_dir": "assets/qilin_memes",
             "self_talk_bubble_style": DEFAULT_SELF_TALK_BUBBLE_STYLE,
             # Existing event wording: legacy is deliberately the default.
             "dialogue_mode": "legacy",
@@ -708,11 +720,11 @@ class Config:
             "throw_strength": "standard",  # gentle / standard / strong / crazy
             "idle_low_fps_enabled": False,  # 闲置降帧（灰度默认关）：长时间无交互时动画隔帧呈现
             "idle_low_fps_threshold": 30.0,  # 闲置阈值（秒）：超过该时长无交互且窗口可见才降帧
-            "click_show_balance": False,  # 点击显示 DeepSeek 余额
+            "click_show_balance": False,  # 旧版点击余额兼容键（停用）
             "click_show_self_talk": False,  # 点击随机显示自定义自言自语
             "self_talk_speak_enabled": True,  # 点击自言自语同句朗读（复用语音报时音频通道）
             "self_talk_voice_precache_enabled": False,  # 台词/点击绑定本地语音预缓存（需本机 TTS 服务，默认关）
-            "balance_refresh_minutes": 0,  # DeepSeek 余额自动刷新间隔（分钟，0=关闭）
+            "balance_refresh_minutes": 0,  # 旧版余额兼容键（停用）（分钟，0=关闭）
             "balance_tier_labels_mode": "default",  # 峰谷提示文案：default / liangwen / custom
             "balance_tier_label_peak": "",  # 自定义“高峰”文本（custom 模式）
             "balance_tier_label_idle": "",  # 自定义“空闲”文本（custom 模式）
@@ -736,8 +748,8 @@ class Config:
             # 面向"环境特殊又不想改环境变量"的用户，属于开发者向高级键，不进设置页。
             "pnpm_bin": "",
             "stream_capture_mode": False,  # 直播捕获兼容模式（Windows：Tool 窗口直播姬/OBS 枚举不到）
-            "chat_background": "",  # 肥鱼牌小手机背景：空=纯色；builtin:* = 内置主题；否则为图片路径
-            "modern_chat_background": "",  # 肥鱼版 DeepSeek 背景：空=纯色；否则为自定义图片路径
+            "chat_background": "",  # 麒麟小窗背景：空=纯色；builtin:* = 内置主题；否则为图片路径
+            "modern_chat_background": "",  # 麒麟工作台 背景：空=纯色；否则为自定义图片路径
             "chat_background_opacity": 100,
             "chat_background_fill": "cover",
             "modern_chat_background_opacity": 100,
@@ -797,7 +809,7 @@ class Config:
             # 退出杀进程、下一次 start() 自然 fresh spawn（把 47→64MB 的 ffmpeg
             # 内部累积周期性清零）。0 = 关闭回收（回退保险）；否则范围 [2, 120]。
             "ffmpeg_recycle_minutes": 10,
-            # 批5.2 spike（默认关）：开 = 「生小肥鱼」从 spawn 新进程改为进程内
+            # 批5.2 spike（默认关）：开 = 「召唤小麒麟」从 spawn 新进程改为进程内
             # 创建第二个 PetInstance。关 = 行为与现状逐位一致（回退保险）。
             "experimental_single_process_spawn": False,
             # 批5.3：同角色共享解码链（进程内帧扇出）开关，默认开。仅当
@@ -837,7 +849,7 @@ class Config:
         """新建副槽时继承主配置（批 C）：委托 slot_manager 的共享落种函数。
 
         只在该槽位还没有个体配置文件时执行；已有存档的 slot-N 配置（用户改过
-        的）一律保持独立记忆，「生小肥鱼」复用旧槽位也不覆盖。副本生成逻辑
+        的）一律保持独立记忆，「召唤小麒麟」复用旧槽位也不覆盖。副本生成逻辑
         （spawn_inherit_size / spawn_scale / spawn_inherit_dynamic_island、位置键
         剔除、脱敏、user_customized 置假）统一收敛在
         ``slot_manager.seed_slot_config_from_main``，这里只负责把 instance_id
@@ -1204,7 +1216,14 @@ class Config:
                 elif isinstance(value, dict):
                     stack.append(value)
 
+    def _migrate_qilin_product(self):
+        """Retire vendor services and migrate bundled memes, preserving custom data."""
+        from .product_migration import migrate_qilin_product
+
+        migrate_qilin_product(self.data)
+
     def _normalize_pet_settings(self):
+        self._migrate_qilin_product()
         dialogue_mode = str(self.data.get("dialogue_mode") or "legacy").lower()
         self.data["dialogue_mode"] = dialogue_mode if dialogue_mode in {"legacy", "whale_maid", "custom"} else "legacy"
         raw_phrases = self.data.get("dialogue_phrases")

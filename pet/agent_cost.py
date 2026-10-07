@@ -6,7 +6,7 @@
     Agent 开始干活 → 记下余额快照
     Agent 本轮结束 → 再查一次，两者相减即本轮消费
 
-**为什么用余额差而不是 token 数**：DeepSeek 只在 ``/user/balance`` 暴露账户余额，
+**为什么用余额差而不是 token 数**：旧版余额适配 只在 ``/user/balance`` 暴露账户余额，
 没有公开的 token 用量接口（platform 网页端的用量接口需要登录态 userToken，
 API Key 打不通，实测返回 ``Authorization Failed``）。而余额是**账户级**的，
 不管 Agent 走哪个 key 消耗，都会从同一份余额扣，差值因此能反映真实花费。

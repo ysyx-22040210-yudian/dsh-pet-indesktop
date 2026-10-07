@@ -87,7 +87,8 @@
 
 | 文档 | 一句话内容 | 何时必读 |
 |---|---|---|
-| [`AGENT_LINK_PROTOCOL.md`](AGENT_LINK_PROTOCOL.md) | 多 Agent 联动统一事件协议与扩展指南：本地文件事件总线、六态词汇、第三方 Agent 接入与新增内置 Agent 的步骤。 | 接入新 Agent、改事件归一（`normalize_event_state`）或六态词汇时；面向集成方的对外协议口径以本文为准。 |
+| [`AGENT_LINK_PROTOCOL.md`](AGENT_LINK_PROTOCOL.md) | 多 Agent 联动统一事件协议与扩展指南：本地文件事件总线、六态词汇、第三方 Agent 接入与新增内置 Agent 的步骤。 | 接入新 Agent、改事件归一（`normalize_event_state`）或六态词汇时；增强版程序识别入口另见 `RUNNING-AGENT-DISCOVERY.md`。 |
+| [`RUNNING-AGENT-DISCOVERY.md`](RUNNING-AGENT-DISCOVERY.md) | 基于 v4.2.1 的本地增强版：运行程序选择、Codex 会话事件、OpenCode 分支来源绑定与插件导出。 | 在新设备接入 Agent、迁移绑定路径或排查事件接口时。 |
 | [`DSH-BRIDGE-PET-EVENT-CONTRACT-2026-09-02.md`](DSH-BRIDGE-PET-EVENT-CONTRACT-2026-09-02.md) | Agent 适配器 → Pet 的事件契约：三层关系（原始事件 → 适配器标准 JSONL → Monitor/AgentLinkManager → 气泡与回写）与接入约束。 | 新增或修改适配器（`integrations/dsh-pet-bridge/`）、或需要在 Pet 侧复用既有状态处理/交互队列时。 |
 | [`DSH-HUMAN-REQUEST-RESEARCH-2026-09-02.md`](DSH-HUMAN-REQUEST-RESEARCH-2026-09-02.md) | DSH 人工请求事件调研：哪些 DSH 信号表示 Agent 暂停等待用户批准/回答，哪些只是工具或生命周期记录。 | 调整审批/提问的识别范围、或怀疑某类事件被误判成需要弹窗时；实现状态以 `integrations/dsh-pet-bridge/index.js` 与测试为准。 |
 | [`DSH-REQUEST-EVENT-CATALOG.md`](DSH-REQUEST-EVENT-CATALOG.md) | DSH human-request 事件的速查表（英文）：可回答的阻塞请求、身份字段、响应帧形状、不得弹窗的非阻塞事件。 | 写 Bridge 解析代码时需要精确的 wire frame / session event 字段与响应契约时；调研背景见上一行。 |
@@ -131,6 +132,12 @@
 
 | 文档 | 一句话内容 | 何时必读 |
 |---|---|---|
+| [`PR-REPORT-qilin-codex-repair-2026-10-07.md`](PR-REPORT-qilin-codex-repair-2026-10-07.md) | Codex修复与实机安装：退休旧服务/品牌、8张麒麟表情和背景、配置及子槽迁移、双击/岛碰撞、SSL/ICU、105动作中2项新增验收、性能和便携包SHA。 | 继续麒麟动画修复、复现品牌迁移、重建/安装或回滚时。 |
+| [`PR-REPORT-running-agent-discovery-2026-10-03.md`](PR-REPORT-running-agent-discovery-2026-10-03.md) | 本地增强版运行程序发现、来源热变更、性能和 Windows 实机证据。 | 检查程序识别、跨设备接入或回归来源切换时。 |
+| [`PR-REPORT-codex-link-2026-10-03.md`](PR-REPORT-codex-link-2026-10-03.md) | Codex 进程关联无反馈的根因、只读会话适配、回归及 Windows 实机证据。 | 排查 Codex 联动或变更会话生命周期解析时。 |
+| [`PR-REPORT-qilin-branding-2026-10-03.md`](PR-REPORT-qilin-branding-2026-10-03.md) | 麒麟少女外部角色包、品牌图标与既有模型/Agent 配置保留的实机证据。 | 修改角色素材、部署品牌图标或验证新便携包时。 |
+| [`PR-REPORT-qilin-motion-2026-10-03.md`](PR-REPORT-qilin-motion-2026-10-03.md) | 麒麟形象历次修正与完整人物116动作、9点击回应交付；原106项覆盖、真实Qt播放、鼠标交互和Windows实机证据。 | 查历史人物与v1.4.0交付时；当前连续性改动另见[PR-REPORT-qilin-smooth-motion-2026-10-04.md](PR-REPORT-qilin-smooth-motion-2026-10-04.md)。 |
+| [`PR-REPORT-qilin-smooth-motion-2026-10-04.md`](PR-REPORT-qilin-smooth-motion-2026-10-04.md) | 麒麟历次动作修正、真实Qt验证与本机安装证据；第十四轮v2.0.12达成106/106；第十九轮按用户指示移除左转奔跑（105动作）；第二十轮灵动岛彻底移除+双击桌宠开设置面板（新EXE，MRO遮蔽桥接修复）。 | 查当前协调性、绿边、虎牙或未完成项时；第九轮v2.0.7安装与第十轮v2.0.8闭眼更正都在此。 |
 | [`PR-REPORT-TEMPLATE.md`](PR-REPORT-TEMPLATE.md) | PR 报告模板：三份交付证据（修改文件说明 / 性能分析 / 实机运行记录）的逐节骨架与判定标准。 | **开新 PR 写报告前必读并整份复制**；2026-09-22 起三份证据是硬要求（`AGENTS.md` Delivery evidence discipline），由 `tests/test_pr_report_discipline.py` 机器化校验。 |
 | [`PR-REPORT-PR76-2026-09-10.md`](PR-REPORT-PR76-2026-09-10.md) | PR76 批次的完整报告：事件汇报概率门 + Persona 模板升级 + 全链路错误语义统一（46 文件，+3004/−917）。 | 追溯 PR76 批次改了什么、以及概率门/persona 模板/错误语义三条线的组合动机时。 |
 | [`PR-REPORT-GATES-2026-09-10.md`](PR-REPORT-GATES-2026-09-10.md) | 汇报概率门专项 PR 报告：8 个门表、判决语义（`roll < probability`）、可注入 rng 的测试考量、提交点自检。 | 调整汇报概率门、或需要"为什么未知事件不抽稀/边界取小于"这类判决语义依据时。 |

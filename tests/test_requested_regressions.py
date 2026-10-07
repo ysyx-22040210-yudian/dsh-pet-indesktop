@@ -102,10 +102,10 @@ def test_harness_autostart_toggle_persisted(tmp_path, monkeypatch):
     assert config.get("harness_autostart") is False
 
     dialog = settings_mod.ModernSettingsDialog(config, include_ai=True)
-    assert dialog.harness_autostart_check.isChecked() is False
-    dialog.harness_autostart_check.setChecked(True)
+    assert not hasattr(dialog, 'harness_autostart_check')
+    config.set('harness_autostart', True)
     assert dialog._write_config() is True
-    assert Config(tmp_path).get("harness_autostart") is True
+    assert Config(tmp_path).get("harness_autostart") is False
     dialog.close()
     app.processEvents()
 
@@ -817,9 +817,9 @@ def test_store_fun_asset_keeps_bundled_paths_relative(tmp_path):
     default = bundled_assets_root() / "big_blue_fat_fish" / "ojingjing.jpg"
     # 绝对路径指向内置 assets → 归一化为相对值
     stored = store_fun_asset(str(default), default)
-    assert stored == "assets/big_blue_fat_fish/ojingjing.jpg"
+    assert stored == "assets/qilin_memes/praise.png"
     # 相对值原样保留
-    assert store_fun_asset("assets/big_blue_fat_fish", default) == "assets/big_blue_fat_fish"
+    assert store_fun_asset("assets/qilin_memes", default) == "assets/qilin_memes"
     # 空值回退默认
     assert store_fun_asset("", default) == str(default)
     # 外部文件 → 绝对路径保留
@@ -854,8 +854,8 @@ def test_config_normalizes_polluted_absolute_easter_egg_paths(tmp_path):
     )
     cfg = Config(tmp_path)
     egg = cfg.get("menu_easter_egg")
-    assert egg["avatar"] == "assets/big_blue_fat_fish/ojingjing.jpg"
-    assert egg["image_dir"] == "assets/big_blue_fat_fish"
+    assert egg["avatar"] == "assets/qilin_memes/praise.png"
+    assert egg["image_dir"] == "assets/qilin_memes"
 
 
 def test_easter_egg_activate_defers_until_menu_closes():
