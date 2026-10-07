@@ -31,6 +31,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build_onedir.ps1 `
 
 轻快记录接触修复（2.0.21）在上述几何基线上只覆盖 `videos/random/轻快记录.webm` 与两份manifest，见[接触修复报告](PR-REPORT-qilin-notebook-contact-2026-10-07.md)。道具原图、准确生图提示词与离线制作SHA在 `packaging/character_postprocess/qilin-notebook-contact-20261007.json`；其余104段字节保留。构建仍读取完整已验收的CharacterRoot，视频与原制作缓存保存在报告所指的E盘目录。
 
+旋转尾根修复（2.0.22）继续使用该CharacterRoot，仅覆盖 `videos/random/小幅度原地360度旋转展示.webm` 与两份manifest。单条短尾、局部布料补片、生图原文及离线脚本SHA见 `packaging/character_postprocess/qilin-tail-root-20261008.json`，安装、便携包和回滚记录见[尾根修复报告](PR-REPORT-qilin-tail-root-2026-10-08.md)。其他104段包含2.0.21本子接触修复，保持字节一致；不要重新套用轮廓/几何变换。
+
 目标：**运行期零解压**——不再产生 `C:\...\Temp\_MEIxxxxxx` 缓存。
 
 - onefile：每次启动把全部素材解压到系统临时目录；崩溃/强杀/断电残留；启动慢（GIF 版 800MB 每次全解压）

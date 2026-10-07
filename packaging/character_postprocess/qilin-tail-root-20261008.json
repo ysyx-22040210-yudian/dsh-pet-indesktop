@@ -1,0 +1,290 @@
+{
+  "character": "qilin",
+  "version": "2.0.22-tail-root",
+  "clip": "小幅度原地360度旋转展示",
+  "source_baseline": "4259e10b5b1d89c92bfe37005557e126570c929a",
+  "source_media_sha256": "476f9a7fbea3aced6f41c09338b56ab5bff0eba9793024ae057c431dc81786a5",
+  "output_sha256": "1a5240a181de23d9cdf0381fc079bfa0edcf5880cf543503a531a610191dcbbc",
+  "frames": 241,
+  "fps": 24,
+  "canvas": [
+    640,
+    360
+  ],
+  "acceptance_scope": "All 241 decoded frames viewed for tail attachment, compact tail, hem/foreground occlusion, exterior fragments and turn/loop transitions; real Windows paint and full native playback verified separately.",
+  "generated_reference_assets": [
+    {
+      "asset": "packaging/character_postprocess/assets/qilin-short-tail-reference-20261008.png",
+      "sha256": "bcc7272ccdc282f793efbd57526e3c5ac6b267c4472f791d52de036a42abb85b",
+      "bytes": 508528,
+      "actual_size": [
+        1672,
+        941
+      ],
+      "actual_mode": "RGBA",
+      "tool": "built-in imagegen",
+      "model": null,
+      "model_scope": "The tool did not report a backend model.",
+      "transparent_background": true,
+      "call_id": "call_4EqdR69bRa93ggyrHjidCgOo",
+      "timestamp_utc": "2026-10-07T15:28:46.540Z",
+      "prompt": "Use case: precise-object-edit. Edit target: the first image, an exact transparent RGBA frame of the existing animated qilin desktop pet looking to the LEFT. Supporting identity/style reference: the second image, the approved character master. Repair ONLY the dragon tail and its attachment. The current tail emerges too high near the back of the hair/waist and is stretched very long. Remove that entire old tail, including the high attachment and any leftover segment. Reconstruct the small area of orange skirt that it obscured. Attach exactly ONE compact orange scaly dragon tail at the LOWER BACK/REAR HIP, below the waistband, with its root hidden behind the REAR ORANGE SKIRT EDGE. In this 640 by 360 source frame the hidden anatomical root is approximately x354 y266, rather than the old high root around y235. The visible tail exits behind the skirt, gently curves down and then up close to the body on SCREEN RIGHT, has a warm golden segmented underside and a small golden flame-shaped tuft. Its total visible curve length should be about HALF of the current stretched tail; visible outward reach about 55 source pixels, not 100+. The tail must taper naturally and remain clear of the hand, hair, leg and shoe. Preserve the original character's exact pose, body position, size, face, one visible profile eye, antlers, ears, hair, wing, clothes, embroidery, hand, skirt hem and feet. Do not add new clothing, markings, text or objects. Do not change the camera or move the character. Preserve the input 16:9 composition and transparent padding as closely as possible. Smooth clean warm brown antialiased outline, no green fringe, no glow. Actual transparent background, one complete character, no old tail remaining.",
+      "usage": "Local tail/cloth pixels only; generated full character is not substituted for the original motion."
+    },
+    {
+      "asset": "packaging/character_postprocess/assets/qilin-rear-cloth-reference-20261008.png",
+      "sha256": "5b81cde6a4425aef4403a7eaa21d0f13babd4c2385fac3ab5afaae1888fedd15",
+      "bytes": 518005,
+      "actual_size": [
+        1672,
+        941
+      ],
+      "actual_mode": "RGBA",
+      "tool": "built-in imagegen",
+      "model": null,
+      "model_scope": "The tool did not report a backend model.",
+      "transparent_background": true,
+      "call_id": "call_5027c546e0d048f7b47a9e322abb86c2",
+      "timestamp_utc": "2026-10-07T15:34:55.428Z",
+      "prompt": "Use case: precise-object-edit. Edit target is the FIRST image: a rear-facing frame of the existing orange/gold qilin girl desktop pet. The SECOND image is her approved identity and outfit reference. This is an INTERMEDIATE CLEAN BACKPLATE for animation compositing, so remove the ENTIRE stretched dragon tail and its high diagonal root, and restore the small orange skirt/lower-back area it obscures. Show NO TAIL at all in this intermediate image; the final short tail will be composited separately behind the skirt. The lower back must read as orange cloth continuing into an intact softly flared orange skirt, with delicate gold cloud embroidery and pale ruffled hem continuous all across the back. Eliminate the tail-like diagonal stripe and green contamination at the lower back. Do not add a belt, wings, a tail stump, a slit or extra ornaments. Preserve the exact rear pose, antlers, ears, head silhouette, golden hair covering the upper back, existing arms, hands, legs, shoes, chibi proportions and figure placement. Only the small tail/skirt repair area should change; the original rear-facing body motion will still be used. No face appears because she faces away. Clean antialiased edges and an actual transparent background, preserve the input 16:9 composition and transparent padding, one complete character, no scene, no shadow or glow, no text.",
+      "usage": "Local tail/cloth pixels only; generated full character is not substituted for the original motion."
+    }
+  ],
+  "offline_render": {
+    "command": "D:/anaconda3/python.exe E:/qilin-codex-fix-20261007/tail-root-20261007/render_tail.py --encode",
+    "script": "E:\\qilin-codex-fix-20261007\\tail-root-20261007\\render_tail.py",
+    "script_sha256": "5bd8d2b5aa8693c560db85766a2bef60e7ed08319247e2a5f7731657557faf44",
+    "wall_seconds": 60.58777189999819,
+    "input_cache": {
+      "path": "E:\\qilin-codex-fix-20261007\\tail-root-20261007\\小幅度原地360度旋转展示-before.npy",
+      "sha256": "b9358f6a52331a66d42447eb211b2b353e1a2daf97ec6ad75ab8001d6b3fea2b"
+    },
+    "foreground_masks": {
+      "script": "E:\\qilin-codex-fix-20261007\\tail-root-20261007\\segment_head.py",
+      "script_sha256": "0bb066f0bc8213e4b49d77e7b9f1132db48bdd22607a9291bda623c8ae577212",
+      "mask_sha256": "5069f654eae6fb814afb078b087e8abe925bbcd4438f93b0425ecfd374038295",
+      "model": "local SAM2.1 Hiera small",
+      "model_sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60",
+      "role": "Offline head/hair masks, manually constrained and visually checked; mask scores do not constitute acceptance."
+    },
+    "tail_crop": [
+      928,
+      586,
+      1084,
+      737
+    ],
+    "tail_working_size": [
+      55,
+      53
+    ],
+    "tail_local_anchor": [
+      1,
+      33
+    ],
+    "root_keyframes": [
+      {
+        "frame": 0,
+        "root": [
+          359.0,
+          271.0
+        ],
+        "direction": 1.0,
+        "cloth_pixels": 0,
+        "removed_exterior_alpha_pixels": 3561
+      },
+      {
+        "frame": 32,
+        "root": [
+          355.0,
+          269.0
+        ],
+        "direction": 1.0,
+        "cloth_pixels": 0,
+        "removed_exterior_alpha_pixels": 2876
+      },
+      {
+        "frame": 38,
+        "root": [
+          318.0,
+          266.0
+        ],
+        "direction": 0.0,
+        "cloth_pixels": 721,
+        "removed_exterior_alpha_pixels": 1356
+      },
+      {
+        "frame": 42,
+        "root": [
+          318.0,
+          266.0
+        ],
+        "direction": -1.0,
+        "cloth_pixels": 1092,
+        "removed_exterior_alpha_pixels": 3362
+      },
+      {
+        "frame": 48,
+        "root": [
+          323.0,
+          264.0
+        ],
+        "direction": -0.88,
+        "cloth_pixels": 4905,
+        "removed_exterior_alpha_pixels": 7193
+      },
+      {
+        "frame": 54,
+        "root": [
+          319.0,
+          266.0
+        ],
+        "direction": -0.82,
+        "cloth_pixels": 5342,
+        "removed_exterior_alpha_pixels": 9542
+      },
+      {
+        "frame": 58,
+        "root": [
+          332.0,
+          267.0
+        ],
+        "direction": 0.0,
+        "cloth_pixels": 4883,
+        "removed_exterior_alpha_pixels": 3302
+      },
+      {
+        "frame": 63,
+        "root": [
+          354.0,
+          272.0
+        ],
+        "direction": 1.0,
+        "cloth_pixels": 778,
+        "removed_exterior_alpha_pixels": 5304
+      },
+      {
+        "frame": 69,
+        "root": [
+          345.0,
+          271.0
+        ],
+        "direction": 1.0,
+        "cloth_pixels": 550,
+        "removed_exterior_alpha_pixels": 6771
+      },
+      {
+        "frame": 78,
+        "root": [
+          350.0,
+          269.0
+        ],
+        "direction": 0.9,
+        "cloth_pixels": 722,
+        "removed_exterior_alpha_pixels": 3574
+      },
+      {
+        "frame": 82,
+        "root": [
+          321.0,
+          267.0
+        ],
+        "direction": 0.0,
+        "cloth_pixels": 1631,
+        "removed_exterior_alpha_pixels": 1414
+      },
+      {
+        "frame": 87,
+        "root": [
+          313.0,
+          265.0
+        ],
+        "direction": -0.95,
+        "cloth_pixels": 4913,
+        "removed_exterior_alpha_pixels": 3835
+      },
+      {
+        "frame": 93,
+        "root": [
+          327.0,
+          267.0
+        ],
+        "direction": -0.68,
+        "cloth_pixels": 4870,
+        "removed_exterior_alpha_pixels": 6465
+      },
+      {
+        "frame": 98,
+        "root": [
+          341.0,
+          267.0
+        ],
+        "direction": 0.0,
+        "cloth_pixels": 5633,
+        "removed_exterior_alpha_pixels": 3153
+      },
+      {
+        "frame": 104,
+        "root": [
+          355.0,
+          271.0
+        ],
+        "direction": 1.0,
+        "cloth_pixels": 676,
+        "removed_exterior_alpha_pixels": 4547
+      },
+      {
+        "frame": 112,
+        "root": [
+          359.0,
+          271.0
+        ],
+        "direction": 1.0,
+        "cloth_pixels": 0,
+        "removed_exterior_alpha_pixels": 4246
+      },
+      {
+        "frame": 120,
+        "root": [
+          359.0,
+          271.0
+        ],
+        "direction": 1.0,
+        "cloth_pixels": 0,
+        "removed_exterior_alpha_pixels": 2460
+      },
+      {
+        "frame": 240,
+        "root": [
+          359.0,
+          271.0
+        ],
+        "direction": 1.0,
+        "cloth_pixels": 0,
+        "removed_exterior_alpha_pixels": 3126
+      }
+    ],
+    "geometry": "Input already includes scale 1, dx -48.5, dy -1 and sigma 0.65; do not apply that transform a second time.",
+    "compositing": "Premultiplied-alpha Lanczos and 0.55px filtering; one tail behind skirt, continuous signed foreshortening. Original upper 158 rows exactly preserved before encoding.",
+    "covered_body_repair": "Generated clean cloth replaces the old high root and obscured back skirt. Two rear-to-profile intervals also repair the old tail fused into the upper legs; original boots retained below the eased patch.",
+    "whole_clip_consistency": "The same short tail is used throughout all 241 frames, including front intervals, to avoid old/new tail double images at fade transitions.",
+    "tracking_path": "E:/qilin-codex-fix-20261007/tail-root-20261007/tail-tracking.json"
+  },
+  "changed_character_files": [
+    "manifest.json",
+    "videos/manifest.json",
+    "videos/random/小幅度原地360度旋转展示.webm"
+  ],
+  "unchanged_other_webm_count": 104,
+  "evidence_root": "E:\\qilin-codex-fix-20261007\\tail-root-20261007",
+  "evidence": [
+    "decoded-review-summary.json",
+    "native-candidate.json",
+    "real-pet-preview/record.json",
+    "installed-pet-preview/record.json",
+    "installation.json",
+    "portable-verification.json",
+    "runtime-performance/summary.json"
+  ],
+  "runtime": "Same EXE and player. Precomposited WebM only; no new model, script, dependency, network request or worker in the application.",
+  "limitations": "Tail-specific acceptance does not certify the remaining catalogue or unrelated original motion/appearance defects."
+}
