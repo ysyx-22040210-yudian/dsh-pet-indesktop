@@ -1,0 +1,115 @@
+{
+  "character": "qilin",
+  "version": "2.0.21-note-contact",
+  "clip": "轻快记录",
+  "source_baseline": "40d948ed4b1bb6aece0d5af3903f0b0353ea4ea4",
+  "old_media_sha256": "9e7e2a4692cffe6b07a6a7c0519e4c2f5ed2c4009a25d18df4be73e0a0ed6f16",
+  "output_sha256": "03b9f8c30a592de157663ee94baefa6a07f022a060490f6cf9793fc1c310442f",
+  "frames": 241,
+  "fps": 24,
+  "canvas": [
+    640,
+    360
+  ],
+  "acceptance": "Decoded visual review, full native playback, real Windows PetWindow frames and installed byte verification passed.",
+  "prop_assets": [
+    {
+      "source_asset": "packaging/character_postprocess/assets/qilin-notebook-20261007.png",
+      "sha256": "afbd2180da686c21b3030f1d2cec2449ced3592c2b2422ef166c7d69119e2bda",
+      "bytes": 1661006,
+      "actual_size": [
+        1610,
+        977
+      ],
+      "actual_mode": "RGBA",
+      "generation_tool": "built-in imagegen",
+      "model": null,
+      "model_scope": "The tool did not report a specific backend model; no model is inferred.",
+      "timestamp_utc": "2026-10-07T14:10:14.210Z",
+      "call_id": "call_ffa8a38fc5044f129bac6bb37807f1b5",
+      "transparent_background": true,
+      "reference_image": "C:/Users/1/AppData/Local/Temp/codex-clipboard-e44446ba-67ba-40af-9803-5a154671eefe.png",
+      "prompt": "Use case: precise-object-edit / isolated game prop. Asset type: a transparent RGBA notebook prop for the existing animated desktop pet. The reference image identifies the established soft anime chibi illustration style and golden/orange/red palette. Create ONLY ONE SMALL OPEN NOTEBOOK as a separate high-resolution prop; do not output the character, hands, fingers, a pen, a brush, other objects, or a scene. Notebook held upright, front-facing with a very slight three-quarter view, open like a shallow V, two distinct stiff golden-orange covers, subtle gold corner trim, a small elegant qilin-inspired ornamental motif on the front cover, no text, no wordmark, no letters, no whale/DeepSeek/logo. The white/light ivory inner pages MUST be visibly exposed at the top as a usable shallow V-shaped writing surface, rather than the book only displaying a closed front cover. Left and right covers visible to the camera with a clear center spine. Approximate bounding-box aspect width to height 1.65:1; the right outer lower-middle edge will be held by the character's supporting hand, and the upper-left page will receive a pen tip, so those contours should be clean and distinct. Soft warm light, delicate smooth dark warm brown outlines, same hand-painted orange/gold chibi asset shading as the reference, cute but geometrically consistent, clean antialiased edges and actual transparent background. Fill most of the image with the single notebook and a narrow transparent margin.",
+      "reference_sha256": "5f92aa1f47f33844c2fd61f047dfb56f1e7dc3706a43d54298d6054a466b4511"
+    },
+    {
+      "source_asset": "packaging/character_postprocess/assets/qilin-note-pen-20261007.png",
+      "sha256": "8cce7ad3945a1b7b0cab7868be8c53036ac566e52fcddfe1343d5d595f206c84",
+      "bytes": 268883,
+      "actual_size": [
+        1145,
+        1374
+      ],
+      "actual_mode": "RGBA",
+      "generation_tool": "built-in imagegen",
+      "model": null,
+      "model_scope": "The tool did not report a specific backend model; no model is inferred.",
+      "timestamp_utc": "2026-10-07T14:15:25.416Z",
+      "call_id": "call_d74780ec5e1840a4adeff6e01e18d9c1",
+      "transparent_background": true,
+      "reference_image": "C:/Users/1/AppData/Local/Temp/codex-clipboard-e44446ba-67ba-40af-9803-5a154671eefe.png",
+      "prompt": "Use case: isolated transparent game prop. Create exactly ONE SLENDER SHORT WRITING PEN as a separate transparent RGBA prop for the existing golden orange anime chibi qilin desktop pet. Soft hand-painted anime chibi illustration, clean warm brown antialiased outlines, red-orange lacquer barrel and tiny gold fittings with a fine dark writing nib. Whole pen straight VERTICAL with the nib pointing DOWN, cap/top pointing UP, approximately width:height 1:12, no bend. A slim everyday fountain/ball pen, no tassel, no feather, no brush bristles, no hands, no character, no book, no scene, no shadow outside the pen, no text or logo. The shaft must be long and thin and the small pointed dark nib easily identifiable. Fill most of image height with narrow transparent margin; actual transparent background. Style match only from supplied character reference.",
+      "reference_sha256": "5f92aa1f47f33844c2fd61f047dfb56f1e7dc3706a43d54298d6054a466b4511"
+    }
+  ],
+  "offline_render": {
+    "script": "E:\\qilin-codex-fix-20261007\\notebook-contact-20261007\\render_contact.py",
+    "script_sha256": "2651ac9f6a6eafb42cb2a24e5ccdb11fbda3ca2fd4f5877b8775e67451afed56",
+    "command": "D:/anaconda3/python.exe E:/qilin-codex-fix-20261007/notebook-contact-20261007/render_contact.py --encode",
+    "wall_seconds": 113.90318649995606,
+    "source_motion": "E:/dsh-pet-motion-models/output/qilin-sixfix-v3/92-轻快记录/frames",
+    "body_keying": "E:/qilin-codex-fix-20261007/composite_contacts.py::key_body",
+    "local_dependencies": {
+      "E:\\qilin-codex-fix-20261007\\composite_contacts.py": "9ce386eb19a2ab524e35e7f63b63b8015e52b2825230420da12bbf83ce6255da",
+      "D:\\AI_helper\\dsh-pet-source\\scripts\\repair_alpha_fringe.py": "2e923f51b30ed48e3f1ab9ffe056bcd39b845a226d623798009307f42b08c7ef",
+      "D:\\AI_helper\\dsh-pet-source\\scripts\\repair_alpha_geometry.py": "dbb3038fd63b5652a51390856e10bfab020a14e6cb8fa8d93435bbdec8636b83"
+    },
+    "cached_inputs": {
+      "raw-body-frames.npy": "62a9046b058d71bc5f682b911e7feb66b968a6dbadd2f11cc4a7a947727a987e",
+      "raw-hand-landmarks.npy": "54a91f24d57bcf9da193d29d0c22738aa73ea1e7a508da581f9acdf85e422605",
+      "installed-frames.npy": "06461dd7ab809b05426c5b7e38056c7a93860857655812fdc5c40232c7e1bf4b"
+    }
+  },
+  "geometry": {
+    "scale": 1.1299435028248588,
+    "dx": -59.381355932203405,
+    "dy": -40.62146892655369,
+    "sigma": 0.65
+  },
+  "contact_method": {
+    "notebook": "Anchor the right cover edge at the tracked supporting palm; redraw skin in front of the edge.",
+    "pen": "Fixed length; grip follows writing hand. Select continuous page contact points with eased transitions; nib leaves the page while thinking.",
+    "resampling": "Premultiplied-alpha Lanczos downsample before affine Lanczos transform and existing contour geometry.",
+    "take_out_put_away": "Deliberate cartoon opacity easing at the beginning and end of prop visibility."
+  },
+  "geometry_diagnostics": {
+    "full_opacity_frames": 160,
+    "support_gap_max_source_px": 1.0,
+    "full_writing_frames": 104,
+    "nib_page_gap_max_source_px": 0.6501190662384033,
+    "scope": "Compositing geometry only; actual decoded pixels were separately viewed on all 241 frames."
+  },
+  "evidence_root": "E:\\qilin-codex-fix-20261007\\notebook-contact-20261007",
+  "evidence": [
+    "decoded-review-summary.json",
+    "native-candidate.json",
+    "real-pet-preview/record.json",
+    "installed-pet-preview/record.json",
+    "installation.json",
+    "package-hashes.json",
+    "runtime-performance/summary.json",
+    "portable-verification.json"
+  ],
+  "runtime": "Same EXE and player; no new runtime model, script, dependency, thread or network call. Assets are precomposited in WebM.",
+  "scope": "Only this clip and the two character manifests change. Other 104 WebM hashes and prior fixed geometry remain unchanged.",
+  "evidence_sha256": {
+    "decoded-review-summary.json": "1a58141bcedbd3eb685a08c98207ae6c711fe8a55770f0b1f1f16f520a18228c",
+    "native-candidate.json": "6bd1ec989171181c1804cbd0e598fc32f334178802f27b4928ddfb464a99eca8",
+    "real-pet-preview/record.json": "4aef07e52af8ccb00e687b8d20b4d1987889d3ee99dfcb04eb6abda80aa16161",
+    "installed-pet-preview/record.json": "c20be5a1f15209efef95bdd75511e580139ea4078b74e7710f783a6ac8d7e75d",
+    "installation.json": "4367d96781e80b58789ef254678d0d118b87b6e16d9aa6e005f62ea2727dc2d2",
+    "package-hashes.json": "5b9870f0f62accc8917bb9e8967c6d7f40876b21acdad893a9d8de73e60f03bf",
+    "runtime-performance/summary.json": "79ceb092a266329248be8ffbfced8f2d0646da3c0993c025cdfabd43023dfa02",
+    "portable-verification.json": "82155521c34235508e742ea69636c15c195344d10ec72a2be733ad917c7adfac"
+  }
+}

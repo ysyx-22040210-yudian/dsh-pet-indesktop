@@ -29,6 +29,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build_onedir.ps1 `
 
 麒麟角色轮廓与固定摆放后处理（2.0.20）见[当前素材报告](PR-REPORT-qilin-alpha-geometry-2026-10-07.md)，参数与逐段哈希在 `packaging/character_postprocess/qilin-alpha-geometry-20261007.json`。处理在制作环境离线执行，构建读取已验收的 CharacterRoot，应用无需安装 NumPy/OpenCV。仅替换同尺寸同帧率的角色包时可更新资源后重新打包，并分别核对外部优先目录、包内目录与便携包字节。
 
+轻快记录接触修复（2.0.21）在上述几何基线上只覆盖 `videos/random/轻快记录.webm` 与两份manifest，见[接触修复报告](PR-REPORT-qilin-notebook-contact-2026-10-07.md)。道具原图、准确生图提示词与离线制作SHA在 `packaging/character_postprocess/qilin-notebook-contact-20261007.json`；其余104段字节保留。构建仍读取完整已验收的CharacterRoot，视频与原制作缓存保存在报告所指的E盘目录。
+
 目标：**运行期零解压**——不再产生 `C:\...\Temp\_MEIxxxxxx` 缓存。
 
 - onefile：每次启动把全部素材解压到系统临时目录；崩溃/强杀/断电残留；启动慢（GIF 版 800MB 每次全解压）
