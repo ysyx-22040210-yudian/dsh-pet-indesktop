@@ -806,7 +806,9 @@ class ChatWindow(QDialog):
         self.setAttribute(Qt.WidgetAttribute.WA_Hover, True)
 
         self.settings = config.chat_settings()
-        self.prompt_builder = PromptBuilder(Path(__file__).resolve().parents[2] / "assets" / "characters")
+        from ..companion_store import companion_root
+        self.prompt_builder = PromptBuilder(Path(__file__).resolve().parents[2] / "assets" / "characters",
+                                           memory_path=companion_root(config.dir, getattr(config, 'instance_id', '')) / 'state.json')
         self.store = SessionStore(config.dir, getattr(config, "instance_id", ""))
         self.session = self._get_session()
         self.service = ChatService(parent=self)

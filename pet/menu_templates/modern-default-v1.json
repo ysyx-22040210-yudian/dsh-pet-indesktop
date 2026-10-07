@@ -21,6 +21,12 @@
     },
     {
       "type": "action",
+      "id": "companion",
+      "visible": true,
+      "section": "interaction"
+    },
+    {
+      "type": "action",
       "id": "look_screen",
       "visible": true,
       "section": "interaction"

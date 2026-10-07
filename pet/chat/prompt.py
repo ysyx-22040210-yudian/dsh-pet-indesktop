@@ -13,7 +13,9 @@ def load_character_prompt(root:Path,character_id:str):
     return str(chat.get('system_prompt','')) if isinstance(chat,dict) else ''
 
 class PromptBuilder:
-    def __init__(self,characters_root=None): self.characters_root=Path(characters_root) if characters_root else None
+    def __init__(self,characters_root=None, *, memory_path=None):
+        self.characters_root=Path(characters_root) if characters_root else None
+        self.memory_path=memory_path
     def effective_system_prompt(self,settings,character_id,role_prompt=None):
         if role_prompt and role_prompt.strip(): return role_prompt.strip()
         if self.characters_root:
@@ -21,7 +23,11 @@ class PromptBuilder:
             if prompt.strip(): return prompt.strip()
         return settings.default_system_prompt.strip()
     def build_messages(self,settings,character_id,history,user_text,role_prompt=None):
-        return [{'role':'system','content':self.effective_system_prompt(settings,character_id,role_prompt)},*({'role':m.role,'content':m.content} for m in self.trim_history(history,settings.history_message_limit,settings.history_char_limit)),{'role':'user','content':user_text.strip()}]
+        system=self.effective_system_prompt(settings,character_id,role_prompt)
+        if self.memory_path is not None:
+            from ..companion_store import memory_context
+            system += memory_context(self.memory_path)
+        return [{'role':'system','content':system},*({'role':m.role,'content':m.content} for m in self.trim_history(history,settings.history_message_limit,settings.history_char_limit)),{'role':'user','content':user_text.strip()}]
     @staticmethod
     def trim_history(history,message_limit,char_limit):
         result=[]; used=0; limit=max(100,char_limit)

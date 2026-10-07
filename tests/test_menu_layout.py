@@ -14,6 +14,7 @@ def test_modern_default_v1_has_compact_root_and_safety_actions():
         "ojingjing",
         "default.separator-profile",
         "chat",
+        "companion",
         "look_screen",
         "default.separator-interaction",
         "animations_hub",
@@ -302,6 +303,7 @@ def test_missing_user_layout_resolves_versioned_default():
     registered = {
         "ojingjing",
         "chat",
+        "companion",
         "look_screen",
         "animations_hub",
         "character",
@@ -356,6 +358,7 @@ def test_missing_user_layout_resolves_versioned_default():
     assert [node["id"] for node in result.nodes if node["type"] != "separator"] == [
         "ojingjing",
         "chat",
+        "companion",
         "look_screen",
         "animations_hub",
         "character",
@@ -477,6 +480,7 @@ def test_default_layout_populates_real_qmenu_hierarchy(monkeypatch):
     expected_root = [
         "麒麟表情包",
         "AI 对话",
+        "麒麟长期助手",
         "看看屏幕",
         "播放动画",
         "切换角色",
@@ -500,7 +504,7 @@ def test_default_layout_populates_real_qmenu_hierarchy(monkeypatch):
     rendered = ["|" if action.isSeparator() else action.text() for action in menu.actions()]
     expected_rendered = [
         "麒麟表情包", "|",
-        "AI 对话", "看看屏幕", "|",
+        "AI 对话", "麒麟长期助手", "看看屏幕", "|",
         "播放动画", "切换角色", "播放速率", "大小", "音乐", "|",
         "桌宠控制", "快捷启动", "|",
         "工具与帮助", "Agent 联动", "|",
@@ -622,7 +626,7 @@ def test_menu_editor_reorders_and_promotes_actions_with_button_controls():
     editor.move_down_action.trigger()
     reordered_ids = [node["id"] for node in editor.value()["nodes"]]
     chat_index = root_ids.index("chat")
-    assert reordered_ids[chat_index : chat_index + 2] == ["look_screen", "chat"]
+    assert reordered_ids[chat_index : chat_index + 2] == ["companion", "chat"]
 
     promoted = editor.item_for_action("drag_physics")
     editor.tree.setCurrentItem(promoted)

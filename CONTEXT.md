@@ -3,6 +3,15 @@
 The user-facing desktop-pet experience shared by settings, menus, overlays, and
 their platform-specific presentations.
 
+**Local Companion Responsibilities**:
+The nonmodal command/result surface for explicitly assigned persistent work,
+scheduled follow-ups and user-saved memories. Tasks own their workspace, engine,
+permission and schedule parameters; these are not global Settings System domains.
+The stable `companion` menu action opens this surface. The GUI-owned service
+persists state and schedules workers; closing the panel preserves work, while
+application shutdown cancels its owned processes and pauses interrupted tasks.
+See [the companion guide](docs/QILIN-COMPANION.md).
+
 ## Language
 
 **Shared UX Contract**:

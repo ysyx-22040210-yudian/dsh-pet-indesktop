@@ -60,6 +60,7 @@
 
 | 文档 | 一句话内容 | 何时必读 |
 |---|---|---|
+| [`QILIN-COMPANION.md`](QILIN-COMPANION.md) | 麒麟本机长期助手的入口、后台任务、调度、记忆、结果、通知及云端能力边界。 | 使用或修改长期助手任务、执行引擎、记忆与恢复策略前。 |
 | [`CONTEXT-MENU-RESEARCH-AND-REFACTOR-2026-08-25.md`](CONTEXT-MENU-RESEARCH-AND-REFACTOR-2026-08-25.md) | 右键菜单图标调研与双模板（`modern-default-v1`）重构记录，含菜单布局树的顺序/显隐/别名/图标覆盖规则与 2026-09 生命周期收口补充。 | **改右键菜单结构、样式、交互或平台行为时必读**（AGENTS.md 口径）。 |
 | [`SETTINGS-CHANGE-GATES.md`](SETTINGS-CHANGE-GATES.md) | Settings System 的变更门禁：一条设置能否进入设置页的准入条件、以及变更的准出证据要求。 | **新增、移动、重命名、删除或改变任何持久设置、以及修改设置页布局/保存语义/平台可见性/依赖关系之前必读**（AGENTS.md 口径）。 |
 | [`SETTINGS-INFORMATION-ARCHITECTURE-2026-08-27.md`](SETTINGS-INFORMATION-ARCHITECTURE-2026-08-27.md) | 设置页信息架构重组记录：按用户任务划分的页面归属表、渐进显示与禁用规则、视觉密度。 | 决定某个新设置该放哪一页/哪一组；确认"同一概念不得跨页重复"的现行归属时。 |
@@ -132,6 +133,7 @@
 
 | 文档 | 一句话内容 | 何时必读 |
 |---|---|---|
+| [`PR-REPORT-qilin-companion-2026-10-08.md`](PR-REPORT-qilin-companion-2026-10-08.md) | 本机长期助手的逐文件说明、性能、线程/进程协议、Windows UI、真实模型与交付证据。 | 改后台任务、暂停/恢复、Codex执行边界或重建本轮安装包前。 |
 | [`PR-REPORT-qilin-codex-repair-2026-10-07.md`](PR-REPORT-qilin-codex-repair-2026-10-07.md) | Codex修复与实机安装：退休旧服务/品牌、8张麒麟表情和背景、配置及子槽迁移、双击/岛碰撞、SSL/ICU、105动作中2项新增验收、性能和便携包SHA。 | 继续麒麟动画修复、复现品牌迁移、重建/安装或回滚时。 |
 | [`PR-REPORT-qilin-alpha-geometry-2026-10-07.md`](PR-REPORT-qilin-alpha-geometry-2026-10-07.md) | 105段去绿边、平滑alpha、固定大小与站立位置校准，逐帧/Qt/明暗采样、2.0.20实机与便携包SHA。 | 继续处理麒麟轮廓、跨动画大小位置，制作/安装或回滚角色资源时；接触和尾根局部覆盖见下方2.0.21、2.0.22报告。 |
 | [`PR-REPORT-qilin-notebook-contact-2026-10-07.md`](PR-REPORT-qilin-notebook-contact-2026-10-07.md) | 轻快记录的书边/支撑手、笔握点/纸面接触修复，241帧视觉检查、Windows绘制、性能和2.0.21安装及包SHA。 | 修复手持道具、复现本段合成、重建或回滚2.0.21资源时。 |

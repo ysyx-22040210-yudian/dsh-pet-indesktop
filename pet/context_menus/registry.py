@@ -50,6 +50,7 @@ from .shared import (
 
 ACTION_LABELS = {
     "ojingjing": "麒麟表情包", "chat": "AI 对话", "look_screen": "看看屏幕",
+    "companion": "麒麟长期助手",
     "animations_hub": "播放动画", "character": "切换角色", "playback_speed": "播放速率",
     "size": "大小", "drag_physics": "拖动物理", "no_move": "不移动",
     "mouse_through": "鼠标穿透", "on_top": "窗口置顶", "autostart": "开机自启",
@@ -77,7 +78,7 @@ Enablement = Callable[[object], bool]
 
 
 ACTION_ICONS = {
-    "ojingjing": "pet", "chat": "chat", "look_screen": "screen",
+    "ojingjing": "pet", "chat": "chat", "look_screen": "screen", "companion": "automation",
     "animations_hub": "play", "character": "character", "playback_speed": "speed",
     "size": "size", "drag_physics": "physics", "no_move": "pause",
     "mouse_through": "interaction", "on_top": "pin", "autostart": "autostart",
@@ -162,6 +163,10 @@ def _build_todo_panel(menu, pet):
     return add_action(menu, "待办提醒", "todo", pet.on_open_todo_panel, close_on_trigger=True)
 
 
+def _build_companion(menu, pet):
+    return add_action(menu, "麒麟长期助手", "automation", pet.on_open_companion, close_on_trigger=True)
+
+
 def _build_voice_chime_now(menu, pet):
     return add_action(menu, "立即报时", "chat", pet.on_voice_chime_now, close_on_trigger=True)
 
@@ -240,6 +245,7 @@ class MenuActionRegistry:
                 disabled_reason="彩蛋入口已在设置中停用",
             ),
             "chat": MenuActionSpec(_build_chat, _callback_available("on_open_chat")),
+            "companion": MenuActionSpec(_build_companion, _callback_available("on_open_companion")),
             "look_screen": MenuActionSpec(add_look_screen, _callback_available("on_look_screen")),
             "animations_hub": MenuActionSpec(_build_animations),
             "character": MenuActionSpec(lambda menu, pet: build_character_menu(menu, pet)),

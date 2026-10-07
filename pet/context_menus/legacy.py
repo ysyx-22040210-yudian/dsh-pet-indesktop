@@ -45,6 +45,9 @@ def build_legacy_menu(menu: QMenu, pet, template: dict) -> None:
     legacy_settings = getattr(pet, "on_open_legacy_settings", None)
     if chat is not None:
         add_action(menu, "AI 对话", None, chat, close_on_trigger=True)
+    companion = getattr(pet, 'on_open_companion', None)
+    if callable(companion):
+        add_action(menu, '麒麟长期助手', None, companion, close_on_trigger=True)
     if chat_settings is not None:
         add_action(menu, "AI 设置", None, chat_settings, close_on_trigger=True)
     if legacy_settings is not None:

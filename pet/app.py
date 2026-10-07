@@ -473,6 +473,7 @@ class PetInstance:
             self._slot_wrap(self.shell.clear_spawned_pets)
             if not self.config.instance_id else None)
         win.on_open_todo_panel = self._slot_wrap(self.shell.open_todo_panel)
+        win.on_open_companion = self._slot_wrap(self.shell.open_companion) if self.enable_chat else None
         win.on_voice_chime_now = self._slot_wrap(self.shell.trigger_voice_chime_now)
         win.on_toggle_voice_chime = self._slot_wrap(self.shell.toggle_voice_chime)
         # 点击自言自语的朗读走同一条音频通道（AppShell 持有，进程内唯一）。
@@ -683,6 +684,8 @@ class PetInstance:
         if self.quick_chat is None:
             self.quick_chat = QuickChatBubble(self.config, pet_window=self.win)
             self.quick_chat.open_chat_callback = self.open_chat
+            self.quick_chat.companion_callback = getattr(getattr(self, 'shell', None), 'open_companion', None)
+            self.quick_chat.companion_btn.setVisible(callable(self.quick_chat.companion_callback))
         else:
             self.quick_chat.pet_window = self.win
             self.quick_chat.settings = self.config.chat_settings()
@@ -1078,6 +1081,8 @@ class AppShell:
         # 角色热切换重建窗口后无需重绑（PR72 上游版挂 PetApp；本分支归 AppShell）。
         self.todo_service = None
         self.todo_panel = None
+        self.companion_service = None
+        self.companion_panel = None
         if self._todo_wanted():
             self._ensure_todo_service()
         # 语音报时：进程级单例（多窗共用调度器）。默认关闭（2026-09-19 起，
@@ -1134,6 +1139,58 @@ class AppShell:
 
             self._shared = SharedSubsystems(self)
         _LIVE_SHELLS.add(self)
+        self._restore_companion()
+
+    def _restore_companion(self):
+        """Restore saved responsibilities; an unused feature starts no workers/timer."""
+        from .companion_store import companion_root
+        if self.enable_chat and (companion_root(self.config.dir, self.config.instance_id) / 'state.json').is_file():
+            self._ensure_companion()
+
+    def _ensure_companion(self):
+        if getattr(self, 'companion_service', None) is None:
+            from .companion_service import CompanionService
+            from .companion_store import companion_root
+            self.companion_service = CompanionService(
+                companion_root(self.config.dir, self.config.instance_id), config=self.config,
+                parent=self.app,
+            )
+            self.companion_service.notification.connect(self._companion_notice)
+        return self.companion_service
+
+    def open_companion(self, text='', *, task_id=None):
+        from .companion_panel import CompanionPanel
+        service = self._ensure_companion()
+        if getattr(self, 'companion_panel', None) is None:
+            panel = CompanionPanel(service, open_settings=self.instance.open_chat_settings)
+            panel.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
+            panel.finished.connect(self._companion_panel_finished)
+            self.companion_panel = panel
+        if isinstance(text, str) and text.strip():
+            self.companion_panel.prefill(text)
+        if task_id:
+            self.companion_panel.select_task(task_id)
+        self.instance._present_dialog(self.companion_panel)
+
+    def _companion_panel_finished(self, _result):
+        self.companion_panel = None
+
+    def _companion_notice(self, task):
+        if not isinstance(task, dict):
+            return
+        status = task['status']
+        title = {'waiting': '麒麟需要你的回答', 'error': '麒麟任务需要处理',
+                 'completed': '麒麟完成了一项任务', 'scheduled': '麒麟完成本轮任务'}.get(status)
+        if status == 'scheduled' and task.get('last_outcome') == 'followup':
+            title = '麒麟的跟进有新进展'
+        if title is None:
+            return
+        body = task['title'] + '\n' + (task.get('error') or task.get('result', ''))[:160]
+        win = self.win
+        if win is not None and win.isVisible() and callable(getattr(win, 'show_bubble', None)):
+            win.show_bubble(title + '：' + task['title'])
+        if bool(self.config.get('system_notifications_enabled', True)):
+            self.system_notify(title, body, on_click=lambda: self.open_companion(task_id=task['id']))
 
     @property
     def enable_chat(self) -> bool:
@@ -1918,6 +1975,10 @@ class AppShell:
         #（关掉后迟到的 queued 回调提交会被明确拒绝）。
         if self.todo_service is not None:
             self.todo_service.stop()
+        if getattr(self, 'companion_service', None) is not None:
+            self.companion_service.stop()
+        if getattr(self, 'companion_panel', None) is not None:
+            self.companion_panel.close()
         # 语音报时同为进程级懒服务，退出必须一并停：其无主 QTimer 的 timeout
         # 连接从 Qt C++ 侧强引用住整个对象图（理由同 todo_service，见
         # _shutdown_live_for_tests 注释）；不停则退出期仍在跑 20s tick，且
@@ -1979,6 +2040,14 @@ class AppShell:
                     shell.todo_service = None
                 if getattr(shell, "_shared", None) is not None:
                     shell._shared.stop_all()
+                service = getattr(shell, 'companion_service', None)
+                if service is not None:
+                    service.stop()
+                    shell.companion_service = None
+                panel = getattr(shell, 'companion_panel', None)
+                if panel is not None:
+                    panel.close()
+                    shell.companion_panel = None
                 service = getattr(shell, "voice_chime_service", None)
                 if service is not None:
                     try:
@@ -3092,6 +3161,7 @@ class AppShell:
 
         if self.enable_chat:
             menu.addAction('AI 对话', self.instance.open_chat)
+            menu.addAction('麒麟长期助手', self.open_companion)
             menu.addAction('快速对话（气泡）', self.instance.open_quick_chat)
             menu.addAction('AI 设置', self.instance.open_chat_settings)
         menu.addAction('桌宠设置', self.instance.open_modern_settings)

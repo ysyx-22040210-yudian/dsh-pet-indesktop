@@ -75,7 +75,10 @@ class QuickChatBubble(QFrame):
 
         self.character_id = str(config.get("character", "shenshen"))
         self.settings = config.chat_settings()
-        self.prompt_builder = PromptBuilder(Path(__file__).resolve().parent.parent / "assets" / "characters")
+        from .companion_store import companion_root
+        self.prompt_builder = PromptBuilder(Path(__file__).resolve().parent.parent / "assets" / "characters",
+                                           memory_path=companion_root(config.dir, getattr(config, 'instance_id', '')) / 'state.json')
+        self.companion_callback = None
         self.store = SessionStore(config.dir, getattr(config, "instance_id", ""))
         self.session = self._get_session()
         self.service = ChatService(parent=self)
@@ -151,6 +154,11 @@ class QuickChatBubble(QFrame):
         self.send_btn.setObjectName("quick-chat-send")
         input_row.addWidget(self.input, 1)
         input_row.addWidget(self.send_btn)
+        self.companion_btn = QPushButton('交给麒麟')
+        self.companion_btn.setAccessibleName('把任务交给麒麟长期助手')
+        self.companion_btn.setVisible(False)
+        self.companion_btn.clicked.connect(self._open_companion)
+        input_row.addWidget(self.companion_btn)
         layout.addLayout(input_row)
 
         bg = self._preset["background"]
@@ -359,6 +367,12 @@ class QuickChatBubble(QFrame):
             self.settings, self.character_id, self.session.messages[:-1], text
         )
         self._active_request_id = self.service.send(messages, config)
+
+    def _open_companion(self):
+        if callable(self.companion_callback):
+            text = self.input.text().strip()
+            self.companion_callback(text)
+            self.close()
 
     def _started(self, request_id: str) -> None:
         if request_id != self._active_request_id:

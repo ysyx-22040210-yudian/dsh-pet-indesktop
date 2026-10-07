@@ -894,6 +894,7 @@ def test_modern_context_menu_has_compact_semantic_groups(monkeypatch):
     expected_labels = [
         "麒麟表情包",
         "AI 对话",
+        "麒麟长期助手",
         "看看屏幕",
         "播放动画",
         "切换角色",
@@ -2717,6 +2718,9 @@ def test_product_copy_has_no_external_brand_reference():
         Path("pet/agent_link.py"), Path("pet/agent_discovery.py"),
         Path("pet/codex_monitor.py"), Path("pet/config.py"),
         Path("pet/running_agents_dialog.py"), Path("docs/AGENT_LINK_PROTOCOL.md"),
+        Path("pet/companion_store.py"), Path("pet/companion_runner.py"),
+        Path("pet/companion_service.py"), Path("pet/companion_panel.py"),
+        Path("docs/QILIN-COMPANION.md"),
         Path("docs/RUNNING-AGENT-DISCOVERY.md"), Path("docs/INDEX.md"),
     }
     hits = []
