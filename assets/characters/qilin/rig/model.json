@@ -1,5 +1,6 @@
 {
   "schema": "qilin-rig2d-1",
+  "motion_revision": "natural-rig-1",
   "canvas": [
     640,
     360

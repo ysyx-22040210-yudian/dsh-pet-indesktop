@@ -140,7 +140,7 @@ def compile_model(source: Path, installed: Path, output: Path) -> None:
         # Normalise props to logical height 1. Grip/tip use this cropped artwork.
         save("prop_" + name, module.premultiply(rgba), factor=rgba.shape[0])
 
-    model = {"schema": "qilin-rig2d-1", "canvas": [640, 360], "fps": 30,
+    model = {"schema": "qilin-rig2d-1", "motion_revision": "natural-rig-1", "canvas": [640, 360], "fps": 30,
              "sampling": 2, "neck": (rig.neck / 2).tolist(), "bones": bones,
              "tail_root": bones["tail"][0], "wing_root": (wing_pivot / 2).tolist(),
              "eye_rects": [[module.TX / 2 + x * module.S / 2,
@@ -155,7 +155,7 @@ def compile_model(source: Path, installed: Path, output: Path) -> None:
                            "reference": "Chibi proportions and independent eye/blink parameters; no third-party model assets"}}
     (output / "model.json").write_text(json.dumps(model, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     manifest = json.loads((videos / "manifest.json").read_text(encoding="utf-8"))
-    manifest.update({"version": "3.0.0-rig2d", "name": "麒麟", "renderer": "rig2d", "rig": "../rig/model.json", "fps": 30,
+    manifest.update({"version": "3.0.1-natural-rig", "name": "麒麟", "renderer": "rig2d", "rig": "../rig/model.json", "fps": 30,
                      "description": "固定麒麟分层模型：实时骨骼、眼睑参数及道具接触约束。"})
     manifest["production"] = {"runtime": "Qt QPainter rig2d; no video decoding for this character",
                               "actions": len(actions), "layers": len(layers),
